@@ -122,6 +122,7 @@ class HSLUScraper:
             # 2. Belegte Module auslesen
             courses = self.get_enrolled_courses(page)
             print(f"Gefundene Kurse auf dem Dashboard: {len(courses)}")
+            downloaded["courses"] = courses
             for c in courses:
                 print(f" - {c['title']}")
 
