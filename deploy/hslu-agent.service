@@ -1,0 +1,15 @@
+[Unit]
+Description=HSLU KI-Studienassistent Scheduler
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/KiAgentHSLU
+ExecStart=/opt/KiAgentHSLU/venv/bin/python main.py
+Restart=always
+RestartSec=60
+EnvironmentFile=/opt/KiAgentHSLU/.env
+
+[Install]
+WantedBy=multi-user.target
