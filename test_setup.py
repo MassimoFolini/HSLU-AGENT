@@ -48,7 +48,7 @@ def test_environment():
         try:
             import google.generativeai as genai
             genai.configure(api_key=gemini_key)
-            model = genai.GenerativeModel('gemini-1.5-pro')
+            model = genai.GenerativeModel('gemini-2.5-flash')
             res = model.generate_content("Antworte nur mit: 'Gemini Verbindung erfolgreich!'")
             print(f"Antwort von Gemini: {res.text.strip()}")
         except Exception as e:

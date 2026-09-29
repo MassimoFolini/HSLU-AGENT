@@ -4,7 +4,7 @@ import google.generativeai as genai
 class LLMProcessor:
     def __init__(self):
         genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
-        self.model = genai.GenerativeModel('gemini-1.5-pro')
+        self.model = genai.GenerativeModel('gemini-2.5-flash')
 
     def generate_dossier(self, week_title, transcript_text, pdf_text_content=""):
         """Generates a structured weekly summary using Gemini."""

@@ -6,7 +6,7 @@ import time
 class Transcriber:
     def __init__(self):
         genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
-        self.model = genai.GenerativeModel('gemini-1.5-pro')
+        self.model = genai.GenerativeModel('gemini-2.5-flash')
 
     def extract_audio(self, video_path):
         """Extracts audio from an mp4 file using ffmpeg to reduce upload size."""
