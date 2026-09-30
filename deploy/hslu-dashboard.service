@@ -1,12 +1,12 @@
 [Unit]
-Description=HSLU KI-Studienassistent Scheduler
+Description=HSLU KI-Studienassistent Dashboard
 After=network.target
 
 [Service]
 Type=simple
 User=ubuntu
 WorkingDirectory=/opt/KiAgentHSLU
-ExecStart=/opt/KiAgentHSLU/venv/bin/python main.py
+ExecStart=/opt/KiAgentHSLU/venv/bin/python dashboard.py
 Restart=always
 RestartSec=60
 EnvironmentFile=/opt/KiAgentHSLU/.env

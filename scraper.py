@@ -103,7 +103,7 @@ class HSLUScraper:
                 pass
         return courses
 
-    def scrape_single_course(self, page, course, week_dir):
+    def scrape_single_course(self, page, course, week_dir, sync_state):
         """Scannt einen einzelnen Kurs nach Unterlagen, PDFs und Videos und lädt diese herunter."""
         course_title = course["title"]
         clean_name = re.sub(r'[^a-zA-Z0-9_-]', '_', course_title.split('.')[1] if '.' in course_title else course_title)
@@ -137,7 +137,7 @@ class HSLUScraper:
                 pass
                 
         # 3. Suche und navigiere in Unterlagen-Ordner (z.B. Modulunterlagen, Vorlesungen, Inputs)
-        subfolder_candidates = page.locator('a:has-text("Modulunterlagen"), a:has-text("Course Documents"), a:has-text("Inputs"), a:has-text("Vorlesung"), a:has-text("Folien"), a:has-text("Unterlagen")').all()
+        subfolder_candidates = page.locator('a:has-text("Modulunterlagen"), a:has-text("Course Documents"), a:has-text("Inputs"), a:has-text("Vorlesung"), a:has-text("Folien"), a:has-text("Unterlagen"), a:has-text("Material")').all()
         target_folder_urls = []
         for sf in subfolder_candidates:
             try:
@@ -148,19 +148,20 @@ class HSLUScraper:
                 pass
 
         # 4. Dateien auf der Hauptseite herunterladen
-        self._download_files_on_page(page, files_dir, downloaded_files)
+        self._download_files_on_page(page, files_dir, downloaded_files, clean_name, sync_state)
 
         # 5. In Unterordner gehen und dort ebenfalls herunterladen
-        for folder_url in target_folder_urls[:3]: # Max 3 Hauptordner zur Schonung der Laufzeit
+        # Alle identifizierten Ordner abscannen (anstatt nur 3), um sicher alles zu haben
+        for folder_url in target_folder_urls: 
             try:
-                print(f" -> Öffne Kursordner: {folder_url}")
+                print(f" -> Öffne Kursordner...")
                 page.goto(folder_url, wait_until="domcontentloaded")
                 page.wait_for_timeout(2000)
-                self._download_files_on_page(page, files_dir, downloaded_files)
+                self._download_files_on_page(page, files_dir, downloaded_files, clean_name, sync_state)
             except Exception as e:
                 print(f" -> Fehler beim Öffnen des Ordners: {e}")
 
-        print(f" -> Kurs '{clean_name}': {len(downloaded_files)} Unterlagen heruntergeladen, {len(video_links)} Video-Referenzen gefunden.")
+        print(f" -> Kurs '{clean_name}': {len(downloaded_files)} NEUE Unterlagen heruntergeladen, {len(video_links)} Video-Referenzen gefunden.")
         
         return {
             "title": course_title,
@@ -171,31 +172,175 @@ class HSLUScraper:
             "text": course_text
         }
 
-    def _download_files_on_page(self, page, target_dir, downloaded_files):
-        """Sucht nach Dateien auf der aktuellen Seite und lädt sie herunter."""
-        file_locators = page.locator('a[href*="goto.php/file/"], a[href*="cmd=download"], a[href*=".pdf"], a[href*=".pptx"], a[href*=".zip"]').all()
+    def _load_sync_state(self):
+        state_file = os.path.join(self.download_dir, "sync_state.json")
+        if os.path.exists(state_file):
+            import json
+            with open(state_file, "r", encoding="utf-8") as f:
+                return json.load(f)
+        return {}
+
+    def _save_sync_state(self, state):
+        state_file = os.path.join(self.download_dir, "sync_state.json")
+        import json
+        with open(state_file, "w", encoding="utf-8") as f:
+            json.dump(state, f, indent=4)
+
+    def _download_files_on_page(self, page, target_dir, downloaded_files, course_id, sync_state):
+        """Sucht nach Dateien auf der aktuellen Seite und lädt sie herunter, wenn sie neu sind."""
+        file_locators = page.locator('a[href*="goto.php/file/"], a[href*="target=file_"], a[href*="cmd=download"], a[href*="cmd=sendfile"], a[href*="ilObjFileGUI"], a[href*=".pdf"], a[href*=".pptx"], a[href*=".zip"], a[href*=".docx"]').all()
+        if course_id not in sync_state:
+            sync_state[course_id] = []
+            
+        new_files_this_page = []
         for fl in file_locators:
             try:
                 fname = fl.inner_text().strip().replace('\n', ' ')
                 href = fl.get_attribute("href")
-                if not href or any(fname in existing for existing in downloaded_files):
+                if not href:
                     continue
-                print(f"   Download: {fname[:50]}...")
-                with page.expect_download(timeout=8000) as download_info:
-                    fl.click()
-                download = download_info.value
-                dest_path = os.path.join(target_dir, download.suggested_filename)
-                download.save_as(dest_path)
-                downloaded_files.append(dest_path)
-                print(f"   [OK] Gespeichert: {download.suggested_filename}")
+                    
+                file_id = f"{fname}_{href.split('?')[-1]}"
+                if file_id in sync_state[course_id] or any(fname in existing for existing in downloaded_files):
+                    continue
+                    
+                print(f"   [NEU] Lade herunter: {fname[:40]}...")
+                
+                # Datei direkt über den Browser-Kontext als Stream/Buffer abrufen (verhindert Inline-PDF-Probleme)
+                response = page.context.request.get(href)
+                if response.ok:
+                    # Versuche einen vernünftigen Dateinamen zu finden
+                    content_disp = response.headers.get('content-disposition', '')
+                    import re
+                    file_name_match = re.search(r'filename="([^"]+)"', content_disp)
+                    if file_name_match:
+                        safe_filename = file_name_match.group(1)
+                    else:
+                        safe_filename = re.sub(r'[^a-zA-Z0-9_\-\.]', '_', fname)
+                        if not safe_filename.lower().endswith(('.pdf', '.zip', '.pptx', '.docx', '.xlsx')):
+                            safe_filename += '.pdf' # Fallback
+                            
+                    dest_path = os.path.join(target_dir, safe_filename)
+                    with open(dest_path, 'wb') as f:
+                        f.write(response.body())
+                        
+                    downloaded_files.append(dest_path)
+                    sync_state[course_id].append(file_id)
+                    new_files_this_page.append(dest_path)
+                    print(f"   [OK] Gespeichert: {safe_filename}")
+                else:
+                    print(f"   [FEHLER] HTTP {response.status} bei {href}")
+            except Exception as e:
+                print(f"   [FEHLER] Konnte nicht herunterladen.")
+        return new_files_this_page
+
+    def _crawl_folder_recursive(self, page, current_url, current_path, base_dir, downloaded_files, sync_state, course_id, visited):
+        """Kriecht rekursiv durch ILIAS-Ordner und übernimmt die exakte Struktur!"""
+        if current_url in visited:
+            return
+        visited.add(current_url)
+        
+        try:
+            page.goto(current_url, wait_until="domcontentloaded")
+            page.wait_for_timeout(2000)
+        except Exception:
+            return
+
+        # 1. Lokalen Ordner erstellen, der dem ILIAS-Pfad entspricht
+        current_local_dir = os.path.join(base_dir, *current_path) if current_path else base_dir
+        os.makedirs(current_local_dir, exist_ok=True)
+        
+        # 2. Dateien herunterladen in diesen spezifischen Unterordner
+        self._download_files_on_page(page, current_local_dir, downloaded_files, course_id, sync_state)
+        
+        # 3. Unterordner finden und rekursiv besuchen
+        # In ILIAS sind Ordner oft "goto.php?target=fold_" oder "goto.php/fold/" oder haben eine Ordner-Klasse
+        folder_links = page.locator('a[href*="target=fold_"], a[href*="/fold/"], a.il_ContainerItemTitle[href*="goto.php"]').all()
+        subfolders = []
+        for fl in folder_links:
+            try:
+                href = fl.get_attribute("href")
+                name = fl.inner_text().strip()
+                if href and name and ("target=fold_" in href or "/fold/" in href):
+                    clean_folder_name = re.sub(r'[^a-zA-Z0-9_\-\s]', '', name).strip()
+                    subfolders.append((clean_folder_name, href))
+            except:
+                pass
+                
+        # Deduplizieren und rekursiv aufrufen
+        seen_hrefs = set()
+        for folder_name, href in subfolders:
+            if href not in seen_hrefs:
+                seen_hrefs.add(href)
+                print(f" -> Betrete Unterordner: {'/'.join(current_path + [folder_name])}")
+                self._crawl_folder_recursive(
+                    page, href, current_path + [folder_name], 
+                    base_dir, downloaded_files, sync_state, course_id, visited
+                )
+
+    def scrape_single_course(self, page, course, week_dir, sync_state):
+        """Scannt einen einzelnen Kurs rekursiv und übernimmt die Ordnerstruktur."""
+        course_title = course["title"]
+        clean_name = re.sub(r'[^a-zA-Z0-9_-]', '_', course_title.split('.')[1] if '.' in course_title else course_title)
+        course_dir = os.path.join(week_dir, clean_name)
+        files_dir = os.path.join(course_dir, "Unterlagen")
+        os.makedirs(files_dir, exist_ok=True)
+        
+        print(f"\n[Scraping] Betrete Kurs: {course_title}")
+        page.goto(course["url"], wait_until="domcontentloaded")
+        page.wait_for_timeout(2500)
+        
+        course_text = ""
+        try:
+            course_text = page.locator('main').first.inner_text()
+        except Exception:
+            pass
+            
+        downloaded_files = []
+        video_links = []
+        
+        # 1. Videos / Streams erfassen (bleibt flach)
+        all_links = page.locator('a').all()
+        for l in all_links:
+            try:
+                href = l.get_attribute("href") or ""
+                text = l.inner_text().strip()
+                if any(v in href.lower() for v in ["panopto", "zoom.us", "mediaspace", ".mp4", ".m4a"]) or any(v in text.lower() for v in ["aufzeichnung", "aufnahme", "recording", "video"]):
+                    video_links.append({"text": text, "url": href})
             except Exception:
                 pass
+                
+        # 2. Rekursives Crawling für Ordnerstruktur starten!
+        visited = set()
+        self._crawl_folder_recursive(
+            page=page, 
+            current_url=course["url"], 
+            current_path=[], 
+            base_dir=files_dir, 
+            downloaded_files=downloaded_files, 
+            sync_state=sync_state, 
+            course_id=clean_name, 
+            visited=visited
+        )
+
+        print(f" -> Kurs '{clean_name}': {len(downloaded_files)} NEUE Unterlagen heruntergeladen, Struktur übernommen.")
+        
+        return {
+            "title": course_title,
+            "clean_name": clean_name,
+            "dir": course_dir,
+            "files": downloaded_files,
+            "videos": video_links,
+            "text": course_text
+        }
 
     def login_and_download(self, week_identifier):
         """Hauptmethode für das wöchentliche Scraping aller Fächer."""
         print(f"Starte wöchentliches Scraping für: {week_identifier}")
         week_dir = os.path.join(self.download_dir, week_identifier)
         os.makedirs(week_dir, exist_ok=True)
+        
+        sync_state = self._load_sync_state()
         
         results = {
             "courses_data": [],
@@ -229,11 +374,12 @@ class HSLUScraper:
             # 4. JEDEN Kurs einzeln scrapen & Unterlagen herunterladen!
             for course in courses:
                 try:
-                    c_data = self.scrape_single_course(page, course, week_dir)
+                    c_data = self.scrape_single_course(page, course, week_dir, sync_state)
                     results["courses_data"].append(c_data)
                 except Exception as e:
                     print(f"Fehler beim Scrapen von {course['title']}: {e}")
 
             browser.close()
-
+            
+        self._save_sync_state(sync_state)
         return results

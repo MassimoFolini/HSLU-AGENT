@@ -6,3 +6,10 @@ venv/
 downloads/
 credentials*.json
 token*.json
+
+deploy.tar.gz
+screenshots/
+agent_memory.json
+auth_url.txt
+links_clean.json
+links_output.txt

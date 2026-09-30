@@ -1,10 +1,13 @@
 import os
+from dotenv import load_dotenv
 from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
+
+load_dotenv()
 
 SCOPES = [
     'https://www.googleapis.com/auth/drive',
@@ -130,6 +133,21 @@ class GoogleWorkspace:
             media = MediaFileUpload(file_path, resumable=True)
 
         print(f"[Google Drive] Lade '{filename}' in Drive hoch (als Google Doc: {as_google_doc})...")
+        
+        # ---------------------------------------------------------
+        # DUPLIKAT-PRÜFUNG: Lösche alte Versionen mit demselben Namen
+        # ---------------------------------------------------------
+        if target_folder:
+            target_name = file_metadata['name']
+            query = f"name='{target_name}' and '{target_folder}' in parents and trashed=false"
+            try:
+                existing_files = self.drive_service.files().list(q=query, spaces='drive', fields='files(id)').execute().get('files', [])
+                for ef in existing_files:
+                    print(f"[Google Drive] Lösche veraltetes Duplikat '{target_name}' (ID: {ef['id']})")
+                    self.drive_service.files().update(fileId=ef['id'], body={'trashed': True}).execute()
+            except Exception as e:
+                print(f"[Google Drive] Fehler bei der Duplikatsprüfung: {e}")
+        # ---------------------------------------------------------
         file = self.drive_service.files().create(
             body=file_metadata,
             media_body=media,

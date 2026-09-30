@@ -46,10 +46,14 @@ def clean_subject_name(raw_title):
     name = parts[1] if len(parts) > 1 else raw_title
     return name.replace(" ", "_").replace("/", "_")
 
-def weekly_job():
+def weekly_job(force_week_str=None):
     now = datetime.now()
-    calendar_week = now.strftime("%W")
-    week_str = f"Woche_{calendar_week}_{now.strftime('%Y-%m-%d')}"
+    if force_week_str:
+        week_str = force_week_str
+    else:
+        # Sauberer Name: z.B. "KW 39 (30.09.2026)"
+        calendar_week = now.strftime("%W")
+        week_str = f"KW {calendar_week} ({now.strftime('%d.%m.%Y')})"
     
     print("\n" + "=" * 75)
     print(f"STARTE HSLU-STUDIENASSISTENT: {week_str}")
@@ -70,7 +74,7 @@ def weekly_job():
         print(f"[Google Drive] Hinweis: {e}")
 
     # 2. HSLU ILIAS scannen: Alle Fächer, Unterlagen und To-Dos erfassen
-    results = scraper.login_and_download(week_str)
+    results = scraper.login_and_download(week_str.replace(" ", "_").replace("(", "").replace(")", ""))
     courses_data = results.get("courses_data", [])
     todos = results.get("todos", [])
     
@@ -91,25 +95,30 @@ def weekly_job():
 
         # A. Google Drive Ordnerstruktur: Fach-Ordner (z.B. 'Datenbanksysteme')
         subject_folder_id = None
+        sources_folder_id = None
         week_folder_id = None
         
         if gworkspace:
             try:
-                # 1. Hauptordner für das Fach (wird nur 1x erstellt und jede Woche wiederverwendet!)
+                # 1. Hauptordner für das Fach
                 subject_folder_id = gworkspace.get_or_create_folder(subject_name)
                 print(f" -> Fach-Ordner in Drive: '{subject_name}' (ID: {subject_folder_id})")
                 
-                # 2. Wochen-Ordner innerhalb des Fachs (z.B. 'Woche_40_2026-09-30')
+                # 2. Ordner für ALLE Quellen (wird immer weiter befüllt) - Sauberer Name!
+                sources_folder_id = gworkspace.get_or_create_folder("Unterlagen", parent_id=subject_folder_id)
+                print(f" -> Quellen-Ordner: 'Unterlagen'")
+                
+                # 3. Wochen-Ordner innerhalb des Fachs (nur für das generierte KI-Dossier)
                 week_folder_id = gworkspace.get_or_create_folder(week_str, parent_id=subject_folder_id)
                 print(f" -> Wochen-Ordner in '{subject_name}': '{week_str}'")
             except Exception as e:
                 print(f" -> Fehler bei Google Drive Ordnererstellung: {e}")
 
-        # B. Text aus allen heruntergeladenen PDFs extrahieren
+        # B. Text aus allen NEUEN heruntergeladenen PDFs extrahieren
         pdf_corpus = ""
         for pdf in files:
             if pdf.lower().endswith(".pdf"):
-                print(f" -> Extrahiere Text aus PDF: {os.path.basename(pdf)}...")
+                print(f" -> Extrahiere Text aus NEUEM PDF: {os.path.basename(pdf)}...")
                 pdf_text = extract_pdf_text(pdf)
                 if pdf_text:
                     pdf_corpus += f"\n\n=== DOKUMENT: {os.path.basename(pdf)} ===\n" + pdf_text
@@ -136,36 +145,55 @@ def weekly_job():
         todo_text = "\n".join([f"- {t}" for t in mod_todos])
 
         # E. Gemini KI-Synthese: KOMPLETTES DOSSIER MIT ALLEM (Stoff, MEP-Fragen & Musterlösungen)
-        combined_source_text = f"Modul-Informationen:\n{page_text[:4000]}\n\nUnterlagen / Folien-Inhalte:\n{pdf_corpus[:15000]}\n\nOffene Abgaben:\n{todo_text}"
+        combined_source_text = f"Modul-Informationen:\n{page_text[:4000]}\n\nNeue Unterlagen / Folien-Inhalte:\n{pdf_corpus[:15000]}\n\nOffene Abgaben:\n{todo_text}"
         
-        print(f" -> Generiere das komplette Google Doc mit Gemini 2.5 Flash...")
+        print(f" -> Generiere das komplette Google Doc mit Gemini...")
         dossier = llm.generate_dossier(
             week_title=f"{subject_name} - {week_str}",
             transcript_text=transcript_corpus,
-            pdf_text_content=combined_source_text
+            pdf_text_content=combined_source_text,
+            subject_code=course_title
         )
 
         # F. Lokal abspeichern
-        dossier_filename = f"Komplettes_Dossier_{subject_name}_{week_str}.md"
+        dossier_filename = f"Wochen-Dossier.md"
         local_dossier_path = os.path.join(c["dir"], dossier_filename)
         with open(local_dossier_path, "w", encoding="utf-8") as f:
             f.write(dossier)
         print(f" -> Lokal gespeichert: {local_dossier_path}")
 
         # G. In Google Drive hochladen:
-        # 1. Das komplette Google Doc in den Wochen-Ordner des Fachs
-        # 2. Alle heruntergeladenen Original-PDFs zur Referenz in denselben Wochenordner
-        if gworkspace and week_folder_id:
+        if gworkspace:
             try:
-                # Als echtes Google Doc hochladen
-                doc_id = gworkspace.upload_file(local_dossier_path, week_folder_id, as_google_doc=True)
-                print(f" -> [Google Docs] Komplettes Dokument hochgeladen! ID: {doc_id}")
+                if week_folder_id:
+                    doc_id = gworkspace.upload_file(local_dossier_path, week_folder_id, as_google_doc=True)
+                    print(f" -> [Google Docs] Komplettes Dokument hochgeladen! ID: {doc_id}")
 
-                # Originale PDF-Unterlagen hochladen
-                for pdf_file in files:
-                    gworkspace.upload_file(pdf_file, week_folder_id, as_google_doc=False)
+                if sources_folder_id:
+                    local_unterlagen_dir = os.path.join(c["dir"], "Unterlagen")
+                    
+                    for pdf_file in files:
+                        # Berechne den relativen Pfad (z.B. "01_Einfuehrung/Skript.pdf")
+                        rel_path = os.path.relpath(pdf_file, local_unterlagen_dir)
+                        rel_dir = os.path.dirname(rel_path)
+                        
+                        target_folder_id = sources_folder_id
+                        
+                        # Erstelle die Unterordner in Google Drive (falls vorhanden)
+                        if rel_dir and rel_dir != "." and rel_dir != "":
+                            parts = rel_dir.replace('\\', '/').split('/')
+                            current_parent_id = sources_folder_id
+                            for part in parts:
+                                current_parent_id = gworkspace.get_or_create_folder(part, parent_id=current_parent_id)
+                            target_folder_id = current_parent_id
+                            
+                        gworkspace.upload_file(pdf_file, target_folder_id, as_google_doc=False)
+                        print(f" -> [Google Drive] Originaldatei in 'Unterlagen/{rel_dir}' gesichert: {os.path.basename(pdf_file)}")
             except Exception as e:
                 print(f" -> Fehler beim Drive-Upload: {e}")
+
+        print(f" -> Warte 15 Sekunden um API-Limits zu vermeiden...")
+        time.sleep(15)
 
     print("\n" + "=" * 75)
     print(f"WÖCHENTLICHER DURCHLAUF FÜR {week_str} ERFOLGREICH BEENDET!")
