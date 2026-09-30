@@ -234,8 +234,8 @@ class HSLUScraper:
                 print(f"   [FEHLER] Konnte nicht herunterladen.")
         return new_files_this_page
 
-    def _crawl_folder_recursive(self, page, current_url, current_path, base_dir, downloaded_files, sync_state, course_id, visited):
-        """Kriecht rekursiv durch ILIAS-Ordner und übernimmt die exakte Struktur!"""
+    def _crawl_folder_recursive(self, page, current_url, current_path, base_dir, downloaded_files, video_links, sync_state, course_id, visited):
+        """Kriecht rekursiv durch ILIAS-Ordner und Ã¼bernimmt die exakte Struktur!"""
         if current_url in visited:
             return
         visited.add(current_url)
@@ -246,15 +246,27 @@ class HSLUScraper:
         except Exception:
             return
 
-        # 1. Lokalen Ordner erstellen, der dem ILIAS-Pfad entspricht
+        # 1. Lokalen Ordner erstellen
         current_local_dir = os.path.join(base_dir, *current_path) if current_path else base_dir
         os.makedirs(current_local_dir, exist_ok=True)
         
         # 2. Dateien herunterladen in diesen spezifischen Unterordner
         self._download_files_on_page(page, current_local_dir, downloaded_files, course_id, sync_state)
         
+        # NEU: 2.5 Videos/Streams auf dieser Ebene erfassen!
+        all_links = page.locator('a').all()
+        for l in all_links:
+            try:
+                href = l.get_attribute("href") or ""
+                text = l.inner_text().strip()
+                if any(v in href.lower() for v in ["panopto", "zoom.us", "mediaspace", ".mp4", ".m4a"]) or any(v in text.lower() for v in ["aufzeichnung", "aufnahme", "recording", "video"]):
+                    # Verhindere Duplikate
+                    if not any(v["url"] == href for v in video_links):
+                        video_links.append({"text": text, "url": href})
+            except Exception:
+                pass
+        
         # 3. Unterordner finden und rekursiv besuchen
-        # In ILIAS sind Ordner oft "goto.php?target=fold_" oder "goto.php/fold/" oder haben eine Ordner-Klasse
         folder_links = page.locator('a[href*="target=fold_"], a[href*="/fold/"], a.il_ContainerItemTitle[href*="goto.php"]').all()
         subfolders = []
         for fl in folder_links:
@@ -275,7 +287,7 @@ class HSLUScraper:
                 print(f" -> Betrete Unterordner: {'/'.join(current_path + [folder_name])}")
                 self._crawl_folder_recursive(
                     page, href, current_path + [folder_name], 
-                    base_dir, downloaded_files, sync_state, course_id, visited
+                    base_dir, downloaded_files, video_links, sync_state, course_id, visited
                 )
 
     def scrape_single_course(self, page, course, week_dir, sync_state):
@@ -318,6 +330,7 @@ class HSLUScraper:
             current_path=[], 
             base_dir=files_dir, 
             downloaded_files=downloaded_files, 
+            video_links=video_links,
             sync_state=sync_state, 
             course_id=clean_name, 
             visited=visited
@@ -400,3 +413,4 @@ class HSLUScraper:
             
         self._save_sync_state(sync_state)
         return results
+

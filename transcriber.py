@@ -59,7 +59,13 @@ class Transcriber:
         return audio_path
 
     def transcribe(self, audio_path):
-        """Transcribes audio using Gemini 1.5 Flash via File API."""
+        """Transcribes audio using Gemini 1.5 Flash via File API and caches locally."""
+        txt_path = audio_path.rsplit('.', 1)[0] + '.txt'
+        if os.path.exists(txt_path):
+            print(f"Lade lokales Transkript: {txt_path}")
+            with open(txt_path, 'r', encoding='utf-8') as f:
+                return f.read()
+
         print(f"Uploading {audio_path} to Gemini File API...")
         try:
             audio_file = genai.upload_file(path=audio_path)
@@ -77,6 +83,10 @@ class Transcriber:
             
             genai.delete_file(audio_file.name)
             
+            # Cache locally
+            with open(txt_path, 'w', encoding='utf-8') as f:
+                f.write(transcript_text)
+                
             return transcript_text
         except Exception as e:
             print(f"Transcription error with Gemini: {e}")
