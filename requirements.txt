@@ -9,3 +9,4 @@ google-generativeai==0.4.1
 pyotp==2.9.0
 pypdf==6.19.0
 flask==3.0.3
+yt-dlp==2024.08.06

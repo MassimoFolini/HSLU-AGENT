@@ -379,6 +379,23 @@ class HSLUScraper:
                 except Exception as e:
                     print(f"Fehler beim Scrapen von {course['title']}: {e}")
 
+            # 5. Cookies exportieren fÃ¼r yt-dlp (Panopto/Zoom Downloads)
+            cookies = context.cookies()
+            cookie_path = os.path.join(self.download_dir, "cookies.txt")
+            with open(cookie_path, "w", encoding="utf-8") as f:
+                f.write("# Netscape HTTP Cookie File\\n")
+                for c in cookies:
+                    domain = c.get("domain", "")
+                    include_subdomain = "TRUE" if domain.startswith(".") else "FALSE"
+                    path = c.get("path", "/")
+                    secure = "TRUE" if c.get("secure", False) else "FALSE"
+                    expires = int(c.get("expires", 0))
+                    if expires == -1: expires = 0
+                    name = c.get("name", "")
+                    value = c.get("value", "")
+                    f.write(f"{domain}\\t{include_subdomain}\\t{path}\\t{secure}\\t{expires}\\t{name}\\t{value}\\n")
+            
+            results["cookie_file"] = cookie_path
             browser.close()
             
         self._save_sync_state(sync_state)

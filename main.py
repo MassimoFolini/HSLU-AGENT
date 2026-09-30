@@ -125,15 +125,27 @@ def weekly_job(force_week_str=None):
 
         # C. Videos erfassen / transkribieren
         transcript_corpus = ""
+        cookie_file = results.get("cookie_file")
+        
         for v in videos:
             v_url = v.get("url", "")
             v_title = v.get("text", "Vorlesung")
+            
             if os.path.exists(v_url):
-                print(f" -> Extrahiere Audio & Transkript von: {v_title}...")
+                print(f" -> Extrahiere Audio (Lokal) von: {v_title}...")
                 audio = transcriber.extract_audio(v_url)
                 if audio:
                     t_text = transcriber.transcribe(audio)
                     transcript_corpus += f"\n=== VORLESUNGSTRANSKRIPT: {v_title} ===\n" + t_text
+            
+            elif v_url.startswith("http") and cookie_file:
+                print(f" -> Downloade Audio-Stream (Web) von: {v_title}...")
+                audio = transcriber.download_audio_from_url(v_url, cookie_file, output_dir=c["dir"])
+                if audio:
+                    t_text = transcriber.transcribe(audio)
+                    transcript_corpus += f"\n=== VORLESUNGSTRANSKRIPT: {v_title} ===\n" + t_text
+                else:
+                    transcript_corpus += f"\nReferenziertes Video/Stream (Konnte nicht geladen werden): {v_title} ({v_url})\n"
             else:
                 transcript_corpus += f"\nReferenziertes Video/Stream: {v_title} ({v_url})\n"
 
@@ -214,3 +226,4 @@ if __name__ == "__main__":
             time.sleep(60)
     except KeyboardInterrupt:
         print("Beendet.")
+
