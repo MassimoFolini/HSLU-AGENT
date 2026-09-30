@@ -1,5 +1,6 @@
 import os
 import time
+import re
 import pyotp
 from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
@@ -95,7 +96,6 @@ class HSLUScraper:
                 href = link.get_attribute("href")
                 if title and href and href not in seen_urls:
                     seen_urls.add(href)
-                    # Falls gewünscht, nur aktuelles Semester (z.B. Herbst 2026 = H26) filtern
                     if current_semester_only and not ("H26" in title or "H26" in href):
                         continue
                     courses.append({"title": title, "url": href})
@@ -103,10 +103,104 @@ class HSLUScraper:
                 pass
         return courses
 
+    def scrape_single_course(self, page, course, week_dir):
+        """Scannt einen einzelnen Kurs nach Unterlagen, PDFs und Videos und lädt diese herunter."""
+        course_title = course["title"]
+        clean_name = re.sub(r'[^a-zA-Z0-9_-]', '_', course_title.split('.')[1] if '.' in course_title else course_title)
+        course_dir = os.path.join(week_dir, clean_name)
+        files_dir = os.path.join(course_dir, "unterlagen")
+        os.makedirs(files_dir, exist_ok=True)
+        
+        print(f"\n[Scraping] Betrete Kurs: {course_title}")
+        page.goto(course["url"], wait_until="domcontentloaded")
+        page.wait_for_timeout(2500)
+        
+        # 1. Textinhalte der Kursseite erfassen
+        course_text = ""
+        try:
+            course_text = page.locator('main').first.inner_text()
+        except Exception:
+            pass
+            
+        downloaded_files = []
+        video_links = []
+        
+        # 2. Suche nach Videos / Streams (Panopto, Zoom, MP4)
+        all_links = page.locator('a').all()
+        for l in all_links:
+            try:
+                href = l.get_attribute("href") or ""
+                text = l.inner_text().strip()
+                if any(v in href.lower() for v in ["panopto", "zoom.us", "mediaspace", ".mp4", ".m4a"]) or any(v in text.lower() for v in ["aufzeichnung", "aufnahme", "recording", "video"]):
+                    video_links.append({"text": text, "url": href})
+            except Exception:
+                pass
+                
+        # 3. Suche und navigiere in Unterlagen-Ordner (z.B. Modulunterlagen, Vorlesungen, Inputs)
+        subfolder_candidates = page.locator('a:has-text("Modulunterlagen"), a:has-text("Course Documents"), a:has-text("Inputs"), a:has-text("Vorlesung"), a:has-text("Folien"), a:has-text("Unterlagen")').all()
+        target_folder_urls = []
+        for sf in subfolder_candidates:
+            try:
+                h = sf.get_attribute("href")
+                if h and h not in target_folder_urls and "goto.php" in h:
+                    target_folder_urls.append(h)
+            except Exception:
+                pass
+
+        # 4. Dateien auf der Hauptseite herunterladen
+        self._download_files_on_page(page, files_dir, downloaded_files)
+
+        # 5. In Unterordner gehen und dort ebenfalls herunterladen
+        for folder_url in target_folder_urls[:3]: # Max 3 Hauptordner zur Schonung der Laufzeit
+            try:
+                print(f" -> Öffne Kursordner: {folder_url}")
+                page.goto(folder_url, wait_until="domcontentloaded")
+                page.wait_for_timeout(2000)
+                self._download_files_on_page(page, files_dir, downloaded_files)
+            except Exception as e:
+                print(f" -> Fehler beim Öffnen des Ordners: {e}")
+
+        print(f" -> Kurs '{clean_name}': {len(downloaded_files)} Unterlagen heruntergeladen, {len(video_links)} Video-Referenzen gefunden.")
+        
+        return {
+            "title": course_title,
+            "clean_name": clean_name,
+            "dir": course_dir,
+            "files": downloaded_files,
+            "videos": video_links,
+            "text": course_text
+        }
+
+    def _download_files_on_page(self, page, target_dir, downloaded_files):
+        """Sucht nach Dateien auf der aktuellen Seite und lädt sie herunter."""
+        file_locators = page.locator('a[href*="goto.php/file/"], a[href*="cmd=download"], a[href*=".pdf"], a[href*=".pptx"], a[href*=".zip"]').all()
+        for fl in file_locators:
+            try:
+                fname = fl.inner_text().strip().replace('\n', ' ')
+                href = fl.get_attribute("href")
+                if not href or any(fname in existing for existing in downloaded_files):
+                    continue
+                print(f"   Download: {fname[:50]}...")
+                with page.expect_download(timeout=8000) as download_info:
+                    fl.click()
+                download = download_info.value
+                dest_path = os.path.join(target_dir, download.suggested_filename)
+                download.save_as(dest_path)
+                downloaded_files.append(dest_path)
+                print(f"   [OK] Gespeichert: {download.suggested_filename}")
+            except Exception:
+                pass
+
     def login_and_download(self, week_identifier):
-        """Hauptmethode für das wöchentliche Scraping."""
+        """Hauptmethode für das wöchentliche Scraping aller Fächer."""
         print(f"Starte wöchentliches Scraping für: {week_identifier}")
-        downloaded = {"pdfs": [], "videos": [], "todos": []}
+        week_dir = os.path.join(self.download_dir, week_identifier)
+        os.makedirs(week_dir, exist_ok=True)
+        
+        results = {
+            "courses_data": [],
+            "todos": []
+        }
 
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
@@ -121,18 +215,25 @@ class HSLUScraper:
 
             # 2. Belegte Module auslesen
             courses = self.get_enrolled_courses(page)
-            print(f"Gefundene Kurse auf dem Dashboard: {len(courses)}")
-            downloaded["courses"] = courses
+            print(f"\nGefundene aktive Kurse ({len(courses)}):")
             for c in courses:
                 print(f" - {c['title']}")
 
-            # 3. To-Dos auslesen (z.B. Abgaben auf der rechten Seite)
+            # 3. To-Dos auslesen
             todo_elements = page.locator('.il-block-todo, div:has-text("Abgabe zur Übungseinheit")').all()
             for td in todo_elements:
                 text = td.inner_text().strip()
-                if text:
-                    downloaded["todos"].append(text)
+                if text and text not in results["todos"]:
+                    results["todos"].append(text)
+
+            # 4. JEDEN Kurs einzeln scrapen & Unterlagen herunterladen!
+            for course in courses:
+                try:
+                    c_data = self.scrape_single_course(page, course, week_dir)
+                    results["courses_data"].append(c_data)
+                except Exception as e:
+                    print(f"Fehler beim Scrapen von {course['title']}: {e}")
 
             browser.close()
 
-        return downloaded
+        return results
