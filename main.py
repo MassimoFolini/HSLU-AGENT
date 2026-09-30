@@ -26,13 +26,36 @@ def extract_pdf_text(pdf_path, max_pages=30):
         print(f"   [PDF-Parser] Hinweis zu {os.path.basename(pdf_path)}: {e}")
         return ""
 
+def clean_subject_name(raw_title):
+    """Erzeugt einen sauberen, lesbaren Fachnamen (z.B. 'Datenbanksysteme')."""
+    # z.B. aus 'I.BA_DBS.H2601' oder 'I.BA_DBS.H2601 - Datenbanksysteme'
+    mapping = {
+        "DBS": "Datenbanksysteme",
+        "ASTAT": "Applied_Statistics",
+        "KRR": "Logical_Reasoning_in_AI",
+        "VSK": "Verteilte_Systeme",
+        "PREN1": "Produktentwicklung_PREN1",
+        "AEDCIT": "Academic_English"
+    }
+    for code, name in mapping.items():
+        if code in raw_title:
+            return name
+            
+    # Fallback
+    parts = raw_title.split(".")
+    name = parts[1] if len(parts) > 1 else raw_title
+    return name.replace(" ", "_").replace("/", "_")
+
 def weekly_job():
     now = datetime.now()
-    week_str = now.strftime("Woche_%W_%Y-%m-%d")
-    print("\n" + "=" * 70)
-    print(f"STARTE VOLLAUTONOMEN HSLU-STUDIENASSISTENTEN: {week_str}")
+    calendar_week = now.strftime("%W")
+    week_str = f"Woche_{calendar_week}_{now.strftime('%Y-%m-%d')}"
+    
+    print("\n" + "=" * 75)
+    print(f"STARTE HSLU-STUDIENASSISTENT: {week_str}")
+    print(f"Struktur: Fach-Hauptordner -> Wochen-Unterordner -> Komplettes Google Doc mit allem")
     print(f"Zeitstempel: {now.strftime('%d.%m.%Y %H:%M:%S')}")
-    print("=" * 70)
+    print("=" * 75)
 
     # 1. Module initialisieren
     scraper = HSLUScraper()
@@ -42,124 +65,121 @@ def weekly_job():
     gworkspace = None
     try:
         gworkspace = GoogleWorkspace()
-        print("[Google Drive] Erfolgreich verbunden!")
+        print("[Google Drive] Verbindung erfolgreich hergestellt!")
     except Exception as e:
         print(f"[Google Drive] Hinweis: {e}")
 
-    # 2. HSLU Scraper ausführen: Alle Kurse, Unterlagen und To-Dos erfassen
+    # 2. HSLU ILIAS scannen: Alle Fächer, Unterlagen und To-Dos erfassen
     results = scraper.login_and_download(week_str)
     courses_data = results.get("courses_data", [])
     todos = results.get("todos", [])
     
-    print(f"\n[Scraping Fertig] {len(courses_data)} Kurse gescannt, {len(todos)} globale To-Dos gefunden.")
+    print(f"\n[Scraping Fertig] {len(courses_data)} Kurse gescannt, {len(todos)} offene Abgaben/To-Dos gefunden.")
 
-    # 3. Google Drive Wochenordner anlegen (z.B. 'Woche_40_2026-09-30')
-    drive_week_folder_id = None
-    if gworkspace:
-        try:
-            drive_week_folder_id = gworkspace.create_folder(week_str)
-            print(f"[Google Drive] Neuer Wochenordner angelegt: '{week_str}' (ID: {drive_week_folder_id})")
-        except Exception as e:
-            print(f"[Google Drive] Ordnererstellung fehlgeschlagen: {e}")
-
-    # 4. Pro Fach (Kurs) verarbeiten: Unterlagen, Transkripte & Dossier
+    # 3. PRO FACH verarbeiten
     for c in courses_data:
         course_title = c["title"]
-        clean_name = c["clean_name"]
+        subject_name = clean_subject_name(course_title)
         files = c.get("files", [])
         videos = c.get("videos", [])
         page_text = c.get("text", "")
         
-        print("\n" + "-" * 60)
-        print(f"VERARBEITE MODUL: {course_title}")
-        print(f"Heruntergeladene Dateien: {len(files)} | Gefundene Videos: {len(videos)}")
-        print("-" * 60)
+        print("\n" + "=" * 60)
+        print(f"FACH: {subject_name} ({course_title})")
+        print(f"Gefundene Unterlagen: {len(files)} | Gefundene Videos: {len(videos)}")
+        print("=" * 60)
 
-        # A. Google Drive Fachordner innerhalb des Wochenordners anlegen
-        course_folder_id = None
-        if gworkspace and drive_week_folder_id:
+        # A. Google Drive Ordnerstruktur: Fach-Ordner (z.B. 'Datenbanksysteme')
+        subject_folder_id = None
+        week_folder_id = None
+        
+        if gworkspace:
             try:
-                course_folder_id = gworkspace.create_folder(clean_name, parent_id=drive_week_folder_id)
-                print(f" -> Fach-Ordner in Drive angelegt: '{clean_name}'")
+                # 1. Hauptordner für das Fach (wird nur 1x erstellt und jede Woche wiederverwendet!)
+                subject_folder_id = gworkspace.get_or_create_folder(subject_name)
+                print(f" -> Fach-Ordner in Drive: '{subject_name}' (ID: {subject_folder_id})")
+                
+                # 2. Wochen-Ordner innerhalb des Fachs (z.B. 'Woche_40_2026-09-30')
+                week_folder_id = gworkspace.get_or_create_folder(week_str, parent_id=subject_folder_id)
+                print(f" -> Wochen-Ordner in '{subject_name}': '{week_str}'")
             except Exception as e:
-                print(f" -> Fehler beim Erstellen des Fachordners: {e}")
+                print(f" -> Fehler bei Google Drive Ordnererstellung: {e}")
 
         # B. Text aus allen heruntergeladenen PDFs extrahieren
         pdf_corpus = ""
         for pdf in files:
             if pdf.lower().endswith(".pdf"):
-                print(f" -> Lese PDF-Inhalt: {os.path.basename(pdf)}...")
+                print(f" -> Extrahiere Text aus PDF: {os.path.basename(pdf)}...")
                 pdf_text = extract_pdf_text(pdf)
                 if pdf_text:
                     pdf_corpus += f"\n\n=== DOKUMENT: {os.path.basename(pdf)} ===\n" + pdf_text
 
-        # C. Videos / Audios verarbeiten und transkribieren
+        # C. Videos erfassen / transkribieren
         transcript_corpus = ""
         for v in videos:
             v_url = v.get("url", "")
-            v_title = v.get("text", "Vorlesungsvideo")
-            # Falls lokale Videodatei heruntergeladen wurde
+            v_title = v.get("text", "Vorlesung")
             if os.path.exists(v_url):
-                print(f" -> Extrahiere Audio & transkribiere: {v_title}...")
+                print(f" -> Extrahiere Audio & Transkript von: {v_title}...")
                 audio = transcriber.extract_audio(v_url)
                 if audio:
                     t_text = transcriber.transcribe(audio)
-                    transcript_corpus += f"\n=== TRANSKRIPT: {v_title} ===\n" + t_text
+                    transcript_corpus += f"\n=== VORLESUNGSTRANSKRIPT: {v_title} ===\n" + t_text
             else:
-                transcript_corpus += f"\nReferenziertes Video: {v_title} ({v_url})\n"
+                transcript_corpus += f"\nReferenziertes Video/Stream: {v_title} ({v_url})\n"
 
         if not transcript_corpus:
-            transcript_corpus = f"Vorlesungsbesprechung und Aufzeichnungen zu {course_title}."
+            transcript_corpus = f"Vorlesungsinhalte und Aufzeichnungen zu {subject_name} für {week_str}."
 
-        # D. Gefundene modulspezifische To-Dos zusammenstellen
-        mod_todos = [td for td in todos if clean_name.lower() in td.lower() or "abgabe" in td.lower()]
+        # D. To-Dos für dieses Fach filtern
+        mod_todos = [td for td in todos if subject_name.lower() in td.lower() or "abgabe" in td.lower()]
         todo_text = "\n".join([f"- {t}" for t in mod_todos])
 
-        # E. Gemini KI-Synthese: Dossier mit Stoff, Prüfungsfragen & Musterlösungen generieren
-        combined_source_text = f"Modulbeschrieb & Inhaltsseite:\n{page_text[:4000]}\n\nPDF-Skripte & Folien:\n{pdf_corpus[:15000]}"
+        # E. Gemini KI-Synthese: KOMPLETTES DOSSIER MIT ALLEM (Stoff, MEP-Fragen & Musterlösungen)
+        combined_source_text = f"Modul-Informationen:\n{page_text[:4000]}\n\nUnterlagen / Folien-Inhalte:\n{pdf_corpus[:15000]}\n\nOffene Abgaben:\n{todo_text}"
         
-        print(f" -> Generiere umfassendes MEP-Dossier mit Gemini 2.5 Flash...")
+        print(f" -> Generiere das komplette Google Doc mit Gemini 2.5 Flash...")
         dossier = llm.generate_dossier(
-            week_title=f"{week_str} - {course_title}",
+            week_title=f"{subject_name} - {week_str}",
             transcript_text=transcript_corpus,
             pdf_text_content=combined_source_text
         )
 
-        # F. Dossier lokal speichern
-        dossier_filename = f"Dossier_{clean_name}_{week_str}.md"
+        # F. Lokal abspeichern
+        dossier_filename = f"Komplettes_Dossier_{subject_name}_{week_str}.md"
         local_dossier_path = os.path.join(c["dir"], dossier_filename)
         with open(local_dossier_path, "w", encoding="utf-8") as f:
             f.write(dossier)
         print(f" -> Lokal gespeichert: {local_dossier_path}")
 
-        # G. In Google Drive hochladen (Dossier als natives Google Doc + Originaldateien als Backup!)
-        target_upload_folder = course_folder_id or drive_week_folder_id
-        if gworkspace and target_upload_folder:
-            # 1. Dossier als echtes Google Doc (perfekt für NotebookLM & sofortiges Lesen)
-            doc_id = gworkspace.upload_file(local_dossier_path, target_upload_folder, as_google_doc=True)
-            print(f" -> [Google Docs] Dossier hochgeladen! Doc-ID: {doc_id}")
+        # G. In Google Drive hochladen:
+        # 1. Das komplette Google Doc in den Wochen-Ordner des Fachs
+        # 2. Alle heruntergeladenen Original-PDFs zur Referenz in denselben Wochenordner
+        if gworkspace and week_folder_id:
+            try:
+                # Als echtes Google Doc hochladen
+                doc_id = gworkspace.upload_file(local_dossier_path, week_folder_id, as_google_doc=True)
+                print(f" -> [Google Docs] Komplettes Dokument hochgeladen! ID: {doc_id}")
 
-            # 2. Original-PDFs als Referenz hochladen
-            for pdf_file in files:
-                gworkspace.upload_file(pdf_file, target_upload_folder, as_google_doc=False)
+                # Originale PDF-Unterlagen hochladen
+                for pdf_file in files:
+                    gworkspace.upload_file(pdf_file, week_folder_id, as_google_doc=False)
+            except Exception as e:
+                print(f" -> Fehler beim Drive-Upload: {e}")
 
-    print("\n" + "=" * 70)
+    print("\n" + "=" * 75)
     print(f"WÖCHENTLICHER DURCHLAUF FÜR {week_str} ERFOLGREICH BEENDET!")
-    print(f"Alle Fächer wurden analysiert, Dossiers als Google Docs erstellt und in Drive abgelegt.")
-    print("=" * 70 + "\n")
+    print(f"Alle Fächer haben ihren Hauptordner, darin den Wochenordner und das komplette Google Doc mit allem erhalten.")
+    print("=" * 75 + "\n")
 
 if __name__ == "__main__":
     print("HSLU KI-Studienassistent ist aktiv.")
-    print("Der wöchentliche Durchlauf startet jeden Sonntag um 18:00 Uhr automatisch.")
-    print("Möchtest du einen Testdurchlauf jetzt sofort starten? (Führe weekly_job() aus).")
+    print("Schedule: Jeden Sonntag um 18:00 Uhr automatisch.")
     
-    # Scheduler: Jeden Sonntag um 18:00 Uhr
+    # Scheduler
     schedule.every().sunday.at("18:00").do(weekly_job)
     
-    # Für manuelle Ausführung bei Start (kann einkommentiert werden)
-    # weekly_job()
-    
-    print("Warteschleife aktiv...")
+    print("Warteschleife aktiv. Drücke Strg + C zum Beenden.")
     try:
         while True:
             schedule.run_pending()

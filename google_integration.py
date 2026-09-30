@@ -49,8 +49,23 @@ class GoogleWorkspace:
             with open('token.json', 'w', encoding='utf-8') as token:
                 token.write(self.creds.to_json())
 
+    def get_or_create_folder(self, folder_name, parent_id=None):
+        """Sucht nach einem existierenden Ordner. Falls nicht vorhanden, wird er erstellt."""
+        parent = parent_id or self.root_folder_id
+        query = f"name = '{folder_name}' and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
+        if parent:
+            query += f" and '{parent}' in parents"
+            
+        results = self.drive_service.files().list(q=query, spaces='drive', fields='files(id, name)').execute()
+        files = results.get('files', [])
+        if files:
+            print(f"[Google Drive] Ordner '{folder_name}' existiert bereits (ID: {files[0]['id']})")
+            return files[0]['id']
+            
+        return self.create_folder(folder_name, parent_id=parent)
+
     def create_folder(self, folder_name, parent_id=None):
-        """Erstellt einen Ordner in Google Drive."""
+        """Erstellt einen neuen Ordner in Google Drive."""
         parent = parent_id or self.root_folder_id
         file_metadata = {
             'name': folder_name,
