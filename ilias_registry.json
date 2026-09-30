@@ -1,0 +1,3007 @@
+{
+    "metadata": {
+        "last_scan": null
+    },
+    "courses": {
+        "BA_AEDCIT": {
+            "items": {
+                "80d298d44742e536867810547c1b7488": {
+                    "type": "pdf",
+                    "title": "AEDCIT_HS26 - CourseOutline_V2_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7308597",
+                    "first_seen": "2026-09-30T16:08:30.956796",
+                    "last_processed": "2026-09-30T16:08:30.956796",
+                    "status": "processed"
+                },
+                "98509a800fc6b084b9c2db998e54aa09": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7308597",
+                    "first_seen": "2026-09-30T16:08:30.958300",
+                    "last_processed": "2026-09-30T16:08:30.958300",
+                    "status": "processed"
+                },
+                "107accd022f957a1fc9e75924517b793": {
+                    "type": "pdf",
+                    "title": "IELTS - Overview of (external) test_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262264",
+                    "first_seen": "2026-09-30T16:08:30.959309",
+                    "last_processed": "2026-09-30T16:08:30.960312",
+                    "status": "processed"
+                },
+                "755f62e52c3b51a68af4468419bab49a": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262264",
+                    "first_seen": "2026-09-30T16:08:30.960312",
+                    "last_processed": "2026-09-30T16:08:30.960312",
+                    "status": "processed"
+                },
+                "df159219afffa4f50132eff64059ed0c": {
+                    "type": "pdf",
+                    "title": "AEDCIT_W1 - post-class slides_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7309080",
+                    "first_seen": "2026-09-30T16:08:30.961818",
+                    "last_processed": "2026-09-30T16:08:30.962534",
+                    "status": "processed"
+                },
+                "b40290a90e09701bfedac2da7abbd080": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7309080",
+                    "first_seen": "2026-09-30T16:08:30.963381",
+                    "last_processed": "2026-09-30T16:08:30.963381",
+                    "status": "processed"
+                },
+                "0e24380a40e9eb4d283ae0bac0fe95dd": {
+                    "type": "pdf",
+                    "title": "Reading - Week 1_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7308944",
+                    "first_seen": "2026-09-30T16:08:30.964544",
+                    "last_processed": "2026-09-30T16:08:30.964544",
+                    "status": "processed"
+                },
+                "4722eb3e4d6d1610bddafed4be996322": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7308944",
+                    "first_seen": "2026-09-30T16:08:30.965543",
+                    "last_processed": "2026-09-30T16:08:30.965543",
+                    "status": "processed"
+                },
+                "0244c9dbebc99349157a79612c8b97f0": {
+                    "type": "pdf",
+                    "title": "Vocabulary exercises - Leisure_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7312199",
+                    "first_seen": "2026-09-30T16:08:30.966542",
+                    "last_processed": "2026-09-30T16:08:30.967543",
+                    "status": "processed"
+                },
+                "4178a821e8f4ac999b248e2c81c04955": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7312199",
+                    "first_seen": "2026-09-30T16:08:30.967543",
+                    "last_processed": "2026-09-30T16:08:30.968542",
+                    "status": "processed"
+                },
+                "071d80533e49c3ee7e87b1a97fe558a6": {
+                    "type": "pdf",
+                    "title": "AEDCIT - Listening (Week 2)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7319779",
+                    "first_seen": "2026-09-30T16:08:30.968542",
+                    "last_processed": "2026-09-30T16:08:30.969545",
+                    "status": "processed"
+                },
+                "47f88217e7143bd5b94f09e9c7b2bd7f": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7319779",
+                    "first_seen": "2026-09-30T16:08:30.970546",
+                    "last_processed": "2026-09-30T16:08:30.970546",
+                    "status": "processed"
+                },
+                "c52dafcf2e746a90c768324263806900": {
+                    "type": "pdf",
+                    "title": "AEDCIT_W2 - post-class slides_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7321005",
+                    "first_seen": "2026-09-30T16:08:30.971545",
+                    "last_processed": "2026-09-30T16:08:30.972549",
+                    "status": "processed"
+                },
+                "0291d104368af40ef7ba879ebca6ae96": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7321005",
+                    "first_seen": "2026-09-30T16:08:30.972549",
+                    "last_processed": "2026-09-30T16:08:30.972549",
+                    "status": "processed"
+                },
+                "8c7ba2ed29a69929f04f4554dc1536ce": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 01 (Test 1, Part 1)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262317",
+                    "first_seen": "2026-09-30T16:08:30.974337",
+                    "last_processed": "2026-09-30T16:08:30.976125",
+                    "status": "processed"
+                },
+                "4bedcfd357e1165ff79ddd8ceda5fa2c": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 02 (Test 1, Part 2)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262318",
+                    "first_seen": "2026-09-30T16:08:30.977136",
+                    "last_processed": "2026-09-30T16:08:30.977136",
+                    "status": "processed"
+                },
+                "8afabc38d20a9a8763d50070734ac00d": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 03 (Test 1, Part 3)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262319",
+                    "first_seen": "2026-09-30T16:08:30.978133",
+                    "last_processed": "2026-09-30T16:08:30.978133",
+                    "status": "processed"
+                },
+                "14cf04188d6050dea2cda734732832c8": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 04 (Test 1, Part 4)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262308",
+                    "first_seen": "2026-09-30T16:08:30.981373",
+                    "last_processed": "2026-09-30T16:08:30.981373",
+                    "status": "processed"
+                },
+                "bedf1b9224cecc90a1fe1259132231c0": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 05 (Test 2, Part 1)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262309",
+                    "first_seen": "2026-09-30T16:08:30.982384",
+                    "last_processed": "2026-09-30T16:08:30.982384",
+                    "status": "processed"
+                },
+                "2db5817839be18b804699930842a53d1": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 06 (Test 2, Part 2)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262312",
+                    "first_seen": "2026-09-30T16:08:30.983892",
+                    "last_processed": "2026-09-30T16:08:30.983892",
+                    "status": "processed"
+                },
+                "aaf3df157160e26859f2c09eb1215b1b": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 07 (Test 2, Part 3)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262320",
+                    "first_seen": "2026-09-30T16:08:30.985464",
+                    "last_processed": "2026-09-30T16:08:30.986475",
+                    "status": "processed"
+                },
+                "c93bb80d05957471ebfa0e9a8017db4e": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 08 (Test 2, Part 4)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262313",
+                    "first_seen": "2026-09-30T16:08:30.987474",
+                    "last_processed": "2026-09-30T16:08:30.987474",
+                    "status": "processed"
+                },
+                "b8781c68b23aa53ea55ed30f3ab34378": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 09 (Test 3, Part 1)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262321",
+                    "first_seen": "2026-09-30T16:08:30.988476",
+                    "last_processed": "2026-09-30T16:08:30.989476",
+                    "status": "processed"
+                },
+                "73b6111167e0341ef3e934f38fffbf02": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 10 (Test 3, Part 2)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262322",
+                    "first_seen": "2026-09-30T16:08:30.990474",
+                    "last_processed": "2026-09-30T16:08:30.991206",
+                    "status": "processed"
+                },
+                "27441f3a1a2bd098cfa09cccf9e2cc6b": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 11 (Test 3, Part 3)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262316",
+                    "first_seen": "2026-09-30T16:08:30.993055",
+                    "last_processed": "2026-09-30T16:08:30.994064",
+                    "status": "processed"
+                },
+                "8401ba42aba437edac4ec59b8f4a2dbd": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 12 (Test 3, Part 4)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262314",
+                    "first_seen": "2026-09-30T16:08:30.995063",
+                    "last_processed": "2026-09-30T16:08:30.996571",
+                    "status": "processed"
+                },
+                "2cc0d5368e5ee91c519aef60be78c5af": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 13 (Test 4, Part 1)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262315",
+                    "first_seen": "2026-09-30T16:08:30.997577",
+                    "last_processed": "2026-09-30T16:08:30.998583",
+                    "status": "processed"
+                },
+                "1b5c1d0031c143e498c7997928229429": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 14 (Test 4, Part 2)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262310",
+                    "first_seen": "2026-09-30T16:08:30.998583",
+                    "last_processed": "2026-09-30T16:08:30.999583",
+                    "status": "processed"
+                },
+                "9781238f348bbfece2fcbfc273908ff1": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 15 (Test 4, Part 3)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262311",
+                    "first_seen": "2026-09-30T16:08:31.001089",
+                    "last_processed": "2026-09-30T16:08:31.002100",
+                    "status": "processed"
+                },
+                "6fa587b153dc41777dd3aeeaaaf1f27e": {
+                    "type": "pdf",
+                    "title": "IELTS17_Track 16 (Test 4, Part 4)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262323",
+                    "first_seen": "2026-09-30T16:08:31.003106",
+                    "last_processed": "2026-09-30T16:08:31.004099",
+                    "status": "processed"
+                },
+                "74e826a360368d57ee48500b74efd8a9": {
+                    "type": "pdf",
+                    "title": "speaking-band-descriptors_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262270",
+                    "first_seen": "2026-09-30T16:08:31.005098",
+                    "last_processed": "2026-09-30T16:08:31.006098",
+                    "status": "processed"
+                },
+                "82d9d2bcea1e4f0ef01eec1498cb9d28": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262270",
+                    "first_seen": "2026-09-30T16:08:31.007095",
+                    "last_processed": "2026-09-30T16:08:31.008603",
+                    "status": "processed"
+                },
+                "7b92d8db8aa302a22c961db8af217e2c": {
+                    "type": "pdf",
+                    "title": "writing-band-descriptors-task-1_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262271",
+                    "first_seen": "2026-09-30T16:08:31.010501",
+                    "last_processed": "2026-09-30T16:08:31.011564",
+                    "status": "processed"
+                },
+                "2ebf7ccd91c5a7b422d2ad1c5f5d191b": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262271",
+                    "first_seen": "2026-09-30T16:08:31.012638",
+                    "last_processed": "2026-09-30T16:08:31.013687",
+                    "status": "processed"
+                },
+                "bcd40c034f46e9d98ff1eb62a347792c": {
+                    "type": "pdf",
+                    "title": "writing-band-descriptors-task-2_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262272",
+                    "first_seen": "2026-09-30T16:08:31.013687",
+                    "last_processed": "2026-09-30T16:08:31.016260",
+                    "status": "processed"
+                },
+                "503f018a344ece664bdc198253347e63": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262272",
+                    "first_seen": "2026-09-30T16:08:31.017367",
+                    "last_processed": "2026-09-30T16:08:31.018964",
+                    "status": "processed"
+                },
+                "c8d01c4f8eeebabc3c3943e00dd17a94": {
+                    "type": "pdf",
+                    "title": "Reading 1_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262278",
+                    "first_seen": "2026-09-30T16:08:31.020553",
+                    "last_processed": "2026-09-30T16:08:31.021613",
+                    "status": "processed"
+                },
+                "9df461e086a53a7599fffb8f534bee3d": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262278",
+                    "first_seen": "2026-09-30T16:08:31.023218",
+                    "last_processed": "2026-09-30T16:08:31.025221",
+                    "status": "processed"
+                },
+                "f2bbf0457e80c65f1652e34850fd2a76": {
+                    "type": "pdf",
+                    "title": "Listening 1_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262277",
+                    "first_seen": "2026-09-30T16:08:31.027049",
+                    "last_processed": "2026-09-30T16:08:31.028059",
+                    "status": "processed"
+                },
+                "f7ad4cb79101ae284255a21d9dd6dd13": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262277",
+                    "first_seen": "2026-09-30T16:08:31.030061",
+                    "last_processed": "2026-09-30T16:08:31.031059",
+                    "status": "processed"
+                },
+                "26fea4fa575bd8ee5c3da82ffad435ee": {
+                    "type": "pdf",
+                    "title": "Writing 1_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262279",
+                    "first_seen": "2026-09-30T16:08:31.033059",
+                    "last_processed": "2026-09-30T16:08:31.034059",
+                    "status": "processed"
+                },
+                "133c95df45f08944ae0f9f2e72332188": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262279",
+                    "first_seen": "2026-09-30T16:08:31.035565",
+                    "last_processed": "2026-09-30T16:08:31.037574",
+                    "status": "processed"
+                },
+                "324c131765d398878b07648843d2730a": {
+                    "type": "pdf",
+                    "title": "Answers_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262280",
+                    "first_seen": "2026-09-30T16:08:31.038578",
+                    "last_processed": "2026-09-30T16:08:31.040573",
+                    "status": "processed"
+                },
+                "2ea0bcdf1dd663eb1c4db3a6f56b54cd": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262280",
+                    "first_seen": "2026-09-30T16:08:31.043083",
+                    "last_processed": "2026-09-30T16:08:31.045093",
+                    "status": "processed"
+                },
+                "9dd9856c42ad769459b1c07cf294dc35": {
+                    "type": "pdf",
+                    "title": "Section Four_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262282",
+                    "first_seen": "2026-09-30T16:08:31.046093",
+                    "last_processed": "2026-09-30T16:08:31.048093",
+                    "status": "processed"
+                },
+                "5b4e2fd4794410e93bb2ae1875bfea52": {
+                    "type": "pdf",
+                    "title": "Section One_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262283",
+                    "first_seen": "2026-09-30T16:08:31.050094",
+                    "last_processed": "2026-09-30T16:08:31.051093",
+                    "status": "processed"
+                },
+                "ce29228268b754e05ae164c3a88c3e58": {
+                    "type": "pdf",
+                    "title": "Section Three_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262284",
+                    "first_seen": "2026-09-30T16:08:31.053299",
+                    "last_processed": "2026-09-30T16:08:31.055310",
+                    "status": "processed"
+                },
+                "979da91317fbe7d87a98f19570bf6bbf": {
+                    "type": "pdf",
+                    "title": "Section Two_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262285",
+                    "first_seen": "2026-09-30T16:08:31.056473",
+                    "last_processed": "2026-09-30T16:08:31.058481",
+                    "status": "processed"
+                },
+                "ce7e8fdf4c0bb537483ca8b3eaee870b": {
+                    "type": "pdf",
+                    "title": "IELTS Writing - Task 1 - Vocabulary_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262303",
+                    "first_seen": "2026-09-30T16:08:31.060486",
+                    "last_processed": "2026-09-30T16:08:31.062484",
+                    "status": "processed"
+                },
+                "31f8819fcab87cfc881497905973500c": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262303",
+                    "first_seen": "2026-09-30T16:08:31.063886",
+                    "last_processed": "2026-09-30T16:08:31.064894",
+                    "status": "processed"
+                },
+                "ebdf932962a7072442b89240d20fbadc": {
+                    "type": "pdf",
+                    "title": "Linking devices for IELTS writing_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262304",
+                    "first_seen": "2026-09-30T16:08:31.065899",
+                    "last_processed": "2026-09-30T16:08:31.066896",
+                    "status": "processed"
+                },
+                "1a8bd82c48ac719083387b724a8991cc": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262304",
+                    "first_seen": "2026-09-30T16:08:31.070018",
+                    "last_processed": "2026-09-30T16:08:31.072227",
+                    "status": "processed"
+                }
+            }
+        },
+        "BA_ASTAT_MM": {
+            "items": {
+                "e7616b6d62e89432d97878b4dcbac919": {
+                    "type": "pdf",
+                    "title": "ASTAT_Administration_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7291524",
+                    "first_seen": "2026-09-30T16:08:31.073834",
+                    "last_processed": "2026-09-30T16:08:31.076131",
+                    "status": "processed"
+                },
+                "b565eeb700f30903d045bcedb3cd3082": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7291524",
+                    "first_seen": "2026-09-30T16:08:31.078296",
+                    "last_processed": "2026-09-30T16:08:31.079563",
+                    "status": "processed"
+                },
+                "d0c97d42445c1dc7de8994ec4d3d4365": {
+                    "type": "pdf",
+                    "title": "SW01_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7311350",
+                    "first_seen": "2026-09-30T16:08:31.081715",
+                    "last_processed": "2026-09-30T16:08:31.083869",
+                    "status": "processed"
+                },
+                "6e3734211a6024bb07ff7285e71b4ac8": {
+                    "type": "pdf",
+                    "title": "SW01-final_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7311349",
+                    "first_seen": "2026-09-30T16:08:31.085449",
+                    "last_processed": "2026-09-30T16:08:31.087574",
+                    "status": "processed"
+                },
+                "b30371050878b72241b6515c59f38787": {
+                    "type": "pdf",
+                    "title": "SW02_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7311351",
+                    "first_seen": "2026-09-30T16:08:31.089181",
+                    "last_processed": "2026-09-30T16:08:31.091179",
+                    "status": "processed"
+                },
+                "e85d700bda32b4b8b87030ac642574fb": {
+                    "type": "pdf",
+                    "title": "SW02-final_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7321900",
+                    "first_seen": "2026-09-30T16:08:31.093180",
+                    "last_processed": "2026-09-30T16:08:31.095698",
+                    "status": "processed"
+                },
+                "b266a8601fa5b573492c936cd073b4ec": {
+                    "type": "pdf",
+                    "title": "SW03_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7321901",
+                    "first_seen": "2026-09-30T16:08:31.097710",
+                    "last_processed": "2026-09-30T16:08:31.099707",
+                    "status": "processed"
+                }
+            }
+        },
+        "BA_DBS": {
+            "items": {
+                "be581234df07750aece400cf92fdb6ef": {
+                    "type": "pdf",
+                    "title": "1 Willkommen zum Modul DBS_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7308321",
+                    "first_seen": "2026-09-30T16:08:31.101705",
+                    "last_processed": "2026-09-30T16:08:31.103704",
+                    "status": "processed"
+                },
+                "bfe8ee14c0997c4441a4108f28d512a7": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7308321",
+                    "first_seen": "2026-09-30T16:08:31.106706",
+                    "last_processed": "2026-09-30T16:08:31.109706",
+                    "status": "processed"
+                },
+                "04c35f685b812ea339a1305ba9a55c7b": {
+                    "type": "pdf",
+                    "title": "2 Semesterplan DBS HS26_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7305419",
+                    "first_seen": "2026-09-30T16:08:31.111706",
+                    "last_processed": "2026-09-30T16:08:31.113761",
+                    "status": "processed"
+                },
+                "9cd4b7d53bd9138eee8099fa65c0fbf7": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7305419",
+                    "first_seen": "2026-09-30T16:08:31.115776",
+                    "last_processed": "2026-09-30T16:08:31.118426",
+                    "status": "processed"
+                },
+                "f5d21e90a07e641bbeda38b579b81bcd": {
+                    "type": "pdf",
+                    "title": "1 Datenmanagement Vorlesung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7307870",
+                    "first_seen": "2026-09-30T16:08:31.120425",
+                    "last_processed": "2026-09-30T16:08:31.122425",
+                    "status": "processed"
+                },
+                "86e7543a64442a73d91fe965c4d659f2": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7307870",
+                    "first_seen": "2026-09-30T16:08:31.125058",
+                    "last_processed": "2026-09-30T16:08:31.126069",
+                    "status": "processed"
+                },
+                "80ee940da7c2f3a953557d4aef97d4bf": {
+                    "type": "pdf",
+                    "title": "2 Datenmanagement Übung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7252351",
+                    "first_seen": "2026-09-30T16:08:31.130735",
+                    "last_processed": "2026-09-30T16:08:31.131780",
+                    "status": "processed"
+                },
+                "90f79bb7d043c5eecfb6032ddf25df77": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7252351",
+                    "first_seen": "2026-09-30T16:08:31.133436",
+                    "last_processed": "2026-09-30T16:08:31.134975",
+                    "status": "processed"
+                },
+                "8174eebf30ba0cc2a7b9167ec4f119e1": {
+                    "type": "pdf",
+                    "title": "1 Datenbankmodellierung SQL Vorlesung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7285431",
+                    "first_seen": "2026-09-30T16:08:31.137523",
+                    "last_processed": "2026-09-30T16:08:31.139158",
+                    "status": "processed"
+                },
+                "814d635eb5cf110a24aac0cdd12b447f": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7285431",
+                    "first_seen": "2026-09-30T16:08:31.141402",
+                    "last_processed": "2026-09-30T16:08:31.143577",
+                    "status": "processed"
+                },
+                "0690c4ff76afcaa3c89f18bfbfabd251": {
+                    "type": "pdf",
+                    "title": "2 Datenbankmodellierung SQL Übung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7285432",
+                    "first_seen": "2026-09-30T16:08:31.145716",
+                    "last_processed": "2026-09-30T16:08:31.147320",
+                    "status": "processed"
+                },
+                "c582a1854afc40e0ab4feda03c3be8e0": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7285432",
+                    "first_seen": "2026-09-30T16:08:31.148331",
+                    "last_processed": "2026-09-30T16:08:31.150328",
+                    "status": "processed"
+                },
+                "5935cc7955de51d06062ab9ce5ad5d22": {
+                    "type": "pdf",
+                    "title": "1 Datenbankintegration SQL Vorlesung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7286951",
+                    "first_seen": "2026-09-30T16:08:31.152968",
+                    "last_processed": "2026-09-30T16:08:31.154967",
+                    "status": "processed"
+                },
+                "6a6307bdddc7699d3c4fd379365daa64": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7286951",
+                    "first_seen": "2026-09-30T16:08:31.156969",
+                    "last_processed": "2026-09-30T16:08:31.160488",
+                    "status": "processed"
+                },
+                "2dd306aadba31cdab7f0e2848fda9b75": {
+                    "type": "pdf",
+                    "title": "2 Datenbankintegration SQL Übung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262335",
+                    "first_seen": "2026-09-30T16:08:31.162493",
+                    "last_processed": "2026-09-30T16:08:31.165492",
+                    "status": "processed"
+                },
+                "0b251d6d22cb4f0ff21b8ac4b111164d": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262335",
+                    "first_seen": "2026-09-30T16:08:31.168486",
+                    "last_processed": "2026-09-30T16:08:31.170491",
+                    "status": "processed"
+                },
+                "9bef0a7014cb0f66d1600b865266716d": {
+                    "type": "pdf",
+                    "title": "1 Datenbank-Analytik SQL Vorlesung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7264608",
+                    "first_seen": "2026-09-30T16:08:31.172995",
+                    "last_processed": "2026-09-30T16:08:31.174734",
+                    "status": "processed"
+                },
+                "3c5ef8d22283b19929429c6df29460f9": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7264608",
+                    "first_seen": "2026-09-30T16:08:31.177618",
+                    "last_processed": "2026-09-30T16:08:31.180158",
+                    "status": "processed"
+                },
+                "fa717a9f17b67f4e8ce3736636dfaba0": {
+                    "type": "pdf",
+                    "title": "2 Datenbank-Analytik SQL Übung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7264609",
+                    "first_seen": "2026-09-30T16:08:31.182918",
+                    "last_processed": "2026-09-30T16:08:31.185649",
+                    "status": "processed"
+                },
+                "1307276c555d2c0dde7573fd1e98781f": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7264609",
+                    "first_seen": "2026-09-30T16:08:31.188309",
+                    "last_processed": "2026-09-30T16:08:31.190973",
+                    "status": "processed"
+                },
+                "e09d4bf6b2cb4b7bf7bf4a28928381f8": {
+                    "type": "pdf",
+                    "title": "1 DB Performance SQL Vorlesung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7266403",
+                    "first_seen": "2026-09-30T16:08:31.193160",
+                    "last_processed": "2026-09-30T16:08:31.196633",
+                    "status": "processed"
+                },
+                "5995b8572bec334688e75e797cc58e2d": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7266403",
+                    "first_seen": "2026-09-30T16:08:31.198825",
+                    "last_processed": "2026-09-30T16:08:31.201421",
+                    "status": "processed"
+                },
+                "b0a9daf8f0a81c4d10ecdbec24385c46": {
+                    "type": "pdf",
+                    "title": "2 DB Performance Übung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7274497",
+                    "first_seen": "2026-09-30T16:08:31.203535",
+                    "last_processed": "2026-09-30T16:08:31.205738",
+                    "status": "processed"
+                },
+                "161b2ac844b69c0c1f158c8c06906ce9": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7274497",
+                    "first_seen": "2026-09-30T16:08:31.207311",
+                    "last_processed": "2026-09-30T16:08:31.211282",
+                    "status": "processed"
+                },
+                "3099eaeac98ebb54246567797e04fe81": {
+                    "type": "pdf",
+                    "title": "1 Big Data & NoSQL Datenbanken Vorlesung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7282117",
+                    "first_seen": "2026-09-30T16:08:31.214363",
+                    "last_processed": "2026-09-30T16:08:31.216371",
+                    "status": "processed"
+                },
+                "9688676b8d38fe3491ab0f222ebaa89a": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7282117",
+                    "first_seen": "2026-09-30T16:08:31.219035",
+                    "last_processed": "2026-09-30T16:08:31.222048",
+                    "status": "processed"
+                },
+                "872a22cc781ec9db23ee9a4aeea50721": {
+                    "type": "pdf",
+                    "title": "2 Big Data & NoSQL Datenbanken Übung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7279036",
+                    "first_seen": "2026-09-30T16:08:31.226582",
+                    "last_processed": "2026-09-30T16:08:31.230617",
+                    "status": "processed"
+                },
+                "6323a94f8e66f2c9bdce6703bf24bbff": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7279036",
+                    "first_seen": "2026-09-30T16:08:31.232632",
+                    "last_processed": "2026-09-30T16:08:31.235633",
+                    "status": "processed"
+                },
+                "3611a81d07e768aa608052bf7a0eb24c": {
+                    "type": "pdf",
+                    "title": "1 Datenbankmodellierung NoSQL Vorlesung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7290959",
+                    "first_seen": "2026-09-30T16:08:31.237638",
+                    "last_processed": "2026-09-30T16:08:31.239488",
+                    "status": "processed"
+                },
+                "ea85f4e2e974032f72b5b8f5f07c635f": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7290959",
+                    "first_seen": "2026-09-30T16:08:31.241632",
+                    "last_processed": "2026-09-30T16:08:31.245150",
+                    "status": "processed"
+                },
+                "7221026ef4f05c8da111c0fc87310625": {
+                    "type": "pdf",
+                    "title": "2 Datenbankmodellierung NoSQL Übung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7290960",
+                    "first_seen": "2026-09-30T16:08:31.247717",
+                    "last_processed": "2026-09-30T16:08:31.250726",
+                    "status": "processed"
+                },
+                "3a44205130986fa814ad099d703ba90f": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7290960",
+                    "first_seen": "2026-09-30T16:08:31.253280",
+                    "last_processed": "2026-09-30T16:08:31.257647",
+                    "status": "processed"
+                },
+                "3088a93655d75d21f29170651662a55d": {
+                    "type": "pdf",
+                    "title": "1 Datenbankintegration NoSQL Vorlesung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7291070",
+                    "first_seen": "2026-09-30T16:08:31.260609",
+                    "last_processed": "2026-09-30T16:08:31.263838",
+                    "status": "processed"
+                },
+                "494442a209798063b6fc10ddef9973dc": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7291070",
+                    "first_seen": "2026-09-30T16:08:31.266557",
+                    "last_processed": "2026-09-30T16:08:31.269741",
+                    "status": "processed"
+                },
+                "d2be32e316940fbf427de4ffb0e21ab4": {
+                    "type": "pdf",
+                    "title": "2 Datenbankintegration NoSQL Übung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7291071",
+                    "first_seen": "2026-09-30T16:08:31.272413",
+                    "last_processed": "2026-09-30T16:08:31.276421",
+                    "status": "processed"
+                },
+                "f83ff4951e7134983029806a78fc02da": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7291071",
+                    "first_seen": "2026-09-30T16:08:31.278421",
+                    "last_processed": "2026-09-30T16:08:31.281423",
+                    "status": "processed"
+                },
+                "6dd33653967a95b0e5c5f2c85c0bb55d": {
+                    "type": "pdf",
+                    "title": "1 Datenbank-Analytik NoSQL –Vorlesung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7300455",
+                    "first_seen": "2026-09-30T16:08:31.284421",
+                    "last_processed": "2026-09-30T16:08:31.286421",
+                    "status": "processed"
+                },
+                "2cb019ca77b6c235523c81be87fb5790": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7300455",
+                    "first_seen": "2026-09-30T16:08:31.289936",
+                    "last_processed": "2026-09-30T16:08:31.293214",
+                    "status": "processed"
+                },
+                "6e1ea4a257d751237a0f4e5d48d7f74f": {
+                    "type": "pdf",
+                    "title": "2 Datenbank-Analytik NoSQL Übung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7300456",
+                    "first_seen": "2026-09-30T16:08:31.295223",
+                    "last_processed": "2026-09-30T16:08:31.297223",
+                    "status": "processed"
+                },
+                "9411856954c63c32528fc01e87bc73ee": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7300456",
+                    "first_seen": "2026-09-30T16:08:31.301225",
+                    "last_processed": "2026-09-30T16:08:31.303735",
+                    "status": "processed"
+                },
+                "35552ac40a5ea0e237b0337fb6e62625": {
+                    "type": "pdf",
+                    "title": "1 DB Performance NoSQL Vorlesung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7305276",
+                    "first_seen": "2026-09-30T16:08:31.305738",
+                    "last_processed": "2026-09-30T16:08:31.308738",
+                    "status": "processed"
+                },
+                "1e615f33e4e08213616d73a82529aae2": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7305276",
+                    "first_seen": "2026-09-30T16:08:31.310738",
+                    "last_processed": "2026-09-30T16:08:31.313949",
+                    "status": "processed"
+                },
+                "1e9c8d3cca1e8fee6f0c18a4ade19401": {
+                    "type": "pdf",
+                    "title": "2 Datenbankperformance Übung NoSQL_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7308821",
+                    "first_seen": "2026-09-30T16:08:31.315470",
+                    "last_processed": "2026-09-30T16:08:31.319156",
+                    "status": "processed"
+                },
+                "3bebd388b501bcddb60a34e3606cf823": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7308821",
+                    "first_seen": "2026-09-30T16:08:31.321155",
+                    "last_processed": "2026-09-30T16:08:31.324156",
+                    "status": "processed"
+                },
+                "c79196a0848528cc66f05e42b357623f": {
+                    "type": "pdf",
+                    "title": "1 Datenbank-Sicherheit Vorlesung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7282267",
+                    "first_seen": "2026-09-30T16:08:31.326156",
+                    "last_processed": "2026-09-30T16:08:31.329181",
+                    "status": "processed"
+                },
+                "0ae640e2740e1d87fadc60c537b681f9": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7282267",
+                    "first_seen": "2026-09-30T16:08:31.332423",
+                    "last_processed": "2026-09-30T16:08:31.335418",
+                    "status": "processed"
+                },
+                "37c725d256026e0d26777146a659bba5": {
+                    "type": "pdf",
+                    "title": "1 Datenmanagement Musterlösung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287151",
+                    "first_seen": "2026-09-30T16:08:31.337948",
+                    "last_processed": "2026-09-30T16:08:31.341465",
+                    "status": "processed"
+                },
+                "759867301103f6c09fc3be4098c10d15": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287151",
+                    "first_seen": "2026-09-30T16:08:31.343945",
+                    "last_processed": "2026-09-30T16:08:31.346938",
+                    "status": "processed"
+                },
+                "05fffefa9fd1fbb26af388e6652b9927": {
+                    "type": "pdf",
+                    "title": "2 Datenbankmodellierung SQL Musterlösung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287153",
+                    "first_seen": "2026-09-30T16:08:31.350177",
+                    "last_processed": "2026-09-30T16:08:31.352820",
+                    "status": "processed"
+                },
+                "cb3bc84ff526e09ccca85fcff9b972e3": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287153",
+                    "first_seen": "2026-09-30T16:08:31.355496",
+                    "last_processed": "2026-09-30T16:08:31.357665",
+                    "status": "processed"
+                },
+                "310e94e82350411b2e0410379efdcda8": {
+                    "type": "pdf",
+                    "title": "3 Database Integration SQL Musterlösung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287154",
+                    "first_seen": "2026-09-30T16:08:31.360798",
+                    "last_processed": "2026-09-30T16:08:31.362806",
+                    "status": "processed"
+                },
+                "9a33aa191acc181772fd305a8ba667a5": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287154",
+                    "first_seen": "2026-09-30T16:08:31.365825",
+                    "last_processed": "2026-09-30T16:08:31.368832",
+                    "status": "processed"
+                },
+                "3dd1e98656f24acf13b9e28414fd0d27": {
+                    "type": "pdf",
+                    "title": "4 Datenbank-Analytik mit SQL Musterlösung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287155",
+                    "first_seen": "2026-09-30T16:08:31.370831",
+                    "last_processed": "2026-09-30T16:08:31.372833",
+                    "status": "processed"
+                },
+                "014d3ad12c6e7c1665e1ad79ecdfd8e9": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287155",
+                    "first_seen": "2026-09-30T16:08:31.376352",
+                    "last_processed": "2026-09-30T16:08:31.379039",
+                    "status": "processed"
+                },
+                "3373a2aef79a6e07ff15e374d6867fe6": {
+                    "type": "pdf",
+                    "title": "5 DB Performance SQL Musterlösung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287158",
+                    "first_seen": "2026-09-30T16:08:31.382297",
+                    "last_processed": "2026-09-30T16:08:31.384870",
+                    "status": "processed"
+                },
+                "b5d690a7a922a742c585fed84c5c52a6": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287158",
+                    "first_seen": "2026-09-30T16:08:31.387377",
+                    "last_processed": "2026-09-30T16:08:31.389392",
+                    "status": "processed"
+                },
+                "93c3304d11b49e8996f935cda1f66cb1": {
+                    "type": "pdf",
+                    "title": "6 Datenbankvisualisierung Musterlösung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287159",
+                    "first_seen": "2026-09-30T16:08:31.392902",
+                    "last_processed": "2026-09-30T16:08:31.396285",
+                    "status": "processed"
+                },
+                "a3fd138f4a3c8e1f94b958629b72682e": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287159",
+                    "first_seen": "2026-09-30T16:08:31.398286",
+                    "last_processed": "2026-09-30T16:08:31.400287",
+                    "status": "processed"
+                },
+                "bb908d5ede4d989adf7e8a8e74120e1c": {
+                    "type": "pdf",
+                    "title": "7 Datenbankmodellierung NoSQL Musterlösung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287160",
+                    "first_seen": "2026-09-30T16:08:31.401286",
+                    "last_processed": "2026-09-30T16:08:31.405416",
+                    "status": "processed"
+                },
+                "20aee22167009b487d1c930b396cb874": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287160",
+                    "first_seen": "2026-09-30T16:08:31.407629",
+                    "last_processed": "2026-09-30T16:08:31.411578",
+                    "status": "processed"
+                },
+                "bddd060d294f7eb43f3cb63ba85ab79f": {
+                    "type": "pdf",
+                    "title": "8 Datenbankintegration NoSQL Musterlösung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287161",
+                    "first_seen": "2026-09-30T16:08:31.413687",
+                    "last_processed": "2026-09-30T16:08:31.416362",
+                    "status": "processed"
+                },
+                "929695d08f0678d9d0095409dc5d4ac2": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7287161",
+                    "first_seen": "2026-09-30T16:08:31.420284",
+                    "last_processed": "2026-09-30T16:08:31.422976",
+                    "status": "processed"
+                },
+                "620a6bd8cd5836736bc19965dd0f03dd": {
+                    "type": "pdf",
+                    "title": "9 Datenbank-Analytik NoSQL Musterlösung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7300459",
+                    "first_seen": "2026-09-30T16:08:31.425098",
+                    "last_processed": "2026-09-30T16:08:31.428106",
+                    "status": "processed"
+                },
+                "21a765ccf4244a06c9c40f08ba650f0a": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7300459",
+                    "first_seen": "2026-09-30T16:08:31.431129",
+                    "last_processed": "2026-09-30T16:08:31.433648",
+                    "status": "processed"
+                },
+                "b875785d4ab5c096f1656aa9dc58c5e0": {
+                    "type": "pdf",
+                    "title": "A Datenbankperformance Übung NoSQL_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7308829",
+                    "first_seen": "2026-09-30T16:08:31.438162",
+                    "last_processed": "2026-09-30T16:08:31.440168",
+                    "status": "processed"
+                },
+                "f10e9353f67c653f6af28132c58cd107": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7308829",
+                    "first_seen": "2026-09-30T16:08:31.444168",
+                    "last_processed": "2026-09-30T16:08:31.447169",
+                    "status": "processed"
+                },
+                "252ff15bbadfbde31c044e638567ab16": {
+                    "type": "pdf",
+                    "title": "Chamberlin and Boyce - 1974 - SEQUEL A Structured Query Language_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7264602",
+                    "first_seen": "2026-09-30T16:08:31.451171",
+                    "last_processed": "2026-09-30T16:08:31.453690",
+                    "status": "processed"
+                },
+                "3c6b6ddd578c69e331424cefa0ef1ba4": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7264602",
+                    "first_seen": "2026-09-30T16:08:31.458296",
+                    "last_processed": "2026-09-30T16:08:31.461293",
+                    "status": "processed"
+                },
+                "c61722ada05e11798b375a34ccfcee2a": {
+                    "type": "pdf",
+                    "title": "Chen - 1976 - The Entity Relationship Model – Toward a Unified View of Data_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262325",
+                    "first_seen": "2026-09-30T16:08:31.464296",
+                    "last_processed": "2026-09-30T16:08:31.467293",
+                    "status": "processed"
+                },
+                "08660e71264336c0f52e38e7b999d9d0": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262325",
+                    "first_seen": "2026-09-30T16:08:31.469801",
+                    "last_processed": "2026-09-30T16:08:31.472372",
+                    "status": "processed"
+                },
+                "5a8dfefc714b64bd91f980c75cf2276b": {
+                    "type": "pdf",
+                    "title": "Codd - 1970 – A Relational Model of Data for Large Shared Data Banks_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262326",
+                    "first_seen": "2026-09-30T16:08:31.475381",
+                    "last_processed": "2026-09-30T16:08:31.477893",
+                    "status": "processed"
+                },
+                "354a64bea40270d960c7dcaaf4e8608f": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262326",
+                    "first_seen": "2026-09-30T16:08:31.480893",
+                    "last_processed": "2026-09-30T16:08:31.483892",
+                    "status": "processed"
+                },
+                "f64d2d79b368a85180ddce2ae7f18015": {
+                    "type": "pdf",
+                    "title": "Codd - 1990 - Serious Flaws in SQL_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7264603",
+                    "first_seen": "2026-09-30T16:08:31.487369",
+                    "last_processed": "2026-09-30T16:08:31.489696",
+                    "status": "processed"
+                },
+                "556d3229cc3cbb7b76f9cd83916128f8": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7264603",
+                    "first_seen": "2026-09-30T16:08:31.493459",
+                    "last_processed": "2026-09-30T16:08:31.496081",
+                    "status": "processed"
+                },
+                "85ec5a09526d5e7706e04052061e5333": {
+                    "type": "pdf",
+                    "title": "Haigh - 2016 - How Charles Bachman Invented the DBMS_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262327",
+                    "first_seen": "2026-09-30T16:08:31.498668",
+                    "last_processed": "2026-09-30T16:08:31.500670",
+                    "status": "processed"
+                },
+                "7f2525dbe967999d9110a9107db06ec2": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262327",
+                    "first_seen": "2026-09-30T16:08:31.503670",
+                    "last_processed": "2026-09-30T16:08:31.505671",
+                    "status": "processed"
+                },
+                "c3fa672062e320d5d60d2e3e9a196e37": {
+                    "type": "pdf",
+                    "title": "Harrison and Harrison - 2021 - Tuning Aggregation Pipelines_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7308823",
+                    "first_seen": "2026-09-30T16:08:31.509668",
+                    "last_processed": "2026-09-30T16:08:31.512671",
+                    "status": "processed"
+                },
+                "5eed155729cc3957046e0b93c4e6c5bf": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7308823",
+                    "first_seen": "2026-09-30T16:08:31.515201",
+                    "last_processed": "2026-09-30T16:08:31.517718",
+                    "status": "processed"
+                },
+                "25f0b5fd14dae3e72d7b2f78ee5a7085": {
+                    "type": "pdf",
+                    "title": "Hilbert et al - 2011 - The World’s Technological Capacity to Store, Communicate, and Compute Information_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7277737",
+                    "first_seen": "2026-09-30T16:08:31.521507",
+                    "last_processed": "2026-09-30T16:08:31.523511",
+                    "status": "processed"
+                },
+                "cee65be511db6565ccc16a7e30d36b16": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7277737",
+                    "first_seen": "2026-09-30T16:08:31.526507",
+                    "last_processed": "2026-09-30T16:08:31.530055",
+                    "status": "processed"
+                },
+                "8ce15aed2d459014ef25b33588c90c00": {
+                    "type": "pdf",
+                    "title": "Ioannidis - 1996 - Query optimization_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7266407",
+                    "first_seen": "2026-09-30T16:08:31.533068",
+                    "last_processed": "2026-09-30T16:08:31.536566",
+                    "status": "processed"
+                },
+                "36068f165507f7cb152422978401093a": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7266407",
+                    "first_seen": "2026-09-30T16:08:31.540448",
+                    "last_processed": "2026-09-30T16:08:31.544441",
+                    "status": "processed"
+                },
+                "a0a3e225b8956504cac21834839fcdcd": {
+                    "type": "pdf",
+                    "title": "NIST - 2015 - Big Data Interoperability Framework_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7272982",
+                    "first_seen": "2026-09-30T16:08:31.547630",
+                    "last_processed": "2026-09-30T16:08:31.551190",
+                    "status": "processed"
+                },
+                "cd4cb75b1a03b01615c69c8625b9f982": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7272982",
+                    "first_seen": "2026-09-30T16:08:31.554198",
+                    "last_processed": "2026-09-30T16:08:31.558204",
+                    "status": "processed"
+                },
+                "668a5c607ab46c1536a104d301ecb7d1": {
+                    "type": "pdf",
+                    "title": "Samonas and Coss - 2014 - The CIA Strikes Back_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7268741",
+                    "first_seen": "2026-09-30T16:08:31.564067",
+                    "last_processed": "2026-09-30T16:08:31.569076",
+                    "status": "processed"
+                },
+                "f1e0fc390b384ea24aece131cabc9a28": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7268741",
+                    "first_seen": "2026-09-30T16:08:31.573594",
+                    "last_processed": "2026-09-30T16:08:31.576593",
+                    "status": "processed"
+                },
+                "e49fad11763b31f61aff5cb1234e08bf": {
+                    "type": "pdf",
+                    "title": "Simitsis and Vassiliadis - 2018 - Extraction, Transformation, and Loading_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262329",
+                    "first_seen": "2026-09-30T16:08:31.582059",
+                    "last_processed": "2026-09-30T16:08:31.585852",
+                    "status": "processed"
+                },
+                "a764561a0e33d7bbcf73f0e7e03e7fe3": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262329",
+                    "first_seen": "2026-09-30T16:08:31.589902",
+                    "last_processed": "2026-09-30T16:08:31.594090",
+                    "status": "processed"
+                },
+                "d18f68f0a827514426cd63e1f7d33949": {
+                    "type": "pdf",
+                    "title": "MongoDB Arbeitsbuch_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7299589",
+                    "first_seen": "2026-09-30T16:08:31.597919",
+                    "last_processed": "2026-09-30T16:08:31.600555",
+                    "status": "processed"
+                },
+                "d16c9db94f08b8fcb05d75b6721b9cb8": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7299589",
+                    "first_seen": "2026-09-30T16:08:31.604070",
+                    "last_processed": "2026-09-30T16:08:31.607613",
+                    "status": "processed"
+                },
+                "98ab9c3a147fd60222454a912e59edfd": {
+                    "type": "pdf",
+                    "title": "MySQL Arbeitsbuch_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7299165",
+                    "first_seen": "2026-09-30T16:08:31.611622",
+                    "last_processed": "2026-09-30T16:08:31.615096",
+                    "status": "processed"
+                },
+                "3872287cef6da0a470dda081f5c2f33d": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7299165",
+                    "first_seen": "2026-09-30T16:08:31.617766",
+                    "last_processed": "2026-09-30T16:08:31.622006",
+                    "status": "processed"
+                },
+                "2281c961f81156e92655cd007d5da5e4": {
+                    "type": "pdf",
+                    "title": "1 Examen Infos DBS_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7255788",
+                    "first_seen": "2026-09-30T16:08:31.625214",
+                    "last_processed": "2026-09-30T16:08:31.629380",
+                    "status": "processed"
+                },
+                "fb239dad58b560aaf4723e1c8c633205": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7255788",
+                    "first_seen": "2026-09-30T16:08:31.632888",
+                    "last_processed": "2026-09-30T16:08:31.637897",
+                    "status": "processed"
+                },
+                "f0fa452bd7096eb491cfd2159cfa4a9a": {
+                    "type": "pdf",
+                    "title": "2 Lernziele DBS_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251668",
+                    "first_seen": "2026-09-30T16:08:31.641899",
+                    "last_processed": "2026-09-30T16:08:31.645902",
+                    "status": "processed"
+                },
+                "ece3fc8c515a21a5c104a97baa3abcae": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251668",
+                    "first_seen": "2026-09-30T16:08:31.648502",
+                    "last_processed": "2026-09-30T16:08:31.652019",
+                    "status": "processed"
+                },
+                "119e7306933fc772d1cc054e4202f2eb": {
+                    "type": "pdf",
+                    "title": "3 Examen Beispiel DBS_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7256212",
+                    "first_seen": "2026-09-30T16:08:31.655525",
+                    "last_processed": "2026-09-30T16:08:31.660056",
+                    "status": "processed"
+                },
+                "4604cab47435cd2f86d7978087f0710c": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7256212",
+                    "first_seen": "2026-09-30T16:08:31.664311",
+                    "last_processed": "2026-09-30T16:08:31.668319",
+                    "status": "processed"
+                },
+                "fa77c47272c20d25dda13fdffcaba395": {
+                    "type": "pdf",
+                    "title": "1 Projektauftrag DBS_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7319305",
+                    "first_seen": "2026-09-30T16:08:31.672775",
+                    "last_processed": "2026-09-30T16:08:31.676799",
+                    "status": "processed"
+                },
+                "8be49671a51f5f4bc39fe8fdd60a9d2b": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7319305",
+                    "first_seen": "2026-09-30T16:08:31.682283",
+                    "last_processed": "2026-09-30T16:08:31.685299",
+                    "status": "processed"
+                },
+                "877d9d10488e75494e946a92583dbbd8": {
+                    "type": "pdf",
+                    "title": "2 Datenbankprojekt Serverinfrastruktur Lab Services_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7302623",
+                    "first_seen": "2026-09-30T16:08:31.688301",
+                    "last_processed": "2026-09-30T16:08:31.691573",
+                    "status": "processed"
+                },
+                "be02930e992717f382a56661512bba48": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7302623",
+                    "first_seen": "2026-09-30T16:08:31.694581",
+                    "last_processed": "2026-09-30T16:08:31.699590",
+                    "status": "processed"
+                },
+                "7c9af547b99af052cf14e8556dac91f7": {
+                    "type": "pdf",
+                    "title": "3 Bewertung Projekt DBS_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7319306",
+                    "first_seen": "2026-09-30T16:08:31.702589",
+                    "last_processed": "2026-09-30T16:08:31.705818",
+                    "status": "processed"
+                },
+                "7f5d85572c64b6978722c091660c6e48": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7319306",
+                    "first_seen": "2026-09-30T16:08:31.709813",
+                    "last_processed": "2026-09-30T16:08:31.712816",
+                    "status": "processed"
+                }
+            }
+        },
+        "BA_KRR": {
+            "items": {
+                "2b1cb465c05e110d4b3c19cd02aaeb86": {
+                    "type": "pdf",
+                    "title": "Welcome to KRR-HS2026_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262053",
+                    "first_seen": "2026-09-30T16:08:31.717637",
+                    "last_processed": "2026-09-30T16:08:31.721972",
+                    "status": "processed"
+                },
+                "d36355ea154271cd36e3bbcefdaf7cc3": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262053",
+                    "first_seen": "2026-09-30T16:08:31.725148",
+                    "last_processed": "2026-09-30T16:08:31.727665",
+                    "status": "processed"
+                },
+                "bf61177cbc84d0716c379a4a63e236e4": {
+                    "type": "pdf",
+                    "title": "Introduction to Logic in AI_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262052",
+                    "first_seen": "2026-09-30T16:08:31.731240",
+                    "last_processed": "2026-09-30T16:08:31.734838",
+                    "status": "processed"
+                },
+                "984b77d08b883df149156152eab87c21": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7262052",
+                    "first_seen": "2026-09-30T16:08:31.739129",
+                    "last_processed": "2026-09-30T16:08:31.744123",
+                    "status": "processed"
+                },
+                "642ea46364d1ecc9e21126dca6ce50d7": {
+                    "type": "pdf",
+                    "title": "PropositionalLogic-Part0_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251429",
+                    "first_seen": "2026-09-30T16:08:31.747127",
+                    "last_processed": "2026-09-30T16:08:31.750255",
+                    "status": "processed"
+                },
+                "e582f8b4f66fd429aa709f24cb615b8f": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251429",
+                    "first_seen": "2026-09-30T16:08:31.753867",
+                    "last_processed": "2026-09-30T16:08:31.756867",
+                    "status": "processed"
+                },
+                "9991162d7400b7fdf655ec7a414a0698": {
+                    "type": "pdf",
+                    "title": "PropositionalLogic-Part1_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251432",
+                    "first_seen": "2026-09-30T16:08:31.761195",
+                    "last_processed": "2026-09-30T16:08:31.764798",
+                    "status": "processed"
+                },
+                "eaefa5bdcaa597fd36b3b51d51b076f0": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251432",
+                    "first_seen": "2026-09-30T16:08:31.768797",
+                    "last_processed": "2026-09-30T16:08:31.771348",
+                    "status": "processed"
+                },
+                "a0f2970e1bb2b6b8e06fc79878021e79": {
+                    "type": "pdf",
+                    "title": "Week2 - Practical Exercises_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7270478",
+                    "first_seen": "2026-09-30T16:08:31.774330",
+                    "last_processed": "2026-09-30T16:08:31.777842",
+                    "status": "processed"
+                },
+                "c12dcd62adb7d8bdb2c64f03702996fb": {
+                    "type": "pdf",
+                    "title": "PropositionalLogic-Part2_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251434",
+                    "first_seen": "2026-09-30T16:08:31.782547",
+                    "last_processed": "2026-09-30T16:08:31.786746",
+                    "status": "processed"
+                },
+                "469112646a45c1c301e1a52747d2dd63": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251434",
+                    "first_seen": "2026-09-30T16:08:31.790744",
+                    "last_processed": "2026-09-30T16:08:31.795261",
+                    "status": "processed"
+                },
+                "dd12d8b8e19ad35e56cc963034af39c2": {
+                    "type": "pdf",
+                    "title": "Week3 - Practical Exercises_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251627",
+                    "first_seen": "2026-09-30T16:08:31.799607",
+                    "last_processed": "2026-09-30T16:08:31.812847",
+                    "status": "processed"
+                },
+                "8f5e4c319d18c554e4362df184340a16": {
+                    "type": "pdf",
+                    "title": "PropositionalLogic-Part3_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251435",
+                    "first_seen": "2026-09-30T16:08:31.816574",
+                    "last_processed": "2026-09-30T16:08:31.819847",
+                    "status": "processed"
+                },
+                "87135ea3c7186b309c64bc8922b8acf4": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251435",
+                    "first_seen": "2026-09-30T16:08:31.823537",
+                    "last_processed": "2026-09-30T16:08:31.826778",
+                    "status": "processed"
+                },
+                "a9c10ef575a44dfa4a0ce6355a088456": {
+                    "type": "pdf",
+                    "title": "Week4 - Practical Exercises_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251630",
+                    "first_seen": "2026-09-30T16:08:31.829772",
+                    "last_processed": "2026-09-30T16:08:31.833830",
+                    "status": "processed"
+                },
+                "37fc40e4ac44c0d341d866a4453200be": {
+                    "type": "pdf",
+                    "title": "Constraint Reasoning - part1_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251574",
+                    "first_seen": "2026-09-30T16:08:31.836831",
+                    "last_processed": "2026-09-30T16:08:31.839831",
+                    "status": "processed"
+                },
+                "b7f51c9254a35f951e459b38f41156d8": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251574",
+                    "first_seen": "2026-09-30T16:08:31.845314",
+                    "last_processed": "2026-09-30T16:08:31.850316",
+                    "status": "processed"
+                },
+                "711833f9962d0e2d1bdff82dc4649a4f": {
+                    "type": "pdf",
+                    "title": "Constraint Reasoning - part2_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251575",
+                    "first_seen": "2026-09-30T16:08:31.854863",
+                    "last_processed": "2026-09-30T16:08:31.858451",
+                    "status": "processed"
+                },
+                "513540a0a8311e624283cc628b65d6d2": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251575",
+                    "first_seen": "2026-09-30T16:08:31.862451",
+                    "last_processed": "2026-09-30T16:08:31.866452",
+                    "status": "processed"
+                },
+                "103a0e67c3153ac13467752eb36fd916": {
+                    "type": "pdf",
+                    "title": "Constraint Reasoning - part3_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251576",
+                    "first_seen": "2026-09-30T16:08:31.871607",
+                    "last_processed": "2026-09-30T16:08:31.874630",
+                    "status": "processed"
+                },
+                "e9130723a796c5db8a1e73c5b1a60770": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251576",
+                    "first_seen": "2026-09-30T16:08:31.879123",
+                    "last_processed": "2026-09-30T16:08:31.882126",
+                    "status": "processed"
+                },
+                "b5a9002f6462950103e161697ea7d1a6": {
+                    "type": "pdf",
+                    "title": "Constraint Reasoning - part7_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251577",
+                    "first_seen": "2026-09-30T16:08:31.885124",
+                    "last_processed": "2026-09-30T16:08:31.890741",
+                    "status": "processed"
+                },
+                "0f2b53493c55471af0240ab8c4332903": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251577",
+                    "first_seen": "2026-09-30T16:08:31.896665",
+                    "last_processed": "2026-09-30T16:08:31.901113",
+                    "status": "processed"
+                },
+                "c069864aebc0a5bde404fad7992ec1bc": {
+                    "type": "pdf",
+                    "title": "Constraint Reasoning - part4_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251580",
+                    "first_seen": "2026-09-30T16:08:31.905123",
+                    "last_processed": "2026-09-30T16:08:31.911538",
+                    "status": "processed"
+                },
+                "e0376b20ddbd8b2451393da044ec8061": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251580",
+                    "first_seen": "2026-09-30T16:08:31.914571",
+                    "last_processed": "2026-09-30T16:08:31.920616",
+                    "status": "processed"
+                },
+                "1148472203647a21862b68813673e61b": {
+                    "type": "pdf",
+                    "title": "Constraint Reasoning - part5_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251581",
+                    "first_seen": "2026-09-30T16:08:31.925626",
+                    "last_processed": "2026-09-30T16:08:31.930125",
+                    "status": "processed"
+                },
+                "46fc16c5f5350778e77873a634adfc37": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251581",
+                    "first_seen": "2026-09-30T16:08:31.934869",
+                    "last_processed": "2026-09-30T16:08:31.939875",
+                    "status": "processed"
+                },
+                "fa8a5df44056edb5b484de42d4acc821": {
+                    "type": "pdf",
+                    "title": "Constraint Reasoning - part6_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251582",
+                    "first_seen": "2026-09-30T16:08:31.944877",
+                    "last_processed": "2026-09-30T16:08:31.949876",
+                    "status": "processed"
+                },
+                "389743964faaa7ff8daf43769ed2e7f5": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251582",
+                    "first_seen": "2026-09-30T16:08:31.953393",
+                    "last_processed": "2026-09-30T16:08:31.958624",
+                    "status": "processed"
+                },
+                "74e948431eaaec22fb9c56c5da9492a8": {
+                    "type": "pdf",
+                    "title": "PredicateLogic-Part1_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251439",
+                    "first_seen": "2026-09-30T16:08:31.963625",
+                    "last_processed": "2026-09-30T16:08:31.967257",
+                    "status": "processed"
+                },
+                "c0be00205f246eac5445fa653a5543c4": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251439",
+                    "first_seen": "2026-09-30T16:08:31.972479",
+                    "last_processed": "2026-09-30T16:08:31.977492",
+                    "status": "processed"
+                },
+                "2c265cbc69a4a1c41b973008956457e8": {
+                    "type": "pdf",
+                    "title": "PredicateLogic-Part2_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251440",
+                    "first_seen": "2026-09-30T16:08:31.982568",
+                    "last_processed": "2026-09-30T16:08:31.986711",
+                    "status": "processed"
+                },
+                "b33e16a010a38e557ec31c2326433575": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251440",
+                    "first_seen": "2026-09-30T16:08:31.990719",
+                    "last_processed": "2026-09-30T16:08:31.995220",
+                    "status": "processed"
+                },
+                "fc2bbdbbe4e7ab8dd6aabb5d302777ca": {
+                    "type": "pdf",
+                    "title": "Week8 - Practical Exercises_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251648",
+                    "first_seen": "2026-09-30T16:08:31.999242",
+                    "last_processed": "2026-09-30T16:08:32.003220",
+                    "status": "processed"
+                },
+                "ca340b62207fc0a2959dd80e6d1f5671": {
+                    "type": "pdf",
+                    "title": "PredicateLogic-Part3_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251443",
+                    "first_seen": "2026-09-30T16:08:32.007260",
+                    "last_processed": "2026-09-30T16:08:32.012264",
+                    "status": "processed"
+                },
+                "67cca41ff79503cbc4a93a025f38ad7f": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251443",
+                    "first_seen": "2026-09-30T16:08:32.015780",
+                    "last_processed": "2026-09-30T16:08:32.017780",
+                    "status": "processed"
+                },
+                "f277ef69c6bb70fc785e3e32639eb5f6": {
+                    "type": "pdf",
+                    "title": "PredicateLogic-Part4_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251444",
+                    "first_seen": "2026-09-30T16:08:32.021558",
+                    "last_processed": "2026-09-30T16:08:32.026063",
+                    "status": "processed"
+                },
+                "37a703f2d998323bb674727b4274e27c": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251444",
+                    "first_seen": "2026-09-30T16:08:32.030413",
+                    "last_processed": "2026-09-30T16:08:32.033411",
+                    "status": "processed"
+                },
+                "0c8d0108504ecfa9b3b6d49e317e2295": {
+                    "type": "pdf",
+                    "title": "PredicateLogic-Part5_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251445",
+                    "first_seen": "2026-09-30T16:08:32.036411",
+                    "last_processed": "2026-09-30T16:08:32.041927",
+                    "status": "processed"
+                },
+                "68dde2d707ba9e1b024f2f1d64f3bb9e": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251445",
+                    "first_seen": "2026-09-30T16:08:32.047460",
+                    "last_processed": "2026-09-30T16:08:32.053461",
+                    "status": "processed"
+                },
+                "daebe4874419e27481e595b14d74d3ad": {
+                    "type": "pdf",
+                    "title": "Week9 - Practical Exercises_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251649",
+                    "first_seen": "2026-09-30T16:08:32.057509",
+                    "last_processed": "2026-09-30T16:08:32.063512",
+                    "status": "processed"
+                },
+                "19de62a468d21f21c7fcebbc875d7a5f": {
+                    "type": "pdf",
+                    "title": "PredicateLogic-Part6_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251452",
+                    "first_seen": "2026-09-30T16:08:32.068506",
+                    "last_processed": "2026-09-30T16:08:32.072553",
+                    "status": "processed"
+                },
+                "5e51bbee1ffc2c47cdac22e4b6c7a8b3": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251452",
+                    "first_seen": "2026-09-30T16:08:32.080076",
+                    "last_processed": "2026-09-30T16:08:32.084442",
+                    "status": "processed"
+                },
+                "638e324493ca902ece5371ff3fbd4fdc": {
+                    "type": "pdf",
+                    "title": "PredicateLogic-Part7_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251453",
+                    "first_seen": "2026-09-30T16:08:32.088444",
+                    "last_processed": "2026-09-30T16:08:32.093960",
+                    "status": "processed"
+                },
+                "2f07fa13ca71a22e47816552937d0048": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251453",
+                    "first_seen": "2026-09-30T16:08:32.098973",
+                    "last_processed": "2026-09-30T16:08:32.105486",
+                    "status": "processed"
+                },
+                "435a3e66f0dcb5a016633384eff1d551": {
+                    "type": "pdf",
+                    "title": "Week10 - Practical Exercises_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251651",
+                    "first_seen": "2026-09-30T16:08:32.113366",
+                    "last_processed": "2026-09-30T16:08:32.118467",
+                    "status": "processed"
+                },
+                "03af304054d91d53ab38d90251c32f6c": {
+                    "type": "pdf",
+                    "title": "KnowledgeRepresentation-Part1_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251461",
+                    "first_seen": "2026-09-30T16:08:32.122982",
+                    "last_processed": "2026-09-30T16:08:32.128510",
+                    "status": "processed"
+                },
+                "56cb82258f6c6721c72d57fd623e963d": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251461",
+                    "first_seen": "2026-09-30T16:08:32.132028",
+                    "last_processed": "2026-09-30T16:08:32.136038",
+                    "status": "processed"
+                },
+                "727f70a936f1d29c2a225253700994af": {
+                    "type": "pdf",
+                    "title": "KnowledgeRepresentation-Part2_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251462",
+                    "first_seen": "2026-09-30T16:08:32.140186",
+                    "last_processed": "2026-09-30T16:08:32.145199",
+                    "status": "processed"
+                },
+                "77b9e0bfcb8fd49e33b296bf667b3fdb": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251462",
+                    "first_seen": "2026-09-30T16:08:32.148723",
+                    "last_processed": "2026-09-30T16:08:32.151721",
+                    "status": "processed"
+                },
+                "4fc707beacade27b55573ac7410d4161": {
+                    "type": "pdf",
+                    "title": "KnowledgeRepresentation-Part3_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251463",
+                    "first_seen": "2026-09-30T16:08:32.157726",
+                    "last_processed": "2026-09-30T16:08:32.162475",
+                    "status": "processed"
+                },
+                "df004f4c2a5de5f68c6d77a446712b33": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251463",
+                    "first_seen": "2026-09-30T16:08:32.166473",
+                    "last_processed": "2026-09-30T16:08:32.169622",
+                    "status": "processed"
+                },
+                "7546c76aa34bd0585537887836a85816": {
+                    "type": "pdf",
+                    "title": "KnowledgeRepresentation-Part4_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251464",
+                    "first_seen": "2026-09-30T16:08:32.173621",
+                    "last_processed": "2026-09-30T16:08:32.179126",
+                    "status": "processed"
+                },
+                "dfc66f5cd9b9370ec9a0b2b5b3b47e74": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251464",
+                    "first_seen": "2026-09-30T16:08:32.183187",
+                    "last_processed": "2026-09-30T16:08:32.187757",
+                    "status": "processed"
+                },
+                "fbcbcf4ea6a944180b1020555c83caba": {
+                    "type": "pdf",
+                    "title": "Week11 - Practical Exercises_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251653",
+                    "first_seen": "2026-09-30T16:08:32.191837",
+                    "last_processed": "2026-09-30T16:08:32.196359",
+                    "status": "processed"
+                },
+                "fd2ac6f55048f84aac1d9f05e63da9a9": {
+                    "type": "pdf",
+                    "title": "KnowledgeRepresentation-Part5_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251471",
+                    "first_seen": "2026-09-30T16:08:32.200359",
+                    "last_processed": "2026-09-30T16:08:32.204873",
+                    "status": "processed"
+                },
+                "df8b09203b420bc47587c3c8796d8efd": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251471",
+                    "first_seen": "2026-09-30T16:08:32.208882",
+                    "last_processed": "2026-09-30T16:08:32.213881",
+                    "status": "processed"
+                },
+                "c2a1f2c3a27d9503b797eaa42845fef0": {
+                    "type": "pdf",
+                    "title": "KnowledgeRepresentation-Part6_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251472",
+                    "first_seen": "2026-09-30T16:08:32.218126",
+                    "last_processed": "2026-09-30T16:08:32.221958",
+                    "status": "processed"
+                },
+                "71c39d3b82590596987362a3ba631781": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251472",
+                    "first_seen": "2026-09-30T16:08:32.225422",
+                    "last_processed": "2026-09-30T16:08:32.231096",
+                    "status": "processed"
+                },
+                "8cb05f6b9ee13af7820cd2a989eb61e9": {
+                    "type": "pdf",
+                    "title": "KnowledgeRepresentation-Part7_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251473",
+                    "first_seen": "2026-09-30T16:08:32.234107",
+                    "last_processed": "2026-09-30T16:08:32.238938",
+                    "status": "processed"
+                },
+                "9873869a12a7f22aa17298357f19e762": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251473",
+                    "first_seen": "2026-09-30T16:08:32.242942",
+                    "last_processed": "2026-09-30T16:08:32.248492",
+                    "status": "processed"
+                },
+                "10307d9f2fa0dc5c6ea3125576787589": {
+                    "type": "pdf",
+                    "title": "Slides-GraphDatabases-Neo4j_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251477",
+                    "first_seen": "2026-09-30T16:08:32.253546",
+                    "last_processed": "2026-09-30T16:08:32.258633",
+                    "status": "processed"
+                },
+                "7fb918d653eee635a34405cbf4797f19": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251477",
+                    "first_seen": "2026-09-30T16:08:32.263634",
+                    "last_processed": "2026-09-30T16:08:32.267635",
+                    "status": "processed"
+                },
+                "ad1748ee2951558b4f291dd1e3478c23": {
+                    "type": "pdf",
+                    "title": "Meier-Kaufmann-SQL-NoSQL-Datenbanken_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251476",
+                    "first_seen": "2026-09-30T16:08:32.271686",
+                    "last_processed": "2026-09-30T16:08:32.276690",
+                    "status": "processed"
+                },
+                "e307f46059b3373140c1d6382f701105": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251476",
+                    "first_seen": "2026-09-30T16:08:32.280718",
+                    "last_processed": "2026-09-30T16:08:32.284715",
+                    "status": "processed"
+                },
+                "121a82fd4a381bc60dd273f4e05513bd": {
+                    "type": "pdf",
+                    "title": "1-Setup Aura Console in Web Browser_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251481",
+                    "first_seen": "2026-09-30T16:08:32.288235",
+                    "last_processed": "2026-09-30T16:08:32.292236",
+                    "status": "processed"
+                },
+                "06998b45c2e869b1fee04254f792df4f": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251481",
+                    "first_seen": "2026-09-30T16:08:32.296325",
+                    "last_processed": "2026-09-30T16:08:32.299335",
+                    "status": "processed"
+                },
+                "eb102e35d1b130be43de55ee4a45400d": {
+                    "type": "pdf",
+                    "title": "2-Run Cypher Queries on Aura Movie Instance_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251482",
+                    "first_seen": "2026-09-30T16:08:32.304035",
+                    "last_processed": "2026-09-30T16:08:32.309868",
+                    "status": "processed"
+                },
+                "58e6efd08adca15c9d52a6394bf9cb01": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251482",
+                    "first_seen": "2026-09-30T16:08:32.314155",
+                    "last_processed": "2026-09-30T16:08:32.319044",
+                    "status": "processed"
+                },
+                "efbc8ec037cc7a875d0fb75629502188": {
+                    "type": "pdf",
+                    "title": "MovieDB dump_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251483",
+                    "first_seen": "2026-09-30T16:08:32.323312",
+                    "last_processed": "2026-09-30T16:08:32.328612",
+                    "status": "processed"
+                },
+                "3a8a35671e4b48cbdf1f75b5114c1a38": {
+                    "type": "pdf",
+                    "title": "1-Install Neo4j Desktop_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251485",
+                    "first_seen": "2026-09-30T16:08:32.333539",
+                    "last_processed": "2026-09-30T16:08:32.338306",
+                    "status": "processed"
+                },
+                "f427fb8c443a44565d72de16b8c2e77b": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251485",
+                    "first_seen": "2026-09-30T16:08:32.342677",
+                    "last_processed": "2026-09-30T16:08:32.346211",
+                    "status": "processed"
+                },
+                "2cb16c8fef5660c13688fc22fca41dbc": {
+                    "type": "pdf",
+                    "title": "2-Create Database_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251486",
+                    "first_seen": "2026-09-30T16:08:32.350212",
+                    "last_processed": "2026-09-30T16:08:32.355009",
+                    "status": "processed"
+                },
+                "4a48c96999ed13dde4a21f05989aa14c": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251486",
+                    "first_seen": "2026-09-30T16:08:32.359926",
+                    "last_processed": "2026-09-30T16:08:32.369450",
+                    "status": "processed"
+                },
+                "0df90827e3cffb2fd4ef0e590d90d497": {
+                    "type": "pdf",
+                    "title": "3-Import Movie Data_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251487",
+                    "first_seen": "2026-09-30T16:08:32.374077",
+                    "last_processed": "2026-09-30T16:08:32.379076",
+                    "status": "processed"
+                },
+                "4ad294a0cb660d3edda9761582dedb6c": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251487",
+                    "first_seen": "2026-09-30T16:08:32.383945",
+                    "last_processed": "2026-09-30T16:08:32.389025",
+                    "status": "processed"
+                },
+                "83fdd34662675a5b98f951ade0e7ef32": {
+                    "type": "pdf",
+                    "title": "CSV Files_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251488",
+                    "first_seen": "2026-09-30T16:08:32.393839",
+                    "last_processed": "2026-09-30T16:08:32.397434",
+                    "status": "processed"
+                },
+                "ce63daddd3a24df7f63d528d5909ca4f": {
+                    "type": "pdf",
+                    "title": "CheatSheet_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251586",
+                    "first_seen": "2026-09-30T16:08:32.402967",
+                    "last_processed": "2026-09-30T16:08:32.409532",
+                    "status": "processed"
+                },
+                "df2dea10891ee65a1be3795d6c76b2f7": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251586",
+                    "first_seen": "2026-09-30T16:08:32.413535",
+                    "last_processed": "2026-09-30T16:08:32.417049",
+                    "status": "processed"
+                },
+                "edb3e8f7ccac4c66aeecbc1a391699ff": {
+                    "type": "pdf",
+                    "title": "Examples from Exams_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251587",
+                    "first_seen": "2026-09-30T16:08:32.423597",
+                    "last_processed": "2026-09-30T16:08:32.429598",
+                    "status": "processed"
+                },
+                "e22f918031718f590c2d57c772cb373e": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251587",
+                    "first_seen": "2026-09-30T16:08:32.434104",
+                    "last_processed": "2026-09-30T16:08:32.438112",
+                    "status": "processed"
+                },
+                "ccb1c2382150dc774b460ff88714bc80": {
+                    "type": "pdf",
+                    "title": "SolutionsToExercisesFromSlides-PL_FOL_KR_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251588",
+                    "first_seen": "2026-09-30T16:08:32.443629",
+                    "last_processed": "2026-09-30T16:08:32.449682",
+                    "status": "processed"
+                },
+                "2a029af2f225cc080c93a76d325c9ca2": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251588",
+                    "first_seen": "2026-09-30T16:08:32.455009",
+                    "last_processed": "2026-09-30T16:08:32.460389",
+                    "status": "processed"
+                },
+                "aa98e6c7101900e81d8ffa7622da9b4b": {
+                    "type": "pdf",
+                    "title": "Russell_Norvig_Artificial_Intelligence_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7052951",
+                    "first_seen": "2026-09-30T16:08:32.464422",
+                    "last_processed": "2026-09-30T16:08:32.469402",
+                    "status": "processed"
+                },
+                "25b34cc1c476dc3d87fd9055de8e801c": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7052951",
+                    "first_seen": "2026-09-30T16:08:32.473916",
+                    "last_processed": "2026-09-30T16:08:32.477917",
+                    "status": "processed"
+                },
+                "981ba8fbe2bc61a2a2c4b8d169bbda33": {
+                    "type": "pdf",
+                    "title": "Russell_Norvig_Künstliche_Intelligenz_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7052952",
+                    "first_seen": "2026-09-30T16:08:32.482447",
+                    "last_processed": "2026-09-30T16:08:32.488471",
+                    "status": "processed"
+                },
+                "ab75d43bb7cf1aeb841092b534668cc9": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7052952",
+                    "first_seen": "2026-09-30T16:08:32.493444",
+                    "last_processed": "2026-09-30T16:08:32.500276",
+                    "status": "processed"
+                },
+                "90f13bad7608d6b66be2d193b284095a": {
+                    "type": "pdf",
+                    "title": "Schoening_Logic_for_ComputerScientists_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7052954",
+                    "first_seen": "2026-09-30T16:08:32.505313",
+                    "last_processed": "2026-09-30T16:08:32.510315",
+                    "status": "processed"
+                },
+                "02aca2432cd4e92e0a7142d35de709df": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7052954",
+                    "first_seen": "2026-09-30T16:08:32.516657",
+                    "last_processed": "2026-09-30T16:08:32.521654",
+                    "status": "processed"
+                },
+                "27507c63695af5b794ac5da8e59b2dc1": {
+                    "type": "pdf",
+                    "title": "Schoening_Logik-fuer-Informatiker_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7052953",
+                    "first_seen": "2026-09-30T16:08:32.527417",
+                    "last_processed": "2026-09-30T16:08:32.532361",
+                    "status": "processed"
+                },
+                "eabafb326b392953c7491826267b5bae": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7052953",
+                    "first_seen": "2026-09-30T16:08:32.536021",
+                    "last_processed": "2026-09-30T16:08:32.544116",
+                    "status": "processed"
+                },
+                "a1049b025d343f7e52194ec65ac446eb": {
+                    "type": "pdf",
+                    "title": "Harmelen_Lifschitz_Porter_Handbook_of_Knowledge_Representation_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7052950",
+                    "first_seen": "2026-09-30T16:08:32.549817",
+                    "last_processed": "2026-09-30T16:08:32.554083",
+                    "status": "processed"
+                },
+                "06a45337fffedf9e953cf1fc1cffcc09": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7052950",
+                    "first_seen": "2026-09-30T16:08:32.558962",
+                    "last_processed": "2026-09-30T16:08:32.563099",
+                    "status": "processed"
+                },
+                "8642d16a2ef57feedec7b2135818af8a": {
+                    "type": "pdf",
+                    "title": "Baader_etal_The_Description_Logic_Handbook_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7052949",
+                    "first_seen": "2026-09-30T16:08:32.568092",
+                    "last_processed": "2026-09-30T16:08:32.573574",
+                    "status": "processed"
+                },
+                "ff4dfcbcd2ff3a14219b5a6c8043f11a": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7052949",
+                    "first_seen": "2026-09-30T16:08:32.579513",
+                    "last_processed": "2026-09-30T16:08:32.585136",
+                    "status": "processed"
+                },
+                "bd6d833cbadb02b1292031a058a5b52e": {
+                    "type": "pdf",
+                    "title": "PLAN-KRR-HS26_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251583",
+                    "first_seen": "2026-09-30T16:08:32.592946",
+                    "last_processed": "2026-09-30T16:08:32.600441",
+                    "status": "processed"
+                },
+                "dac462b6405398663f2c391470412551": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7251583",
+                    "first_seen": "2026-09-30T16:08:32.607069",
+                    "last_processed": "2026-09-30T16:08:32.614256",
+                    "status": "processed"
+                }
+            }
+        },
+        "BA_VSK_MM": {
+            "items": {
+                "9b103ce1d8a82a107ce1755fc4773784": {
+                    "type": "pdf",
+                    "title": "EP_50_CleanCodeJugsTalk (PDF)",
+                    "url": "https://elearning.hslu.ch/ilias/goto.php/file/7292470/download",
+                    "first_seen": "2026-09-30T16:08:32.618939",
+                    "last_processed": "2026-09-30T16:08:32.625799",
+                    "status": "processed"
+                },
+                "976386296d3e0a98b739305733e6884c": {
+                    "type": "pdf",
+                    "title": "EP_51_CleanCodeUnitTests (PDF)",
+                    "url": "https://elearning.hslu.ch/ilias/goto.php/file/7292471/download",
+                    "first_seen": "2026-09-30T16:08:32.632751",
+                    "last_processed": "2026-09-30T16:08:32.639365",
+                    "status": "processed"
+                },
+                "5a2e0e35ace85b9faaacfabb8c1f0413": {
+                    "type": "pdf",
+                    "title": "EP_52_CleanCodeFunctions (PDF)",
+                    "url": "https://elearning.hslu.ch/ilias/goto.php/file/7292472/download",
+                    "first_seen": "2026-09-30T16:08:32.645883",
+                    "last_processed": "2026-09-30T16:08:32.652876",
+                    "status": "processed"
+                },
+                "91062bf221de9343b3d6f8c75ce70e8d": {
+                    "type": "pdf",
+                    "title": "EP_10_ProEntLehIntro (PDF)",
+                    "url": "https://elearning.hslu.ch/ilias/goto.php/file/7311851/download",
+                    "first_seen": "2026-09-30T16:08:32.658194",
+                    "last_processed": "2026-09-30T16:08:32.662731",
+                    "status": "processed"
+                },
+                "9fa0cb67998a71df41ad535268222993": {
+                    "type": "pdf",
+                    "title": "EP_11_Versionskontrolle (PDF)",
+                    "url": "https://elearning.hslu.ch/ilias/goto.php/file/7311852/download",
+                    "first_seen": "2026-09-30T16:08:32.670828",
+                    "last_processed": "2026-09-30T16:08:32.678971",
+                    "status": "processed"
+                },
+                "da15b32533b698eeb0f8016435e4edf2": {
+                    "type": "pdf",
+                    "title": "EP_12_Buildautomatisation (PDF)",
+                    "url": "https://elearning.hslu.ch/ilias/goto.php/file/7311853/download",
+                    "first_seen": "2026-09-30T16:08:32.684420",
+                    "last_processed": "2026-09-30T16:08:32.692349",
+                    "status": "processed"
+                },
+                "1d7c7a48e0e16c12633d995a1e9fc9bf": {
+                    "type": "pdf",
+                    "title": "EP_13_DependencyManagement (PDF)",
+                    "url": "https://elearning.hslu.ch/ilias/goto.php/file/7311854/download",
+                    "first_seen": "2026-09-30T16:08:32.697831",
+                    "last_processed": "2026-09-30T16:08:32.704513",
+                    "status": "processed"
+                },
+                "168d369110f7398edd8e1d16c3e275d5": {
+                    "type": "pdf",
+                    "title": "EP_14_Buildserver (PDF)",
+                    "url": "https://elearning.hslu.ch/ilias/goto.php/file/7311855/download",
+                    "first_seen": "2026-09-30T16:08:32.710516",
+                    "last_processed": "2026-09-30T16:08:32.716038",
+                    "status": "processed"
+                },
+                "c7533cc229375d2f976a0005fe919615": {
+                    "type": "pdf",
+                    "title": "Die detailierte Agenda finden Sie hier_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7274047",
+                    "first_seen": "2026-09-30T16:08:32.720069",
+                    "last_processed": "2026-09-30T16:08:32.725067",
+                    "status": "processed"
+                },
+                "cefd0dcb74365b41f4f193e81b6bd573": {
+                    "type": "pdf",
+                    "title": "Einführung in Verteilte Systeme (PDF)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7306802",
+                    "first_seen": "2026-09-30T16:08:32.729712",
+                    "last_processed": "2026-09-30T16:08:32.734245",
+                    "status": "processed"
+                },
+                "f35e2e666dbf3f4584fdd8678e2da2b6": {
+                    "type": "pdf",
+                    "title": "Socketkommunikation & Remote-Procedure-Call (PDF)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7309076",
+                    "first_seen": "2026-09-30T16:08:32.739192",
+                    "last_processed": "2026-09-30T16:08:32.743192",
+                    "status": "processed"
+                },
+                "c6ef65162836ef5e1ae45b6057929c73": {
+                    "type": "pdf",
+                    "title": "vsk_tcp_grpc.zip (ZIP)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7309087",
+                    "first_seen": "2026-09-30T16:08:32.748217",
+                    "last_processed": "2026-09-30T16:08:32.754290",
+                    "status": "processed"
+                },
+                "16c2e616e6b3280cadd808ab460ede6c": {
+                    "type": "pdf",
+                    "title": "Komponenten und Schnittstellen (PDF)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7318474",
+                    "first_seen": "2026-09-30T16:08:32.760686",
+                    "last_processed": "2026-09-30T16:08:32.767384",
+                    "status": "processed"
+                },
+                "f5eb875f60f56e30435e8f193916474e": {
+                    "type": "pdf",
+                    "title": "vsk_components.zip (ZIP)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7318486",
+                    "first_seen": "2026-09-30T16:08:32.772872",
+                    "last_processed": "2026-09-30T16:08:32.779613",
+                    "status": "processed"
+                },
+                "3a4f462195c2c0e790608dbddcfb6b52": {
+                    "type": "pdf",
+                    "title": "Javanotes 9, Section 12.3 -- Threads and Parallel Processing_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7272913",
+                    "first_seen": "2026-09-30T16:08:32.784548",
+                    "last_processed": "2026-09-30T16:08:32.789561",
+                    "status": "processed"
+                },
+                "f3f3bc2feb704ff7affe997b4348afd4": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7272913",
+                    "first_seen": "2026-09-30T16:08:32.795082",
+                    "last_processed": "2026-09-30T16:08:32.800083",
+                    "status": "processed"
+                },
+                "25470938d69a33dfbaa2f746be2744ba": {
+                    "type": "pdf",
+                    "title": "Javanotes 9, Section 12.1 -- Introduction to Threads_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7272914",
+                    "first_seen": "2026-09-30T16:08:32.804658",
+                    "last_processed": "2026-09-30T16:08:32.812645",
+                    "status": "processed"
+                },
+                "d55d74389a03f280576602453ceea5ae": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7272914",
+                    "first_seen": "2026-09-30T16:08:32.826848",
+                    "last_processed": "2026-09-30T16:08:32.833539",
+                    "status": "processed"
+                },
+                "2c0b8b48e155a55c32c6686db0a99e5d": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7274047",
+                    "first_seen": "2026-09-30T16:08:32.839055",
+                    "last_processed": "2026-09-30T16:08:32.845284",
+                    "status": "processed"
+                },
+                "af4d7dee013ad8b8fef82dc6d08d3ec4": {
+                    "type": "pdf",
+                    "title": "Projektbeschrieb und Rahmenbedingungen_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7274551&origin=dropzone",
+                    "first_seen": "2026-09-30T16:08:32.849796",
+                    "last_processed": "2026-09-30T16:08:32.856532",
+                    "status": "processed"
+                },
+                "84bced080107962979cf263b8bbeb438": {
+                    "type": "pdf",
+                    "title": "Logger-Schnittstelle (PDF)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7274658&origin=dropzone",
+                    "first_seen": "2026-09-30T16:08:32.862021",
+                    "last_processed": "2026-09-30T16:08:32.866260",
+                    "status": "processed"
+                },
+                "fe581686f5bc4153efed4889c2085e58": {
+                    "type": "pdf",
+                    "title": "Sprint 1 (PDF)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7274659&origin=dropzone",
+                    "first_seen": "2026-09-30T16:08:32.871595",
+                    "last_processed": "2026-09-30T16:08:32.877650",
+                    "status": "processed"
+                },
+                "c7390dd8e17f9ef04df46cfbbc9cd582": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7274658",
+                    "first_seen": "2026-09-30T16:08:32.881817",
+                    "last_processed": "2026-09-30T16:08:32.886435",
+                    "status": "processed"
+                },
+                "c7267e95ee34b988ec1422f605d45878": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7274659",
+                    "first_seen": "2026-09-30T16:08:32.891951",
+                    "last_processed": "2026-09-30T16:08:32.897952",
+                    "status": "processed"
+                },
+                "ed4a90aa22ca89d4a75ff0410ca763d7": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7274551",
+                    "first_seen": "2026-09-30T16:08:32.902948",
+                    "last_processed": "2026-09-30T16:08:32.908159",
+                    "status": "processed"
+                },
+                "df3d29018d2d51f2299ee0be5584b57c": {
+                    "type": "pdf",
+                    "title": "VSK_InterfaceSpec_StringPersistor_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292382",
+                    "first_seen": "2026-09-30T16:08:32.913160",
+                    "last_processed": "2026-09-30T16:08:32.919882",
+                    "status": "processed"
+                },
+                "c6727df8c4b7d4cf470a37cd3655e835": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292382",
+                    "first_seen": "2026-09-30T16:08:32.924395",
+                    "last_processed": "2026-09-30T16:08:32.932321",
+                    "status": "processed"
+                },
+                "a3bd2983401d514a94c62adfc2604bcd": {
+                    "type": "pdf",
+                    "title": "OOP_JavaDevelopmentManual_jdk25_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292361",
+                    "first_seen": "2026-09-30T16:08:32.938542",
+                    "last_processed": "2026-09-30T16:08:32.944627",
+                    "status": "processed"
+                },
+                "8968a777f85112db7a9e910372b00c08": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292361",
+                    "first_seen": "2026-09-30T16:08:32.949940",
+                    "last_processed": "2026-09-30T16:08:32.954246",
+                    "status": "processed"
+                },
+                "010d4e103d71323fd655f336b5e4dfe8": {
+                    "type": "pdf",
+                    "title": "oop_maven_template_jdk25-6.1.0_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292362",
+                    "first_seen": "2026-09-30T16:08:32.959013",
+                    "last_processed": "2026-09-30T16:08:32.963207",
+                    "status": "processed"
+                },
+                "53f006eb7c7cec14e1122dae2c113fc5": {
+                    "type": "pdf",
+                    "title": "SwitchDriveSoftwareArchivLink_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292378",
+                    "first_seen": "2026-09-30T16:08:32.967722",
+                    "last_processed": "2026-09-30T16:08:32.973750",
+                    "status": "processed"
+                },
+                "6b8b6f74a45f1057c322028119fa7fb1": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292378",
+                    "first_seen": "2026-09-30T16:08:32.979729",
+                    "last_processed": "2026-09-30T16:08:32.985004",
+                    "status": "processed"
+                },
+                "7e12fd5aae6eb96734a3982dc6cea689": {
+                    "type": "pdf",
+                    "title": "UML-Notationsübersicht-2.5_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292379",
+                    "first_seen": "2026-09-30T16:08:32.990584",
+                    "last_processed": "2026-09-30T16:08:32.996549",
+                    "status": "processed"
+                },
+                "93eb4fed25acf6cbc90824035b0e2817": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292379",
+                    "first_seen": "2026-09-30T16:08:33.001552",
+                    "last_processed": "2026-09-30T16:08:33.006597",
+                    "status": "processed"
+                },
+                "3d0b672308ac66e5f0ea5631c7e578b0": {
+                    "type": "pdf",
+                    "title": "EP_50_CleanCodeJugsTalk_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292470",
+                    "first_seen": "2026-09-30T16:08:33.012832",
+                    "last_processed": "2026-09-30T16:08:33.018364",
+                    "status": "processed"
+                },
+                "0af5e6d7f5da512b9bec86e807b73e35": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292470",
+                    "first_seen": "2026-09-30T16:08:33.023637",
+                    "last_processed": "2026-09-30T16:08:33.029153",
+                    "status": "processed"
+                },
+                "ed6544555e7bf861c16b7906969c6227": {
+                    "type": "pdf",
+                    "title": "EP_51_CleanCodeUnitTests_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292471",
+                    "first_seen": "2026-09-30T16:08:33.033201",
+                    "last_processed": "2026-09-30T16:08:33.038205",
+                    "status": "processed"
+                },
+                "4c7a75d6dcf68288df7ef27d0421ddf2": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292471",
+                    "first_seen": "2026-09-30T16:08:33.042714",
+                    "last_processed": "2026-09-30T16:08:33.048254",
+                    "status": "processed"
+                },
+                "e019adf67dadce0576c36806ed0ad046": {
+                    "type": "pdf",
+                    "title": "EP_52_CleanCodeFunctions_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292472",
+                    "first_seen": "2026-09-30T16:08:33.054260",
+                    "last_processed": "2026-09-30T16:08:33.059260",
+                    "status": "processed"
+                },
+                "b25aafea25c1b75b97ae0868b9e9e521": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7292472",
+                    "first_seen": "2026-09-30T16:08:33.066889",
+                    "last_processed": "2026-09-30T16:08:33.075125",
+                    "status": "processed"
+                },
+                "beaa5a7d1c9c8c494f1d0883ec2dba43": {
+                    "type": "pdf",
+                    "title": "PR_Einführung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7306802",
+                    "first_seen": "2026-09-30T16:08:33.080122",
+                    "last_processed": "2026-09-30T16:08:33.087642",
+                    "status": "processed"
+                },
+                "b7530dc6384cceb9abd31e75dd6f99cc": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7306802",
+                    "first_seen": "2026-09-30T16:08:33.092642",
+                    "last_processed": "2026-09-30T16:08:33.097653",
+                    "status": "processed"
+                },
+                "abca56cbe7e215928e97d9b0996f6614": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7309076",
+                    "first_seen": "2026-09-30T16:08:33.102863",
+                    "last_processed": "2026-09-30T16:08:33.108202",
+                    "status": "processed"
+                },
+                "23b93d3b94b4e1c8a918e4edf55ce399": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7318474",
+                    "first_seen": "2026-09-30T16:08:33.113792",
+                    "last_processed": "2026-09-30T16:08:33.118929",
+                    "status": "processed"
+                },
+                "01fa6e5dec0f1e265c60d2e7d5e0608c": {
+                    "type": "pdf",
+                    "title": "EP_10_ProEntLehIntro_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7311851",
+                    "first_seen": "2026-09-30T16:08:33.123056",
+                    "last_processed": "2026-09-30T16:08:33.130141",
+                    "status": "processed"
+                },
+                "ad654d01fe589b7eb02f221cd001972b": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7311851",
+                    "first_seen": "2026-09-30T16:08:33.135974",
+                    "last_processed": "2026-09-30T16:08:33.140791",
+                    "status": "processed"
+                },
+                "2d07c668c69f79148eef7310be552870": {
+                    "type": "pdf",
+                    "title": "EP_11_Versionskontrolle_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7311852",
+                    "first_seen": "2026-09-30T16:08:33.147264",
+                    "last_processed": "2026-09-30T16:08:33.153265",
+                    "status": "processed"
+                },
+                "96f37c7684ddd891dde469fa7ecc5853": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7311852",
+                    "first_seen": "2026-09-30T16:08:33.159266",
+                    "last_processed": "2026-09-30T16:08:33.165267",
+                    "status": "processed"
+                },
+                "2532bef878e6c8f2fb0f633618c893fb": {
+                    "type": "pdf",
+                    "title": "EP_12_Buildautomatisation_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7311853",
+                    "first_seen": "2026-09-30T16:08:33.170274",
+                    "last_processed": "2026-09-30T16:08:33.177274",
+                    "status": "processed"
+                },
+                "1bdc405e7898fe213503bb5249181b0e": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7311853",
+                    "first_seen": "2026-09-30T16:08:33.182796",
+                    "last_processed": "2026-09-30T16:08:33.187477",
+                    "status": "processed"
+                },
+                "b274509541e597cc152c5073400d2a1f": {
+                    "type": "pdf",
+                    "title": "EP_13_DependencyManagement_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7311854",
+                    "first_seen": "2026-09-30T16:08:33.195340",
+                    "last_processed": "2026-09-30T16:08:33.202072",
+                    "status": "processed"
+                },
+                "2e5b9dc0639d9a3fa3fe24a6df4f5408": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7311854",
+                    "first_seen": "2026-09-30T16:08:33.206775",
+                    "last_processed": "2026-09-30T16:08:33.212907",
+                    "status": "processed"
+                },
+                "29f3c9f7f41c728ea3123fc96383435e": {
+                    "type": "pdf",
+                    "title": "EP_14_Buildserver_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7311855",
+                    "first_seen": "2026-09-30T16:08:33.220326",
+                    "last_processed": "2026-09-30T16:08:33.227122",
+                    "status": "processed"
+                },
+                "7bf9bed6592027b96bc0564580a790dc": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7311855",
+                    "first_seen": "2026-09-30T16:08:33.235595",
+                    "last_processed": "2026-09-30T16:08:33.243231",
+                    "status": "processed"
+                }
+            }
+        },
+        "BA_PREN1": {
+            "items": {
+                "3dd6e822de3e37296551e3d7b55c5dfe": {
+                    "type": "pdf",
+                    "title": "Einteilung Teams PREN1 HS26 v2_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7309440",
+                    "first_seen": "2026-09-30T16:08:33.250335",
+                    "last_processed": "2026-09-30T16:08:33.260089",
+                    "status": "processed"
+                },
+                "e88026296469edf5fdd822a901b8492b": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7309440",
+                    "first_seen": "2026-09-30T16:08:33.267494",
+                    "last_processed": "2026-09-30T16:08:33.274066",
+                    "status": "processed"
+                },
+                "c7c5e142a5c0816107b716f5b91642ee": {
+                    "type": "pdf",
+                    "title": "AufgabenstellungPREN1HS26-Version-3_0_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7310027",
+                    "first_seen": "2026-09-30T16:08:33.280992",
+                    "last_processed": "2026-09-30T16:08:33.286328",
+                    "status": "processed"
+                },
+                "e712f1ddb82ac28cd35b3a892a8c3fc4": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7310027",
+                    "first_seen": "2026-09-30T16:08:33.292507",
+                    "last_processed": "2026-09-30T16:08:33.297504",
+                    "status": "processed"
+                },
+                "2cc4ca7f9f629e1666b8e16f69ee81c3": {
+                    "type": "pdf",
+                    "title": "FAQ_PREN1_2 HS26FS27 (1)_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7310031",
+                    "first_seen": "2026-09-30T16:08:33.303505",
+                    "last_processed": "2026-09-30T16:08:33.309650",
+                    "status": "processed"
+                },
+                "e448764e5fde8e48e63a1fc4981c7bce": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7310031",
+                    "first_seen": "2026-09-30T16:08:33.317011",
+                    "last_processed": "2026-09-30T16:08:33.327469",
+                    "status": "processed"
+                },
+                "0092ea97bbe8caa92249f0192e4e9410": {
+                    "type": "pdf",
+                    "title": "Sicherheitsdossier PREN Werkstatt_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227039",
+                    "first_seen": "2026-09-30T16:08:33.335039",
+                    "last_processed": "2026-09-30T16:08:33.339488",
+                    "status": "processed"
+                },
+                "3371f2b4632d4aff6f3f0fa3dc1d952e": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227039",
+                    "first_seen": "2026-09-30T16:08:33.345492",
+                    "last_processed": "2026-09-30T16:08:33.350489",
+                    "status": "processed"
+                },
+                "63eff8bcfc68325a7488941bb282a059": {
+                    "type": "pdf",
+                    "title": "Leihmaterial und Örtlichkeiten_26-27_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7241201",
+                    "first_seen": "2026-09-30T16:08:33.356402",
+                    "last_processed": "2026-09-30T16:08:33.363418",
+                    "status": "processed"
+                },
+                "1a85bf57051835934fdf6d4307ef04b8": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7241201",
+                    "first_seen": "2026-09-30T16:08:33.369567",
+                    "last_processed": "2026-09-30T16:08:33.376563",
+                    "status": "processed"
+                },
+                "16b005f7c64c95388fdf846033b875b1": {
+                    "type": "pdf",
+                    "title": "Bestellablauf 3D-Printing_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227005",
+                    "first_seen": "2026-09-30T16:08:33.382085",
+                    "last_processed": "2026-09-30T16:08:33.386597",
+                    "status": "processed"
+                },
+                "9dc211cf606a2a1dd22a678dac4eb355": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227005",
+                    "first_seen": "2026-09-30T16:08:33.394640",
+                    "last_processed": "2026-09-30T16:08:33.401156",
+                    "status": "processed"
+                },
+                "1ade039818bcc8edba8f7ee1d174ef34": {
+                    "type": "pdf",
+                    "title": "PREN 26-27 - Formular - 3D-Printing_1_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7241017",
+                    "first_seen": "2026-09-30T16:08:33.407240",
+                    "last_processed": "2026-09-30T16:08:33.414319",
+                    "status": "processed"
+                },
+                "79cdb5f478679c1bdcc6ba2dd15f9043": {
+                    "type": "pdf",
+                    "title": "Bestellablauf Blechbauteile Blexon_V3_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227008",
+                    "first_seen": "2026-09-30T16:08:33.420838",
+                    "last_processed": "2026-09-30T16:08:33.425956",
+                    "status": "processed"
+                },
+                "49ba38ba85ba190497acb0193531d47c": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227008",
+                    "first_seen": "2026-09-30T16:08:33.430955",
+                    "last_processed": "2026-09-30T16:08:33.435337",
+                    "status": "processed"
+                },
+                "52cc66bb3c1dc19efc976eddd7c5058d": {
+                    "type": "pdf",
+                    "title": "PREN 26-27 - Formular - Blechteil_blexon_V3_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7241046",
+                    "first_seen": "2026-09-30T16:08:33.442914",
+                    "last_processed": "2026-09-30T16:08:33.449237",
+                    "status": "processed"
+                },
+                "e2c463a639377a1d31e58fc23756005e": {
+                    "type": "pdf",
+                    "title": "Bestellablauf Fertigungswerkstatt_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7233827",
+                    "first_seen": "2026-09-30T16:08:33.455247",
+                    "last_processed": "2026-09-30T16:08:33.461503",
+                    "status": "processed"
+                },
+                "0cb4f36de54432543498017da9431cb3": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7233827",
+                    "first_seen": "2026-09-30T16:08:33.466448",
+                    "last_processed": "2026-09-30T16:08:33.472549",
+                    "status": "processed"
+                },
+                "a24639f6575ed415183a12520ad00fd2": {
+                    "type": "pdf",
+                    "title": "Muster-Zeichnung_PREN_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227011",
+                    "first_seen": "2026-09-30T16:08:33.478684",
+                    "last_processed": "2026-09-30T16:08:33.486926",
+                    "status": "processed"
+                },
+                "079dcfae6d4e11637d8850b221b55ac8": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227011",
+                    "first_seen": "2026-09-30T16:08:33.495733",
+                    "last_processed": "2026-09-30T16:08:33.505554",
+                    "status": "processed"
+                },
+                "e235735b2339238ae5f04b353c9d0aa0": {
+                    "type": "pdf",
+                    "title": "PREN 26-27 - Form- Fertigungswerkstatt_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7241069",
+                    "first_seen": "2026-09-30T16:08:33.512288",
+                    "last_processed": "2026-09-30T16:08:33.518861",
+                    "status": "processed"
+                },
+                "19db0a576bf4b56015506399c3b7a2c2": {
+                    "type": "pdf",
+                    "title": "161018_DXF Export von Nicht-Blechbauteilen_NX11-000_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227015",
+                    "first_seen": "2026-09-30T16:08:33.524870",
+                    "last_processed": "2026-09-30T16:08:33.531599",
+                    "status": "processed"
+                },
+                "4c3ed16d75c94a410a957966a5403ee9": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227015",
+                    "first_seen": "2026-09-30T16:08:33.536828",
+                    "last_processed": "2026-09-30T16:08:33.543469",
+                    "status": "processed"
+                },
+                "d562e113a07c6edbbc9f53d65bcc5f16": {
+                    "type": "pdf",
+                    "title": "Bestellablauf Laser FabLab_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227016",
+                    "first_seen": "2026-09-30T16:08:33.550095",
+                    "last_processed": "2026-09-30T16:08:33.555609",
+                    "status": "processed"
+                },
+                "85c37879a6dcab39d5489347f2468fed": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227016",
+                    "first_seen": "2026-09-30T16:08:33.566890",
+                    "last_processed": "2026-09-30T16:08:33.572641",
+                    "status": "processed"
+                },
+                "c85b5db6541099eb393c119784bd1cfc": {
+                    "type": "pdf",
+                    "title": "PREN 26-27 - Formular - Laser-FabLab_4_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7241097",
+                    "first_seen": "2026-09-30T16:08:33.581163",
+                    "last_processed": "2026-09-30T16:08:33.588173",
+                    "status": "processed"
+                },
+                "5eb43718de9051090021de65573f0b2a": {
+                    "type": "pdf",
+                    "title": "Bestellablauf Printfabrikation_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227019",
+                    "first_seen": "2026-09-30T16:08:33.595761",
+                    "last_processed": "2026-09-30T16:08:33.601651",
+                    "status": "processed"
+                },
+                "2c2071f0c24a816b4387f6743127964f": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227019",
+                    "first_seen": "2026-09-30T16:08:33.608659",
+                    "last_processed": "2026-09-30T16:08:33.614709",
+                    "status": "processed"
+                },
+                "81c2a65d321cf24862566782cfa34fc2": {
+                    "type": "pdf",
+                    "title": "PREN 26-27 - Formular - Printfabrikation_4_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7241119",
+                    "first_seen": "2026-09-30T16:08:33.620224",
+                    "last_processed": "2026-09-30T16:08:33.626250",
+                    "status": "processed"
+                },
+                "29b25f842a91f641873624610f79c399": {
+                    "type": "pdf",
+                    "title": "111116_Schraubensortiment Studierende_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227022",
+                    "first_seen": "2026-09-30T16:08:33.632258",
+                    "last_processed": "2026-09-30T16:08:33.637772",
+                    "status": "processed"
+                },
+                "68eb899640f1ba41154ab05dbcda0278": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227022",
+                    "first_seen": "2026-09-30T16:08:33.645769",
+                    "last_processed": "2026-09-30T16:08:33.651356",
+                    "status": "processed"
+                },
+                "9479b69afe636740b73d2246cb033a6f": {
+                    "type": "pdf",
+                    "title": "161128_Rohmaterial Studierende PREN_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227023",
+                    "first_seen": "2026-09-30T16:08:33.656869",
+                    "last_processed": "2026-09-30T16:08:33.662408",
+                    "status": "processed"
+                },
+                "09c1de9ddce390c78fad8cea444fb06e": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227023",
+                    "first_seen": "2026-09-30T16:08:33.670022",
+                    "last_processed": "2026-09-30T16:08:33.675824",
+                    "status": "processed"
+                },
+                "fb7fe37cc80378efe57827e57dfc6175": {
+                    "type": "pdf",
+                    "title": "Bestellablauf Rohmaterial u. MaschElem_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227024",
+                    "first_seen": "2026-09-30T16:08:33.680453",
+                    "last_processed": "2026-09-30T16:08:33.687471",
+                    "status": "processed"
+                },
+                "89fd0e48cced04053deea27495a4a1b9": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227024",
+                    "first_seen": "2026-09-30T16:08:33.693609",
+                    "last_processed": "2026-09-30T16:08:33.699608",
+                    "status": "processed"
+                },
+                "8cd737e138bc92beb2cf15cfd85af9cc": {
+                    "type": "pdf",
+                    "title": "PREN 26-27 - Formular - Rohmat u MaschElem_5_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7241141",
+                    "first_seen": "2026-09-30T16:08:33.706786",
+                    "last_processed": "2026-09-30T16:08:33.710784",
+                    "status": "processed"
+                },
+                "84eb812157a8497b5409a8dc6bcf92f6": {
+                    "type": "pdf",
+                    "title": "Ablauf Rückerstattung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227027",
+                    "first_seen": "2026-09-30T16:08:33.717954",
+                    "last_processed": "2026-09-30T16:08:33.722954",
+                    "status": "processed"
+                },
+                "71985b1f88983f7a4c1cdfa48295f60f": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227027",
+                    "first_seen": "2026-09-30T16:08:33.729537",
+                    "last_processed": "2026-09-30T16:08:33.735259",
+                    "status": "processed"
+                },
+                "2855e3f55eb9abe88928c49f981f05df": {
+                    "type": "pdf",
+                    "title": "PREN 26-27 - Formular - Rueckerstattung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7241164",
+                    "first_seen": "2026-09-30T16:08:33.743548",
+                    "last_processed": "2026-09-30T16:08:33.749056",
+                    "status": "processed"
+                },
+                "f340197169e94384cecca45d5eba1602": {
+                    "type": "pdf",
+                    "title": "Bestellablauf-Mouser-Digikey-Bestellung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7322760",
+                    "first_seen": "2026-09-30T16:08:33.754801",
+                    "last_processed": "2026-09-30T16:08:33.761319",
+                    "status": "processed"
+                },
+                "307d822b805515fb09fe9561a20df3e0": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7322760",
+                    "first_seen": "2026-09-30T16:08:33.767438",
+                    "last_processed": "2026-09-30T16:08:33.772745",
+                    "status": "processed"
+                },
+                "d0e4cd0cbfa613116d692ec4d4ef2192": {
+                    "type": "pdf",
+                    "title": "Bestellablauf-Mädler-Igus-Conrad-Bestellung_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227032",
+                    "first_seen": "2026-09-30T16:08:33.778757",
+                    "last_processed": "2026-09-30T16:08:33.783756",
+                    "status": "processed"
+                },
+                "7ec8491184447b24b039e5740292695a": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227032",
+                    "first_seen": "2026-09-30T16:08:33.789465",
+                    "last_processed": "2026-09-30T16:08:33.797235",
+                    "status": "processed"
+                },
+                "0e69ffaac7a3369c299046e5c7b795fd": {
+                    "type": "pdf",
+                    "title": "Kurzanleitung_Bestellsystem_Oesys_IET_Studenten_PREN - V02_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227030",
+                    "first_seen": "2026-09-30T16:08:33.804731",
+                    "last_processed": "2026-09-30T16:08:33.810707",
+                    "status": "processed"
+                },
+                "4d0d90868771ac671a074fc8a24815fa": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7227030",
+                    "first_seen": "2026-09-30T16:08:33.817737",
+                    "last_processed": "2026-09-30T16:08:33.823918",
+                    "status": "processed"
+                },
+                "f6be52750d1229e70c1158fd55ac8bb7": {
+                    "type": "pdf",
+                    "title": "PREN 26-27 - Formular -Mädler-Igus-Conrad-Bestellungen_1_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7241188",
+                    "first_seen": "2026-09-30T16:08:33.831420",
+                    "last_processed": "2026-09-30T16:08:33.845131",
+                    "status": "processed"
+                },
+                "102477473384a6ed973b40e10b34537b": {
+                    "type": "pdf",
+                    "title": "1 PREN1 Einleitung HS26_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7310033",
+                    "first_seen": "2026-09-30T16:08:33.850747",
+                    "last_processed": "2026-09-30T16:08:33.856250",
+                    "status": "processed"
+                },
+                "e0c63a865e852cb31cf3cddada09af91": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7310033",
+                    "first_seen": "2026-09-30T16:08:33.864256",
+                    "last_processed": "2026-09-30T16:08:33.869780",
+                    "status": "processed"
+                },
+                "91f25701554fc7fb764703cf7be9201f": {
+                    "type": "pdf",
+                    "title": "2 PREN1_Aufgabenstellung_HS26_Interaktive_Roboter_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7310457",
+                    "first_seen": "2026-09-30T16:08:33.877635",
+                    "last_processed": "2026-09-30T16:08:33.883644",
+                    "status": "processed"
+                },
+                "a32db50ed3bc557fa2d04c962f1746e0": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7310457",
+                    "first_seen": "2026-09-30T16:08:33.889267",
+                    "last_processed": "2026-09-30T16:08:33.895269",
+                    "status": "processed"
+                },
+                "4b61ba8d4acf71383987987f54ce75b8": {
+                    "type": "pdf",
+                    "title": "3 PREN1-Projektmanagement_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7310790",
+                    "first_seen": "2026-09-30T16:08:33.903876",
+                    "last_processed": "2026-09-30T16:08:33.912084",
+                    "status": "processed"
+                },
+                "3ac1fc016bdae323aae8139e659c2dc0": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7310790",
+                    "first_seen": "2026-09-30T16:08:33.921154",
+                    "last_processed": "2026-09-30T16:08:33.929837",
+                    "status": "processed"
+                },
+                "9d64fce687ed04b20769e93c04e7dd9b": {
+                    "type": "pdf",
+                    "title": "4 PREN Produktanforderung HS26_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7320027",
+                    "first_seen": "2026-09-30T16:08:33.939893",
+                    "last_processed": "2026-09-30T16:08:33.949991",
+                    "status": "processed"
+                },
+                "4c7035f443935b5965139d097b22d222": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7320027",
+                    "first_seen": "2026-09-30T16:08:33.960652",
+                    "last_processed": "2026-09-30T16:08:33.970215",
+                    "status": "processed"
+                },
+                "f984e9432f54e90e87e6f6e26c9635be": {
+                    "type": "pdf",
+                    "title": "5 PREN1 Recherche und Lösungsfindung HS26_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7320251",
+                    "first_seen": "2026-09-30T16:08:33.979726",
+                    "last_processed": "2026-09-30T16:08:33.989821",
+                    "status": "processed"
+                },
+                "62812fb9dd79b1b6242d150b6399cc01": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7320251",
+                    "first_seen": "2026-09-30T16:08:34.001864",
+                    "last_processed": "2026-09-30T16:08:34.012243",
+                    "status": "processed"
+                },
+                "175ef50fb262f48403062419e050c65a": {
+                    "type": "pdf",
+                    "title": "6 PREN1 Input Nachhaltigkeit HS26_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7320566",
+                    "first_seen": "2026-09-30T16:08:34.022316",
+                    "last_processed": "2026-09-30T16:08:34.032790",
+                    "status": "processed"
+                },
+                "3ebb1458e1586c17c75c40f01b437e37": {
+                    "type": "pdf",
+                    "title": "Download_baseClass=ilrepositorygui&cmdNode=yb:o1&cmdClass=ilObjFileGUI&cmd=sendfile&ref",
+                    "url": "id=7320566",
+                    "first_seen": "2026-09-30T16:08:34.045296",
+                    "last_processed": "2026-09-30T16:08:34.057052",
+                    "status": "processed"
+                }
+            }
+        }
+    }
+}
