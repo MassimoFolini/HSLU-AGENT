@@ -103,14 +103,13 @@ def weekly_job():
             f.write(dossier_text)
         print(f" -> Lokal gespeichert: {local_file}")
         
-        # In Google Docs speichern (falls verbunden)
+        # In Google Drive als echtes Google Doc speichern (perfekt für NotebookLM)
         if gworkspace and drive_folder_id:
             try:
-                doc_title = f"{week_str} - {course_name}"
-                doc_id = gworkspace.create_document(doc_title, dossier_text, drive_folder_id)
-                print(f" -> In Google Docs abgelegt! (Doc-ID: {doc_id})")
+                doc_id = gworkspace.upload_file(local_file, drive_folder_id, as_google_doc=True)
+                print(f" -> Als Google Doc in Drive abgelegt! (Doc-ID: {doc_id})")
             except Exception as e:
-                print(f" -> Google Docs Export-Fehler: {e}")
+                print(f" -> Google Drive Export-Fehler: {e}")
 
     print(f"\n========================================================")
     print(f"WÖCHENTLICHER WORKFLOW FÜR {week_str} ERFOLGREICH BEENDET!")

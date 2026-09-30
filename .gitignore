@@ -4,5 +4,5 @@ __pycache__/
 venv/
 .venv/
 downloads/
-credentials.json
-token.json
+credentials*.json
+token*.json
