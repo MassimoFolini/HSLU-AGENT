@@ -1,4 +1,4 @@
-from flask import Flask, render_template_string, jsonify, request
+﻿from flask import Flask, render_template_string, jsonify, request, send_file
 import subprocess
 import os
 import threading
@@ -95,6 +95,7 @@ HTML_TEMPLATE = """
                     document.getElementById('GEMINI_API_KEY').value = data.GEMINI_API_KEY || '';
                     document.getElementById('GOOGLE_DRIVE_FOLDER_ID').value = data.GOOGLE_DRIVE_FOLDER_ID || '';
                     document.getElementById('GOOGLE_SERVICE_JSON').value = data.GOOGLE_SERVICE_JSON || '';
+                    document.getElementById('NOTEBOOKLM_COOKIES').value = data.NOTEBOOKLM_COOKIES || '';
                 });
         }
         
@@ -109,7 +110,8 @@ HTML_TEMPLATE = """
                 HSLU_TOTP_SECRET: document.getElementById('HSLU_TOTP_SECRET').value,
                 GEMINI_API_KEY: document.getElementById('GEMINI_API_KEY').value,
                 GOOGLE_DRIVE_FOLDER_ID: document.getElementById('GOOGLE_DRIVE_FOLDER_ID').value,
-                GOOGLE_SERVICE_JSON: document.getElementById('GOOGLE_SERVICE_JSON').value
+                GOOGLE_SERVICE_JSON: document.getElementById('GOOGLE_SERVICE_JSON').value,
+                    NOTEBOOKLM_COOKIES: document.getElementById('NOTEBOOKLM_COOKIES').value
             };
             
             fetch('/api/settings', {
@@ -221,7 +223,16 @@ HTML_TEMPLATE = """
                         </div>
                     </div>
                     <div class="lg:col-span-2">
-                        <div class="bg-gray-900 rounded-lg shadow flex flex-col h-[700px] border border-gray-700">
+                        <div class="bg-gray-900 rounded-lg shadow flex flex-col h-[400px] border border-gray-700 mb-6">
+                            <div class="bg-gray-800 px-4 py-2 border-b border-gray-700 rounded-t-lg flex items-center">
+                                <i class="fas fa-eye text-gray-400 mr-2"></i>
+                                <div class="text-xs text-gray-400 font-mono">Live Browser View (Auto-Refresh)</div>
+                            </div>
+                            <div class="p-2 flex-1 flex items-center justify-center overflow-hidden bg-black">
+                                <img id="live-view" src="/api/current_view" alt="Waiting for screenshot..." class="max-h-full max-w-full object-contain" onerror="this.style.display='none'" onload="this.style.display='block'">
+                            </div>
+                        </div>
+                        <div class="bg-gray-900 rounded-lg shadow flex flex-col h-[400px] border border-gray-700">
                             <div class="bg-gray-800 px-4 py-2 border-b border-gray-700 rounded-t-lg flex items-center">
                                 <div class="flex space-x-2">
                                     <div class="w-3 h-3 rounded-full bg-red-500"></div>
@@ -286,7 +297,16 @@ HTML_TEMPLATE = """
                                     <textarea id="GOOGLE_SERVICE_JSON" rows="6" class="mt-1 focus:ring-brand focus:border-brand block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2 border font-mono text-xs" placeholder='{ "type": "service_account", "project_id": "..." }'></textarea>
                                 </div>
                             </div>
-                        </div>
+                            </div>
+                            
+                            <h4 class="text-md font-medium text-gray-900 mb-4 border-b pb-2 mt-8"><i class="fas fa-podcast text-indigo-500 mr-2"></i> NotebookLM (Audio Podcasts)</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">NotebookLM Cookie JSON</label>
+                                    <p class="text-xs text-gray-500 mb-1">Füge hier die exportierten JSON-Cookies von notebooklm.google.com ein (via EditThisCookie o.ä.).</p>
+                                    <textarea id="NOTEBOOKLM_COOKIES" rows="6" class="mt-1 focus:ring-brand focus:border-brand block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2 border font-mono text-xs" placeholder='[{"domain": ".google.com", "name": "SID", ...}]'></textarea>
+                                </div>
+                            </div>
 
                         <div class="pt-6">
                             <button type="submit" id="save-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700">
@@ -324,6 +344,14 @@ def run_script_task(cmd_list, title):
 
 @app.route('/')
 def index(): return render_template_string(HTML_TEMPLATE)
+
+@app.route('/api/current_view')
+def get_current_view():
+    import os
+    path = os.path.join("downloads", "current_view.png")
+    if os.path.exists(path):
+        return send_file(path, mimetype='image/png')
+    return "", 404
 
 @app.route('/log')
 def get_log():
@@ -377,7 +405,8 @@ def get_settings():
         "HSLU_TOTP_SECRET": config.get("HSLU_TOTP_SECRET", ""),
         "GEMINI_API_KEY": config.get("GEMINI_API_KEY", ""),
         "GOOGLE_DRIVE_FOLDER_ID": config.get("GOOGLE_DRIVE_FOLDER_ID", "").strip("'").strip('"'),
-        "GOOGLE_SERVICE_JSON": service_json_content
+        "GOOGLE_SERVICE_JSON": service_json_content,
+        "NOTEBOOKLM_COOKIES": "" if not os.path.exists('notebooklm_cookies.json') else open('notebooklm_cookies.json').read()
     })
 
 @app.route('/api/settings', methods=['POST'])
@@ -387,6 +416,16 @@ def save_settings():
     
     # Extract service account JSON
     service_json = data.pop("GOOGLE_SERVICE_JSON", "")
+    nblm_cookies = data.pop("NOTEBOOKLM_COOKIES", "")
+    if nblm_cookies and nblm_cookies.strip() != "":
+        with open('notebooklm_cookies.json', 'w') as f:
+            f.write(nblm_cookies)
+        import subprocess
+        try:
+            subprocess.run(["/opt/KiAgentHSLU/venv/bin/python", "-m", "notebooklm", "auth", "import-cookies", "notebooklm_cookies.json"], check=False)
+        except:
+            pass
+
     if service_json and service_json.strip() != "":
         try:
             # Validate JSON format
@@ -412,3 +451,9 @@ def save_settings():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
+
+
+
+
+

@@ -16,7 +16,7 @@ class HSLUScraper:
         self.totp_secret = os.environ.get("HSLU_TOTP_SECRET", "").replace(" ", "")
 
     def login(self, page):
-        """FÃ¼hrt den vollstÃ¤ndigen Login- und 2FA-Prozess bei HSLU / Switch edu-ID durch."""
+        """Führt den vollständigen Login- und 2FA-Prozess bei HSLU / Switch edu-ID durch."""
         print("1. Rufe HSLU ILIAS auf...")
         page.goto("https://elearning.hslu.ch/", wait_until="domcontentloaded")
         page.wait_for_timeout(2000)
@@ -38,7 +38,7 @@ class HSLUScraper:
         # 3. SWITCH edu-ID Auswahl
         eduid_btn = page.locator('text="SWITCH edu-ID"').or_(page.locator('a:has-text("SWITCH edu-ID")')).or_(page.locator('button:has-text("SWITCH edu-ID")')).first
         if eduid_btn.is_visible():
-            print("4. WÃ¤hle SWITCH edu-ID...")
+            print("4. Wähle SWITCH edu-ID...")
             eduid_btn.click()
             page.wait_for_timeout(3000)
 
@@ -52,7 +52,7 @@ class HSLUScraper:
                 submit_user.click()
                 page.wait_for_timeout(2000)
 
-        # 5. Passworteingabe (Passkey-Ãœberspringen falls nÃ¶tig)
+        # 5. Passworteingabe (Passkey-Überspringen falls nötig)
         use_pwd_btn = page.locator('text="Use password"').or_(page.locator('text="Passwort verwenden"')).or_(page.locator('button:has-text("password")')).first
         if use_pwd_btn.is_visible():
             use_pwd_btn.click()
@@ -74,7 +74,7 @@ class HSLUScraper:
             totp = pyotp.TOTP(self.totp_secret)
             current_code = totp.now()
             totp_input.fill(current_code)
-            submit_totp = page.locator('button[type="submit"]').or_(page.locator('input[type="submit"]')).or_(page.locator('button:has-text("PrÃ¼fen")')).or_(page.locator('button:has-text("Verify")')).first
+            submit_totp = page.locator('button[type="submit"]').or_(page.locator('input[type="submit"]')).or_(page.locator('button:has-text("Prüfen")')).or_(page.locator('button:has-text("Verify")')).first
             if submit_totp.is_visible():
                 submit_totp.click()
                 page.wait_for_timeout(4000)
@@ -88,7 +88,7 @@ class HSLUScraper:
         courses = []
         seen_urls = set()
         
-        # In ILIAS 10 sind alle Kurse Ã¼ber goto.php/crs/ verlinkt
+        # In ILIAS 10 sind alle Kurse über goto.php/crs/ verlinkt
         links = page.locator('a[href*="goto.php/crs/"]').all()
         for link in links:
             try:
@@ -104,7 +104,7 @@ class HSLUScraper:
         return courses
 
     def scrape_single_course(self, page, course, week_dir, sync_state):
-        """Scannt einen einzelnen Kurs nach Unterlagen, PDFs und Videos und lÃ¤dt diese herunter."""
+        """Scannt einen einzelnen Kurs nach Unterlagen, PDFs und Videos und lädt diese herunter."""
         course_title = course["title"]
         clean_name = re.sub(r'[^a-zA-Z0-9_-]', '_', course_title.split('.')[1] if '.' in course_title else course_title)
         course_dir = os.path.join(week_dir, clean_name)
@@ -154,12 +154,12 @@ class HSLUScraper:
         # Alle identifizierten Ordner abscannen (anstatt nur 3), um sicher alles zu haben
         for folder_url in target_folder_urls: 
             try:
-                print(f" -> Ã–ffne Kursordner...")
+                print(f" -> Öffne Kursordner...")
                 page.goto(folder_url, wait_until="domcontentloaded")
                 page.wait_for_timeout(2000)
                 self._download_files_on_page(page, files_dir, downloaded_files, clean_name, sync_state)
             except Exception as e:
-                print(f" -> Fehler beim Ã–ffnen des Ordners: {e}")
+                print(f" -> Fehler beim Öffnen des Ordners: {e}")
 
         print(f" -> Kurs '{clean_name}': {len(downloaded_files)} NEUE Unterlagen heruntergeladen, {len(video_links)} Video-Referenzen gefunden.")
         
@@ -187,7 +187,7 @@ class HSLUScraper:
             json.dump(state, f, indent=4)
 
     def _download_files_on_page(self, page, target_dir, downloaded_files, course_id, sync_state):
-        """Sucht nach Dateien auf der aktuellen Seite und lÃ¤dt sie herunter, wenn sie neu sind."""
+        """Sucht nach Dateien auf der aktuellen Seite und lädt sie herunter, wenn sie neu sind."""
         file_locators = page.locator('a[href*="goto.php/file/"], a[href*="target=file_"], a[href*="cmd=download"], a[href*="cmd=sendfile"], a[href*="ilObjFileGUI"], a[href*=".pdf"], a[href*=".pptx"], a[href*=".zip"], a[href*=".docx"]').all()
         if course_id not in sync_state:
             sync_state[course_id] = []
@@ -207,10 +207,10 @@ class HSLUScraper:
                     
                 print(f"   [NEU] Lade herunter: {fname[:40]}...")
                 
-                # Datei direkt Ã¼ber den Browser-Kontext als Stream/Buffer abrufen (verhindert Inline-PDF-Probleme)
+                # Datei direkt über den Browser-Kontext als Stream/Buffer abrufen (verhindert Inline-PDF-Probleme)
                 response = page.context.request.get(href)
                 if response.ok:
-                    # Versuche einen vernÃ¼nftigen Dateinamen zu finden
+                    # Versuche einen vernünftigen Dateinamen zu finden
                     content_disp = response.headers.get('content-disposition', '')
                     import re
                     file_name_match = re.search(r'filename="([^"]+)"', content_disp)
@@ -245,6 +245,10 @@ class HSLUScraper:
         try:
             page.goto(current_url, wait_until="domcontentloaded")
             page.wait_for_timeout(2000)
+            try:
+                page.screenshot(path="downloads/current_view.png")
+            except:
+                pass
         except Exception:
             return
 
@@ -294,7 +298,7 @@ class HSLUScraper:
                 )
 
     def scrape_single_course(self, page, course, week_dir, sync_state):
-        """Scannt einen einzelnen Kurs rekursiv und Ã¼bernimmt die Ordnerstruktur."""
+        """Scannt einen einzelnen Kurs rekursiv und übernimmt die Ordnerstruktur."""
         course_title = course["title"]
         clean_name = re.sub(r'[^a-zA-Z0-9_-]', '_', course_title.split('.')[1] if '.' in course_title else course_title)
         course_dir = os.path.join(week_dir, clean_name)
@@ -304,7 +308,11 @@ class HSLUScraper:
         print(f"\n[Scraping] Betrete Kurs: {course_title}")
         page.goto(course["url"], wait_until="domcontentloaded")
         page.wait_for_timeout(2500)
-        
+        try:
+            page.screenshot(path="downloads/current_view.png")
+        except:
+            pass
+            
         course_text = ""
         try:
             course_text = page.locator('main').first.inner_text()
@@ -325,7 +333,7 @@ class HSLUScraper:
             except Exception:
                 pass
                 
-        # 2. Rekursives Crawling fÃ¼r Ordnerstruktur starten!
+        # 2. Rekursives Crawling für Ordnerstruktur starten!
         visited = set()
         self._crawl_folder_recursive(
             page=page, 
@@ -339,7 +347,7 @@ class HSLUScraper:
             visited=visited
         )
 
-        print(f" -> Kurs '{clean_name}': {len(downloaded_files)} NEUE Unterlagen heruntergeladen, Struktur Ã¼bernommen.")
+        print(f" -> Kurs '{clean_name}': {len(downloaded_files)} NEUE Unterlagen heruntergeladen, Struktur übernommen.")
         
         return {
             "title": course_title,
@@ -351,8 +359,8 @@ class HSLUScraper:
         }
 
     def login_and_download(self, week_identifier):
-        """Hauptmethode fÃ¼r das wÃ¶chentliche Scraping aller FÃ¤cher."""
-        print(f"Starte wÃ¶chentliches Scraping fÃ¼r: {week_identifier}")
+        """Hauptmethode für das wöchentliche Scraping aller Fächer."""
+        print(f"Starte wöchentliches Scraping für: {week_identifier}")
         week_dir = os.path.join(self.download_dir, week_identifier)
         os.makedirs(week_dir, exist_ok=True)
         
@@ -373,6 +381,10 @@ class HSLUScraper:
 
             # 1. Login
             self.login(page)
+            try:
+                page.screenshot(path="downloads/current_view.png")
+            except:
+                pass
 
             # 2. Belegte Module auslesen
             courses = self.get_enrolled_courses(page)
@@ -381,7 +393,7 @@ class HSLUScraper:
                 print(f" - {c['title']}")
 
             # 3. To-Dos auslesen
-            todo_elements = page.locator('.il-block-todo, div:has-text("Abgabe zur Ãœbungseinheit")').all()
+            todo_elements = page.locator('.il-block-todo, div:has-text("Abgabe zur Übungseinheit")').all()
             for td in todo_elements:
                 text = td.inner_text().strip()
                 if text and text not in results["todos"]:
@@ -416,5 +428,6 @@ class HSLUScraper:
             
         self._save_sync_state(sync_state)
         return results
+
 
 

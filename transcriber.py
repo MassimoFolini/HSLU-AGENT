@@ -76,7 +76,7 @@ class Transcriber:
                 audio_file = genai.get_file(audio_file.name)
             
             print("Audio uploaded. Generating transcription...")
-            prompt = "Bitte transkribiere diese Vorlesungsaufzeichnung vollstÃ¤ndig und wortgetreu auf Deutsch."
+            prompt = "Bitte transkribiere diese Vorlesungsaufzeichnung vollständig und wortgetreu auf Deutsch."
             
             response = self.model.generate_content([prompt, audio_file])
             transcript_text = response.text
