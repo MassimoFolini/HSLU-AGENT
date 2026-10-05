@@ -369,7 +369,7 @@ def get_status():
 def run_now():
     global process
     if process is not None and process.poll() is None: return jsonify({"message": "Läuft bereits!"})
-    threading.Thread(target=run_script_task, args=(["bash", "-c", "/opt/KiAgentHSLU/venv/bin/python -u crawl_videos.py && /opt/KiAgentHSLU/venv/bin/python -u fetch_missing_videos.py"], "HAUPT-DURCHLAUF (NEW)")).start()
+    threading.Thread(target=run_script_task, args=(["bash", "-c", "/opt/KiAgentHSLU/venv/bin/python -u run_weeks.py"], "HAUPT-DURCHLAUF (NEW)")).start()
     return jsonify({"message": "Gestartet!"})
 
 @app.route('/test/<test_type>', methods=['POST'])

@@ -109,8 +109,8 @@ def weekly_job(force_week_str=None):
                 print(f" -> Quellen-Ordner: 'Unterlagen'")
                 
                 # 3. Wochen-Ordner innerhalb des Fachs (nur für das generierte KI-Dossier)
-                week_folder_id = gworkspace.get_or_create_folder(week_str, parent_id=subject_folder_id)
-                print(f" -> Wochen-Ordner in '{subject_name}': '{week_str}'")
+                
+                
             except Exception as e:
                 print(f" -> Fehler bei Google Drive Ordnererstellung: {e}")
 
@@ -177,8 +177,8 @@ def weekly_job(force_week_str=None):
         # G. In Google Drive hochladen:
         if gworkspace:
             try:
-                if week_folder_id:
-                    doc_id = gworkspace.upload_file(local_dossier_path, week_folder_id, as_google_doc=True)
+                if sources_folder_id:
+                    doc_id = gworkspace.upload_file(local_dossier_path, sources_folder_id, as_google_doc=True)
                     print(f" -> [Google Docs] Komplettes Dokument hochgeladen! ID: {doc_id}")
 
                 if sources_folder_id:
