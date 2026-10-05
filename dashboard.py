@@ -365,9 +365,11 @@ def run_script_task(cmd_list, title):
     process.wait()
 
 @app.route('/')
+@requires_auth
 def index(): return render_template_string(HTML_TEMPLATE)
 
 @app.route('/api/current_view')
+@requires_auth
 def get_current_view():
     import os
     path = os.path.join("downloads", "current_view.png")
@@ -376,17 +378,20 @@ def get_current_view():
     return "", 404
 
 @app.route('/log')
+@requires_auth
 def get_log():
     if not os.path.exists(LOG_FILE): return "System bereit. Noch keine Log-Einträge vorhanden."
     with open(LOG_FILE, "r", encoding="utf-8", errors="replace") as f: return "".join(f.readlines()[-300:])
 
 @app.route('/status')
+@requires_auth
 def get_status():
     global process
     is_running = process is not None and process.poll() is None
     return jsonify({"is_running": is_running, "next_run": get_next_sunday()})
 
 @app.route('/run', methods=['POST'])
+@requires_auth
 def run_now():
     global process
     if process is not None and process.poll() is None: return jsonify({"message": "Läuft bereits!"})
@@ -394,6 +399,7 @@ def run_now():
     return jsonify({"message": "Gestartet!"})
 
 @app.route('/test/<test_type>', methods=['POST'])
+@requires_auth
 def run_test(test_type):
     global process
     if process is not None and process.poll() is None: return jsonify({"message": "Ein anderer Prozess läuft bereits!"})
@@ -408,6 +414,7 @@ def run_test(test_type):
     return jsonify({"message": f"{title} gestartet!"})
 
 @app.route('/api/settings', methods=['GET'])
+@requires_auth
 def get_settings():
     if not os.path.exists(ENV_FILE): open(ENV_FILE, 'a').close()
     config = dotenv_values(ENV_FILE)
@@ -432,6 +439,7 @@ def get_settings():
     })
 
 @app.route('/api/settings', methods=['POST'])
+@requires_auth
 def save_settings():
     data = request.json
     if not os.path.exists(ENV_FILE): open(ENV_FILE, 'a').close()
