@@ -7,6 +7,27 @@ from dotenv import set_key, dotenv_values
 import json
 
 app = Flask(__name__)
+
+from functools import wraps
+from flask import request, Response
+
+def check_auth(username, password):
+    # Das Passwort kann später auch aus der .env gelesen werden
+    expected_pass = dotenv_values(ENV_FILE).get("DASHBOARD_PASS", "hslu2026")
+    return username == 'admin' and password == expected_pass
+
+def authenticate():
+    return Response('Login erforderlich.', 401, {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+
 ENV_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
 SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'service_account.json')
 
