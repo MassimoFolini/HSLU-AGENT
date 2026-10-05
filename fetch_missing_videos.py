@@ -2,7 +2,7 @@
 import re
 from registry import registry
 from transcriber import Transcriber
-import google.generativeai as genai
+from google_integration import GoogleWorkspace
 
 def fetch_missing_videos():
     print("Starte gezielten Download der fehlenden Videos/Streams anhand der Registry...")
@@ -16,8 +16,9 @@ def fetch_missing_videos():
 
     cookie_file = os.path.join("downloads", "cookies.txt")
     if not os.path.exists(cookie_file):
-        print("WARNUNG: Keine cookies.txt gefunden! Panopto-Downloads könnten fehlschlagen.")
         cookie_file = None
+
+    gw = GoogleWorkspace()
 
     for v in videos:
         course_id = v["course_id"]
@@ -48,7 +49,18 @@ def fetch_missing_videos():
                 f.write(f"**Quelle:** {url}\n\n")
                 f.write(transcript)
                 
-            print(f"-> Transkript gespeichert: {md_path}")
+            print(f"-> Transkript lokal gespeichert: {md_path}")
+            
+            # Lade zu Google Drive "Unterlagen" hoch
+            try:
+                clean_name = re.sub(r'[^a-zA-Z0-9_-]', '_', course_id.split('.')[1] if '.' in course_id else course_id)
+                folder_id = gw.get_or_create_folder(clean_name)
+                unterlagen_id = gw.get_or_create_folder("Unterlagen", parent_id=folder_id)
+                doc_id = gw.upload_file(md_path, unterlagen_id, as_google_doc=True)
+                print(f"-> Erfolgreich im Google Drive (Unterlagen) gespeichert! ID: {doc_id}")
+            except Exception as e:
+                print(f"-> Fehler beim Google Drive Upload: {e}")
+                
             registry.mark_processed(course_id, item_id)
         else:
             print("-> Fehler beim Download des Audios.")

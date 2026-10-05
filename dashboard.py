@@ -18,6 +18,7 @@ HTML_TEMPLATE = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HSLU AI Agent</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -368,7 +369,7 @@ def get_status():
 def run_now():
     global process
     if process is not None and process.poll() is None: return jsonify({"message": "Läuft bereits!"})
-    threading.Thread(target=run_script_task, args=(["python", "run_weeks.py"], "MANUELLER HAUPT-DURCHLAUF")).start()
+    threading.Thread(target=run_script_task, args=(["bash", "-c", "/opt/KiAgentHSLU/venv/bin/python -u crawl_videos.py && /opt/KiAgentHSLU/venv/bin/python -u fetch_missing_videos.py"], "HAUPT-DURCHLAUF (NEW)")).start()
     return jsonify({"message": "Gestartet!"})
 
 @app.route('/test/<test_type>', methods=['POST'])
