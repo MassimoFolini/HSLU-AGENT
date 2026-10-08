@@ -254,7 +254,7 @@ def weekly_job(force_week_str=None):
     if os.environ.get("AUTO_AI", "0").strip() == "1" and gworkspace:
         import sys
         here = os.path.dirname(os.path.abspath(__file__))
-        for script in ("transcribe_audio.py", "generate_dossiers.py"):
+        for script in ("transcribe_audio.py", "clean_transcripts.py", "generate_dossiers.py"):
             print(f"\n[Auto] {script} ...", flush=True)
             subprocess.run([sys.executable, "-u", os.path.join(here, "maintenance", script), "--sync"], cwd=here)
 
