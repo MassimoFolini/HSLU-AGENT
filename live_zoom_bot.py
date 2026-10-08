@@ -56,6 +56,20 @@ def do_ms_login(page, email, password, totp_secret):
         except Exception:
             pass
 
+def dismiss_cookies(page):
+    """Zoom-Cookie-Banner ablehnen (verdeckt sonst Knoepfe wie 'Join')."""
+    for sel in ('#onetrust-reject-all-handler', 'button:has-text("Decline Cookies")', 'button:has-text("Cookies ablehnen")',
+                '#onetrust-accept-btn-handler'):
+        try:
+            el = page.locator(sel).first
+            if el.is_visible():
+                el.click(timeout=3000)
+                page.wait_for_timeout(800)
+                return
+        except Exception:
+            pass
+
+
 LEAVE_SEL = ('button:has-text("Leave")', 'button[aria-label*="Leave"]', 'button:has-text("Verlassen")')
 
 
@@ -86,33 +100,48 @@ def join_meeting(page, context, ilias_link, passcode, email, password, totp_secr
         page.goto(ilias_link, wait_until="domcontentloaded", timeout=60000)
         page.wait_for_timeout(5000)
 
-    print("2. Auf Zoom-Launch Seite. Suche 'Join from Browser'...")
-    join_browser = page.locator('a:has-text("Browser")').first
-    if join_browser.is_visible():
-        join_browser.click()
-    else:
-        current = page.url
-        if "/j/" in current:
-            page.goto(current.replace("/j/", "/wc/join/"))
-        elif "/wc/" not in current:
+    print("2. Oeffne den Zoom Web Client direkt...")
+    current = page.url.split("#")[0]
+    if "/j/" in current:
+        page.goto(current.replace("/j/", "/wc/join/"), wait_until="domcontentloaded", timeout=60000)
+    elif "/wc/" not in current:
+        dismiss_cookies(page)
+        join_browser = page.get_by_text(re.compile(r"Join from (your )?browser", re.I)).or_(page.locator('a:has-text("Browser")')).first
+        if join_browser.is_visible():
+            join_browser.click()
+        else:
             print("URL Format unbekannt:", current)
             page.screenshot(path="downloads/live_error.png")
             return False
-    page.wait_for_timeout(10000)
+    page.wait_for_timeout(8000)
 
+    # Beitrittsformular: erst Passcode und Name ausfuellen, dann "Join" (sonst ist der Knopf gesperrt)
+    dismiss_cookies(page)
     name_input = page.locator('input[name="inputname"]').or_(page.locator('input#input-for-name')).first
+    pass_input = page.locator('input#input-for-pwd').or_(page.locator('input[type="password"]')).first
+    try:
+        pass_input.or_(name_input).first.wait_for(timeout=20000)
+    except Exception:
+        pass
+    if pass_input.is_visible() and pass_input.input_value():
+        print("Passcode ist durch den Link schon ausgefuellt.")
+    elif pass_input.is_visible():
+        if passcode:
+            print("Passcode verlangt, gebe ein...")
+            pass_input.fill(passcode)
+        else:
+            print("Passcode verlangt, aber keiner hinterlegt.")
+            page.screenshot(path="downloads/live_error_passcode.png")
+            return False
     if name_input.is_visible():
         name_input.fill("KiAgent Bot")
-        page.locator('button:has-text("Join")').or_(page.locator('button:has-text("Beitreten")')).first.click()
-        page.wait_for_timeout(5000)
-
-    pass_input = page.locator('input[type="password"]').first
-    if pass_input.is_visible():
-        print("Passcode verlangt, gebe ein...")
-        pass_input.fill(passcode)
-        page.locator('button:has-text("Join")').or_(page.locator('button:has-text("Beitreten")')).first.click()
+    join_btn = page.locator('button:has-text("Join")').or_(page.locator('button:has-text("Beitreten")')).first
+    dismiss_cookies(page)
+    if join_btn.is_visible():
+        join_btn.click()
         page.wait_for_timeout(8000)
 
+    dismiss_cookies(page)
     print("3. Im Meeting? Klicke auf Computer Audio...")
     page.screenshot(path="downloads/live_meeting_join.png")
     audio_btn = page.locator('button:has-text("Computer Audio")').or_(page.locator('button:has-text("Join Audio by Computer")')).or_(page.locator('button:has-text("Per Computer dem Audio beitreten")')).first

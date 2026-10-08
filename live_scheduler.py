@@ -20,7 +20,7 @@ MEETINGS_FILE = os.path.join(BASE, "live_meetings.json")
 STATE_FILE = os.path.join(BASE, "live_scheduler_state.json")
 RUN_SCRIPT = os.path.join(BASE, "scripts", "run_live_zoom.sh")
 REC_DIR = os.path.join(BASE, "downloads", "live_recordings")
-JOIN_LEAD_MIN = 2          # so viele Minuten vor Beginn beitreten
+JOIN_LEAD_MIN = 5          # so viele Minuten vor Beginn beitreten
 CHECK_INTERVAL_S = 30
 TZ = ZoneInfo("Europe/Zurich")   # Stundenplan gilt in Schweizer Zeit, der Server laeuft in UTC
 
@@ -116,8 +116,11 @@ def run_meeting(meeting, now):
     mp3 = os.path.join(out_dir, f"{now.strftime('%Y-%m-%d')}_{meeting['time_start'].replace(':', '')}.mp3")
     meeting_id = re.sub(r"\D", "", meeting["meeting_id"])
     link = f"https://hslu.zoom.us/j/{meeting_id}"
+    passcode = meeting.get("passcode", "")
+    if len(passcode) > 12:                 # langer Wert = pwd-Token aus dem Zoom-Link, kein 6-stelliger Code
+        link += f"?pwd={passcode}"
     print(f"[Scheduler] Starte Aufnahme: {title} -> {mp3} (bis {end_dt:%H:%M})", flush=True)
-    res = subprocess.run(["bash", RUN_SCRIPT, link, meeting.get("passcode", ""), mp3, str(int(end_dt.timestamp()))],
+    res = subprocess.run(["bash", RUN_SCRIPT, link, ("" if len(passcode) > 12 else passcode), mp3, str(int(end_dt.timestamp()))],
                          cwd=BASE)
     if os.path.exists(mp3) and os.path.getsize(mp3) > 10_000:
         upload_recording(title, mp3)
