@@ -17,6 +17,8 @@ AI_ENABLED = os.environ.get("AI_ENABLED", "0").strip() == "1"
 
 DRIVE_SYNC_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "drive_sync.json")
 VIDEO_EXTS = (".mp4", ".m4v", ".mov", ".mkv", ".webm")
+# Ordner, die nie nach Drive gehoeren (z.B. venv aus entpackten Uebungs-ZIPs)
+SKIP_DIRS = {".venv", "venv", "__pycache__", ".ipynb_checkpoints", "node_modules", ".git", "site-packages"}
 
 
 def extract_pdf_text(pdf_path, max_pages=30):
@@ -117,7 +119,8 @@ def sync_course_to_drive(sync, course, subject_name):
     local_root = os.path.join(course["dir"], "Unterlagen")
     uploaded = skipped = 0
 
-    for dirpath, _, filenames in os.walk(local_root):
+    for dirpath, dirnames, filenames in os.walk(local_root):
+        dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
         rel_dir = os.path.relpath(dirpath, local_root)
         for fn in sorted(filenames):
             if fn.endswith(".part"):

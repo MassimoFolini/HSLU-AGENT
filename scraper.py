@@ -214,8 +214,10 @@ class HSLUScraper:
                     import zipfile
                     print(f"   [ZIP] Entpacke {fname}...")
                     try:
+                        skip = {".venv", "venv", "__pycache__", ".ipynb_checkpoints", "node_modules", ".git", "site-packages"}
                         with zipfile.ZipFile(dest, 'r') as zip_ref:
-                            zip_ref.extractall(target_dir)
+                            members = [m for m in zip_ref.namelist() if not skip.intersection(m.replace("\\", "/").split("/"))]
+                            zip_ref.extractall(target_dir, members=members)
                         os.remove(dest)
                         print(f"   [ZIP] Erfolgreich entpackt und geloescht.")
                         return None # Datei ist weg, stattdessen liegen nun die entpackten Dateien da
