@@ -1,8 +1,9 @@
+import os, sys; sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import os
 import subprocess
 import webbrowser
 from google_auth_oauthlib.flow import InstalledAppFlow
-from test_google_drive import test_drive
+from checks.check_google_drive import test_drive
 
 SCOPES = [
     'https://www.googleapis.com/auth/drive',

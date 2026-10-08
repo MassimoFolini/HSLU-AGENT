@@ -10,14 +10,15 @@ Ein automatisierter Agent für Studierende der Hochschule Luzern (HSLU). Er logg
 | `run_weeks.py` | Einmaliger manueller Lauf. Optional mit Wochenbezeichnung als Argument: `python run_weeks.py "KW 41 (08.10.2026)"`. |
 | `scraper.py` | Playwright-Scraper für ILIAS (edu-ID, TOTP, verschachtelte Ordner, `cmd=sendfile`-Downloads). |
 | `registry.py` | `ilias_registry.json`: merkt sich, was bereits heruntergeladen wurde. |
-| `zoom_downloader.py`, `live_zoom_bot.py`, `run_live_zoom.sh` | Zoom-Aufzeichnungen und Live-Meetings (Xvfb, PulseAudio, ffmpeg). |
+| `zoom_downloader.py`, `live_zoom_bot.py`, `scripts/run_live_zoom.sh` | Zoom-Aufzeichnungen und Live-Meetings (Xvfb, PulseAudio, ffmpeg). |
 | `detect_live_courses.py` | Erkennt Fächer und Live-Kurse. |
 | `google_integration.py` | Google Drive und Docs API. |
 | `llm_processor.py`, `transcriber.py` | Gemini-Dossiers und Transkription. |
-| `notebooklm_integration.py`, `sync_notebooklm.py` | NotebookLM-Sync. |
+| `notebooklm_integration.py` | NotebookLM-Anbindung. |
 | `dashboard.py` | Flask-Dashboard (Port 5000, Basic Auth): Läufe starten, Logs lesen, Konfiguration bearbeiten. |
-| `tests/` | Verbindungs- und Login-Tests (Google, Gemini, ILIAS, Zoom). |
-| `tools/` | Wartungsskripte. `tools/oneoff/` enthält archivierte Einmal-Patches und Debug-Skripte. |
+| `checks/` | Verbindungschecks (Google, Gemini, ILIAS, Zoom), werden von den Test-Buttons im Dashboard gestartet. |
+| `maintenance/` | Wartungs- und Migrationsskripte (Backfill, Duplikate bereinigen, NotebookLM-Sync, Google-Auth usw.). Aus dem Projektroot starten: `python maintenance/<skript>.py`. |
+| `scripts/` | Shell-Skripte (`start_run.sh`, `run_fetcher.sh`, `run_live_zoom.sh`). |
 | `deploy/` | `setup_server.sh` und systemd-Units für Ubuntu. |
 
 ## Installation

@@ -747,10 +747,10 @@ def run_test(test_type):
     if process is not None and process.poll() is None:
         return jsonify({"message": "Ein anderer Prozess läuft bereits!"})
     cmd_map = {
-        "google": (["/opt/KiAgentHSLU/venv/bin/python", "-u", "tests/test_google_drive.py"], "TEST: GOOGLE DRIVE API"),
-        "gemini": (["/opt/KiAgentHSLU/venv/bin/python", "-u", "tests/test_setup.py"], "TEST: GEMINI KI API & SETUP"),
-        "ilias": (["/opt/KiAgentHSLU/venv/bin/python", "-u", "tests/test_login.py"], "TEST: HSLU ILIAS LOGIN"),
-        "zoom": (["/opt/KiAgentHSLU/venv/bin/python", "-u", "tests/test_zoom_full.py"], "TEST: ZOOM & MICROSOFT 365 LOGIN")
+        "google": (["/opt/KiAgentHSLU/venv/bin/python", "-u", "checks/check_google_drive.py"], "TEST: GOOGLE DRIVE API"),
+        "gemini": (["/opt/KiAgentHSLU/venv/bin/python", "-u", "checks/check_gemini_setup.py"], "TEST: GEMINI KI API & SETUP"),
+        "ilias": (["/opt/KiAgentHSLU/venv/bin/python", "-u", "checks/check_ilias_login.py"], "TEST: HSLU ILIAS LOGIN"),
+        "zoom": (["/opt/KiAgentHSLU/venv/bin/python", "-u", "checks/check_zoom_login.py"], "TEST: ZOOM & MICROSOFT 365 LOGIN")
     }
     if test_type not in cmd_map:
         return jsonify({"message": "Unbekannter Test!"})

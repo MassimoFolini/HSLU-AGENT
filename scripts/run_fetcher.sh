@@ -5,4 +5,4 @@ done
 echo "=========================================" >> agent_run.log
 echo "FETCHER START" >> agent_run.log
 echo "=========================================" >> agent_run.log
-./venv/bin/python -u fetch_missing_videos.py >> agent_run.log 2>&1
+./venv/bin/python -u maintenance/fetch_missing_videos.py >> agent_run.log 2>&1

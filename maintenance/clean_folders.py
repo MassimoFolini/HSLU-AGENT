@@ -1,3 +1,4 @@
+import os, sys; sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from google_integration import GoogleWorkspace
 gw = GoogleWorkspace()
 query = "name contains 'Woche_' and trashed = false"
