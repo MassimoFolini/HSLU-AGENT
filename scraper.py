@@ -285,6 +285,28 @@ class HSLUScraper:
             print(f" -> Ordner: {'/'.join(path_parts + [name])}")
             self._crawl(page, href, path_parts + [name], base_dir, state, depth + 1)
 
+    @staticmethod
+    def _resolve_weblink(page, url):
+        """Folgt einem ILIAS-Weblink (calldirectlink) und liefert die Ziel-URL (z.B. Zoom-Aufzeichnung mit Passcode)."""
+        hits = []
+
+        def on_resp(r):
+            if r.request.is_navigation_request() and r.status < 400 and "elearning.hslu.ch" not in r.url:
+                hits.append(r.url)
+
+        page.on("response", on_resp)
+        try:
+            page.goto(url, wait_until="domcontentloaded", timeout=60000)
+            page.wait_for_timeout(4000)
+        except Exception as e:
+            print(f"   [Weblink] Aufloesen fehlgeschlagen: {e}")
+        finally:
+            page.remove_listener("response", on_resp)
+        for h in hits:
+            if "zoom.us/rec/share" in h or "zoom.us/rec/play" in h:
+                return h
+        return hits[0] if hits else None
+
     def _capture_module_description(self, page, course_url):
         """Text der Kursseite + (falls vorhanden) Info-Reiter als Modulbeschreibung."""
         parts = []
@@ -322,6 +344,10 @@ class HSLUScraper:
             "videos": [],
         }
         self._crawl(page, course["url"], [], files_dir, state)
+
+        for v in state["videos"]:
+            v["resolved_url"] = self._resolve_weblink(page, v["url"])
+            print(f"   [Stream] {v['text'] or 'Weblink'} -> {(v['resolved_url'] or 'nicht aufloesbar')[:90]}")
 
         description = self._capture_module_description(page, course["url"])
         desc_path = os.path.join(course_dir, "Modulbeschreibung.md")

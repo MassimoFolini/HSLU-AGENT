@@ -207,7 +207,10 @@ def weekly_job(force_week_str=None):
             z_down = ZoomDownloader()
             if z_down.is_configured():
                 for v in c["videos"]:
-                    v_url = v.get("url", "")
+                    v_url = v.get("resolved_url") or v.get("url", "")
+                    if "zoom.us/rec/" not in v_url:
+                        print(f"   [Hinweis] Kein Zoom-Link, uebersprungen: {v.get('text') or ''} -> {v_url}")
+                        continue
                     v_text = v.get("text", "Aufzeichnung")
                     out_dir = v.get("local_dir") or os.path.join(c["dir"], "Unterlagen")
                     print(f"   [Zoom] Starte automatischen Download: {v_text}...")

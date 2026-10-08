@@ -1,11 +1,12 @@
 import os
+import re
 import subprocess
 import time
 import pyotp
 from playwright.sync_api import sync_playwright
 
 class ZoomDownloader:
-    def __init__(self, download_dir):
+    def __init__(self, download_dir="downloads"):
         self.download_dir = download_dir
         os.makedirs(self.download_dir, exist_ok=True)
         self.storage_file = os.path.join(self.download_dir, "zoom_storage_state.json")
@@ -13,6 +14,15 @@ class ZoomDownloader:
         self.password = os.environ.get('HSLU_MS_PASSWORD')
         ms_totp = os.environ.get('HSLU_MS_TOTP_SECRET', '').replace(' ', '')
         self.totp_secret = ms_totp or os.environ.get('HSLU_TOTP_SECRET', '').replace(' ', '')
+
+    @staticmethod
+    def _accept_cookies(page):
+        for sel in ('button:has-text("Cookies akzeptieren")', 'button:has-text("Accept Cookies")', '#onetrust-accept-btn-handler'):
+            el = page.locator(sel).first
+            if el.is_visible():
+                el.click()
+                page.wait_for_timeout(1000)
+                return
 
     def is_configured(self):
         return bool(self.email and self.password)
@@ -92,6 +102,7 @@ class ZoomDownloader:
         os.makedirs(output_dir, exist_ok=True)
         dest_mp4 = os.path.join(output_dir, f"{file_basename}.mp4")
         dest_mp3 = os.path.join(output_dir, f"{file_basename}.mp3")
+        dest_audio = os.path.join(output_dir, f"{file_basename}.m4a")
 
         if os.path.exists(dest_mp3) and os.path.getsize(dest_mp3) > 1000:
             print(f"   [Zoom] Bereits vorhanden: {os.path.basename(dest_mp3)}")
@@ -120,88 +131,73 @@ class ZoomDownloader:
             try:
                 page.goto(recording_url, wait_until="domcontentloaded", timeout=60000)
                 page.wait_for_timeout(8000)
+                self._accept_cookies(page)
 
                 if "zoom.us/signin" in page.url:
-                    print("   [Zoom] Zoom erfordert SSO-Bestätigung...")
-                    cookie_btn = page.locator('button:has-text("Accept Cookies")').or_(page.locator('button[id="onetrust-accept-btn-handler"]')).first
-                    if cookie_btn.is_visible():
-                        cookie_btn.click()
-                        page.wait_for_timeout(1000)
-                    
-                    sso_icon = page.get_by_text("SSO", exact=True).first
-                    if sso_icon.is_visible():
-                        sso_icon.click(force=True)
-                        page.wait_for_timeout(3000)
-                        try:
-                            page.locator('input[name="domain"]').or_(page.locator('input[type="text"]')).first.fill("hslu")
-                            page.wait_for_timeout(500)
-                            page.locator('button[type="submit"]').or_(page.locator('button:has-text("Continue")')).first.click()
-                            page.wait_for_timeout(8000)
-                        except Exception:
-                            pass
-                        
-                        if "microsoft" in page.url:
-                            try:
-                                page.wait_for_url("**/rec/share/**", timeout=20000)
-                            except Exception:
-                                self.do_ms_login(page, context)
-                                try:
-                                    page.wait_for_url("**/rec/share/**", timeout=30000)
-                                except Exception:
-                                    pass
+                    print("   [Zoom] Zoom erfordert Anmeldung, versuche SSO erneut...")
+                    self.login_zoom_sso(page, context)
+                    page.goto(recording_url, wait_until="domcontentloaded", timeout=60000)
+                    page.wait_for_timeout(8000)
+                    self._accept_cookies(page)
 
-                    if "zoom.us/rec/share" not in page.url and "zoom.us/rec/play" not in page.url:
-                        page.goto(recording_url, wait_until="domcontentloaded", timeout=60000)
-                    page.wait_for_timeout(5000)
-
-                if "recording-register" in page.url or page.locator('button:has-text("Registrieren")').or_(page.locator('button:has-text("Register")')).is_visible():
+                # Registrierungsformular (Name/Mail sind vorausgefuellt)
+                reg_btn = page.locator('button:has-text("Register")').or_(page.locator('button:has-text("Registrieren")')).first
+                if reg_btn.is_visible():
                     print("   [Zoom] Registrierung verlangt. Klicke auf 'Registrieren'...")
-                    reg_btn = page.locator('button:has-text("Registrieren")').or_(page.locator('button:has-text("Register")')).first
-                    if reg_btn.is_visible():
-                        reg_btn.click()
-                        page.wait_for_timeout(5000)
+                    reg_btn.click()
+                    page.wait_for_timeout(8000)
+                    self._accept_cookies(page)
 
-                dl_btn = page.locator('button:has-text("Download")').or_(page.locator('a:has-text("Download")')).or_(page.locator('button:has-text("Herunterladen")')).first
+                saved = []
+
+                def on_download(d):
+                    name = d.suggested_filename.lower()
+                    try:
+                        if name.endswith(".mp4") and "mp4" not in saved_kinds:
+                            d.save_as(dest_mp4)
+                            saved_kinds.add("mp4")
+                        elif name.endswith((".m4a", ".mp3")) and "audio" not in saved_kinds:
+                            d.save_as(dest_audio)
+                            saved_kinds.add("audio")
+                        else:
+                            d.cancel()
+                            return
+                        saved.append(name)
+                        print(f"   [Zoom] Gespeichert: {d.suggested_filename}")
+                    except Exception as e:
+                        print(f"   [Zoom] Download-Fehler: {e}")
+
+                saved_kinds = set()
+                page.on("download", on_download)
+
+                dl_btn = page.get_by_text(re.compile(r"(Download|Herunterladen)\s*\(\d+")).first
+                try:
+                    dl_btn.wait_for(timeout=30000)
+                except Exception:
+                    dl_btn = page.locator('button:has-text("Herunterladen")').or_(page.locator('button:has-text("Download")')).first
                 if dl_btn.is_visible():
                     print("   [Zoom] Download-Button gefunden, starte Download...")
-                    with page.expect_download(timeout=60000) as download_info:
-                        dl_btn.click()
-                    download = download_info.value
-                    download.save_as(dest_mp4)
-                    print(f"   [Zoom] MP4 erfolgreich gespeichert: {dest_mp4}")
-                elif found_media_url:
-                    import requests
-                    cookies = {c["name"]: c["value"] for c in context.cookies()}
-                    with requests.get(found_media_url[0], cookies=cookies, stream=True, timeout=120) as r:
-                        if r.status_code == 200:
-                            with open(dest_mp4, "wb") as f:
-                                for chunk in r.iter_content(chunk_size=1024*1024):
-                                    if chunk: f.write(chunk)
-                            print(f"   [Zoom] MP4 gestreamt: {dest_mp4}")
+                    dl_btn.click()
+                    deadline = time.time() + 600
+                    while time.time() < deadline and len(saved_kinds) < 2:
+                        page.wait_for_timeout(2000)
+                    # Dateien muessen vollstaendig auf der Platte liegen
+                    page.wait_for_timeout(3000)
                 else:
-                    cookie_path = os.path.join(self.download_dir, "zoom_cookies.txt")
-                    cookies = context.cookies()
-                    with open(cookie_path, "w", encoding="utf-8") as f:
-                        f.write("# Netscape HTTP Cookie File\n")
-                        for c in cookies:
-                            domain = c.get("domain", "")
-                            sub = "TRUE" if domain.startswith(".") else "FALSE"
-                            secure = "TRUE" if c.get("secure", False) else "FALSE"
-                            expires = int(c.get("expires", 0))
-                            f.write(f"{domain}\t{sub}\t{c.get('path', '/')}\t{secure}\t{expires}\t{c.get('name', '')}\t{c.get('value', '')}\n")
-                    
-                    cmd = ["/opt/KiAgentHSLU/venv/bin/yt-dlp", "--cookies", cookie_path, "-o", dest_mp4, recording_url]
-                    res = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                    if res.returncode == 0 and os.path.exists(dest_mp4):
-                        print(f"   [Zoom] Per yt-dlp heruntergeladen: {dest_mp4}")
+                    print("   [Zoom] Kein Download-Button gefunden. Aufzeichnung evtl. nicht freigegeben.")
+                    page.screenshot(path=os.path.join(self.download_dir, "zoom_no_download.png"))
             except Exception as e:
                 print(f"   [Zoom] Fehler: {e}")
             finally:
                 browser.close()
 
-        if os.path.exists(dest_mp4) and os.path.getsize(dest_mp4) > 1000:
-            print(f"   [Audio] Erzeuge MP3 aus Zoom-Aufzeichnung...")
-            subprocess.run(["ffmpeg", "-y", "-i", dest_mp4, "-vn", "-acodec", "libmp3lame", "-q:a", "5", dest_mp3],
+        source = next((f for f in (dest_audio, dest_mp4) if os.path.exists(f) and os.path.getsize(f) > 1000), None)
+        if source:
+            print(f"   [Audio] Erzeuge MP3 aus {os.path.basename(source)}...")
+            subprocess.run(["ffmpeg", "-y", "-i", source, "-vn", "-acodec", "libmp3lame", "-q:a", "5", dest_mp3],
                            check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            return dest_mp3
+            if os.path.exists(dest_audio):
+                os.remove(dest_audio)  # nur MP4 + MP3 behalten
+            if os.path.exists(dest_mp3) and os.path.getsize(dest_mp3) > 1000:
+                return dest_mp3
         return None
