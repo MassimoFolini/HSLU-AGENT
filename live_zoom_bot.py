@@ -55,28 +55,120 @@ def do_ms_login(page, email, password, totp_secret):
         except Exception:
             pass
 
+LEAVE_SEL = ('button:has-text("Leave")', 'button[aria-label*="Leave"]', 'button:has-text("Verlassen")')
+
+
+def join_meeting(page, context, ilias_link, passcode, email, password, totp_secret, storage_file):
+    """Ein Beitritts-Versuch. Gibt True zurück, wenn wir im Meeting sind."""
+    print("1. Rufe ILIAS / Zoom Link auf...")
+    page.goto(ilias_link, wait_until="domcontentloaded", timeout=60000)
+    page.wait_for_timeout(5000)
+
+    if "login.microsoftonline.com" in page.url or "zoom.us/signin" in page.url:
+        if "zoom.us/signin" in page.url:
+            cookie_btn = page.locator('button:has-text("Accept Cookies")').or_(page.locator('button[id="onetrust-accept-btn-handler"]')).first
+            if cookie_btn.is_visible():
+                cookie_btn.click()
+            sso_icon = page.get_by_text("SSO", exact=True).first
+            if sso_icon.is_visible():
+                sso_icon.click(force=True)
+                page.wait_for_timeout(2000)
+                page.locator('input[name="domain"]').first.fill("hslu")
+                page.locator('button[type="submit"]').first.click()
+                page.wait_for_timeout(5000)
+
+        do_ms_login(page, email, password, totp_secret)
+        try:
+            context.storage_state(path=storage_file)
+        except Exception:
+            pass
+        page.goto(ilias_link, wait_until="domcontentloaded", timeout=60000)
+        page.wait_for_timeout(5000)
+
+    print("2. Auf Zoom-Launch Seite. Suche 'Join from Browser'...")
+    join_browser = page.locator('a:has-text("Browser")').first
+    if join_browser.is_visible():
+        join_browser.click()
+    else:
+        current = page.url
+        if "/j/" in current:
+            page.goto(current.replace("/j/", "/wc/join/"))
+        elif "/wc/" not in current:
+            print("URL Format unbekannt:", current)
+            page.screenshot(path="downloads/live_error.png")
+            return False
+    page.wait_for_timeout(10000)
+
+    name_input = page.locator('input[name="inputname"]').or_(page.locator('input#input-for-name')).first
+    if name_input.is_visible():
+        name_input.fill("KiAgent Bot")
+        page.locator('button:has-text("Join")').or_(page.locator('button:has-text("Beitreten")')).first.click()
+        page.wait_for_timeout(5000)
+
+    pass_input = page.locator('input[type="password"]').first
+    if pass_input.is_visible():
+        print("Passcode verlangt, gebe ein...")
+        pass_input.fill(passcode)
+        page.locator('button:has-text("Join")').or_(page.locator('button:has-text("Beitreten")')).first.click()
+        page.wait_for_timeout(8000)
+
+    print("3. Im Meeting? Klicke auf Computer Audio...")
+    page.screenshot(path="downloads/live_meeting_join.png")
+    audio_btn = page.locator('button:has-text("Computer Audio")').or_(page.locator('button:has-text("Join Audio by Computer")')).or_(page.locator('button:has-text("Per Computer dem Audio beitreten")')).first
+    try:
+        audio_btn.wait_for(timeout=20000)
+        audio_btn.click()
+    except Exception:
+        pass
+    # Erfolgskriterium: Leave-Button sichtbar
+    leave = page.locator(LEAVE_SEL[0]).or_(page.locator(LEAVE_SEL[1])).or_(page.locator(LEAVE_SEL[2])).first
+    try:
+        leave.wait_for(timeout=15000)
+        return True
+    except Exception:
+        return False
+
+
+def meeting_ended(page):
+    try:
+        txt = page.locator("body").inner_text(timeout=3000).lower()
+    except Exception:
+        return False
+    return any(k in txt for k in ("meeting has been ended", "meeting has ended", "host has ended",
+                                  "meeting wurde beendet", "this meeting is not in progress"))
+
+
+def leave_meeting(page):
+    try:
+        leave = page.locator(LEAVE_SEL[0]).or_(page.locator(LEAVE_SEL[2])).first
+        if leave.is_visible():
+            leave.click()
+            page.wait_for_timeout(1500)
+            confirm = page.locator('button:has-text("Leave Meeting")').or_(page.locator('button:has-text("Meeting verlassen")')).first
+            if confirm.is_visible():
+                confirm.click()
+    except Exception:
+        pass
+
+
 def main():
     if len(sys.argv) < 3:
-        print("Usage: python live_zoom_bot.py <ILIAS_LINK> <MEETING_PASSCODE>")
+        print("Usage: python live_zoom_bot.py <ILIAS_LINK> <MEETING_PASSCODE> [END_UNIX_TS]")
         sys.exit(1)
-        
+
     ilias_link = sys.argv[1]
     passcode = sys.argv[2]
-    
+    end_ts = float(sys.argv[3]) if len(sys.argv) > 3 and sys.argv[3] else time.time() + 60
+
     email = os.environ.get('HSLU_MS_EMAIL')
     password = os.environ.get('HSLU_MS_PASSWORD')
     totp_secret = os.environ.get('HSLU_MS_TOTP_SECRET', '').replace(' ', '')
-
     storage_file = "zoom_storage_state.json"
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=False, # Wichtig für Xvfb Audio!
-            args=[
-                '--no-sandbox',
-                '--autoplay-policy=no-user-gesture-required',
-                '--disable-gpu'
-            ]
+            headless=False,  # Wichtig für Xvfb Audio!
+            args=['--no-sandbox', '--autoplay-policy=no-user-gesture-required', '--disable-gpu']
         )
         context = browser.new_context(
             permissions=["microphone", "camera"],
@@ -85,82 +177,37 @@ def main():
         )
         page = context.new_page()
 
-        print("1. Rufe ILIAS / Zoom Link auf...")
-        page.goto(ilias_link, wait_until="domcontentloaded", timeout=60000)
-        page.wait_for_timeout(5000)
-
-        # Login falls nötig
-        if "login.microsoftonline.com" in page.url or "zoom.us/signin" in page.url:
-            if "zoom.us/signin" in page.url:
-                cookie_btn = page.locator('button:has-text("Accept Cookies")').or_(page.locator('button[id="onetrust-accept-btn-handler"]')).first
-                if cookie_btn.is_visible(): cookie_btn.click()
-                sso_icon = page.get_by_text("SSO", exact=True).first
-                if sso_icon.is_visible():
-                    sso_icon.click(force=True)
-                    page.wait_for_timeout(2000)
-                    page.locator('input[name="domain"]').first.fill("hslu")
-                    page.locator('button[type="submit"]').first.click()
-                    page.wait_for_timeout(5000)
-
-            do_ms_login(page, email, password, totp_secret)
-            
+        joined = False
+        for attempt in range(1, 4):
+            if time.time() >= end_ts:
+                break
+            print(f"Beitritts-Versuch {attempt}/3")
             try:
-                context.storage_state(path=storage_file)
-            except:
-                pass
-            
-            page.goto(ilias_link, wait_until="domcontentloaded", timeout=60000)
-            page.wait_for_timeout(5000)
+                joined = join_meeting(page, context, ilias_link, passcode, email, password, totp_secret, storage_file)
+            except Exception as e:
+                print(f"   Fehler beim Beitritt: {e}")
+                page.screenshot(path=f"downloads/live_error_{attempt}.png")
+            if joined:
+                break
+            page.wait_for_timeout(10000)
 
-        print("2. Auf Zoom-Launch Seite. Suche 'Join from Browser'...")
-        # Zoom Launch Page hat oft einen "Launch Meeting" Knopf oder "Join from Your Browser"
-        join_browser = page.locator('a:has-text("Browser")').or_(page.locator('a:has-text("Browser")')).first
-        if join_browser.is_visible():
-            print("Klicke auf 'Join from Browser'...")
-            join_browser.click()
-        else:
-            print("Kein direkter Browser-Link gefunden, baue Web Client URL zusammen...")
-            # Falls URL https://hslu.zoom.us/j/123456789...
-            # Zu https://hslu.zoom.us/wc/join/123456789 umbauen
-            current = page.url
-            if "/j/" in current:
-                web_url = current.replace("/j/", "/wc/join/")
-                page.goto(web_url)
-            else:
-                print("URL Format unbekannt:", current)
-                page.screenshot(path="downloads/live_error.png")
+        if not joined:
+            print("FEHLER: Meeting konnte nicht betreten werden.")
+            browser.close()
+            sys.exit(2)
 
-        page.wait_for_timeout(10000)
-        
-        # Falls Zoom nochmal nach dem Namen fragt (obwohl SSO)
-        name_input = page.locator('input[name="inputname"]').first
-        if name_input.is_visible():
-            name_input.fill("KiAgent Bot")
-            page.locator('button:has-text("Join")').or_(page.locator('button:has-text("Beitreten")')).first.click()
-            page.wait_for_timeout(5000)
-
-        # Falls Passcode verlangt wird
-        pass_input = page.locator('input[type="password"]').first
-        if pass_input.is_visible():
-            print("Passcode verlangt, gebe ein...")
-            pass_input.fill(passcode)
-            page.locator('button:has-text("Join")').or_(page.locator('button:has-text("Beitreten")')).first.click()
-            page.wait_for_timeout(8000)
-
-        print("3. Im Meeting? Klicke auf Computer Audio...")
-        page.screenshot(path="downloads/live_meeting_join.png")
-        audio_btn = page.locator('button:has-text("Computer Audio")').or_(page.locator('button:has-text("Join Audio by Computer")')).or_(page.locator('button:has-text("Per Computer dem Audio beitreten")')).first
-        if audio_btn.is_visible():
-            audio_btn.click()
-        
-        print("Erfolgreich beigetreten. Höre zu für 60 Sekunden zum Test...")
+        print("Erfolgreich beigetreten. Nehme auf bis zur Endzeit...")
         page.screenshot(path="downloads/live_meeting_active.png")
-        
-        # Wir warten kurz für den Test. In Echt würde er hier laufen, bis das Meeting endet.
-        time.sleep(60)
-        
-        print("Test beendet.")
+        while time.time() < end_ts:
+            if meeting_ended(page):
+                print("Meeting wurde vom Host beendet.")
+                break
+            time.sleep(15)
+
+        leave_meeting(page)
+        print("Meeting verlassen.")
         browser.close()
+
 
 if __name__ == "__main__":
     main()

@@ -25,3 +25,5 @@ __pycache__/
 tools/oneoff/*.png
 *.png
 *.html.bak
+live_scheduler_state.json
+zoom_storage_state.json

@@ -4,6 +4,7 @@ from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+from google.auth.exceptions import RefreshError
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
@@ -38,7 +39,16 @@ class GoogleWorkspace:
         if not self.creds or not self.creds.valid:
             if self.creds and self.creds.expired and self.creds.refresh_token:
                 print("[Google Auth] Erneuere abgelaufenes Token...")
-                self.creds.refresh(Request())
+                try:
+                    self.creds.refresh(Request())
+                except RefreshError as e:
+                    raise RuntimeError(
+                        "Google-Token ist abgelaufen oder widerrufen (invalid_grant). "
+                        "Neu anmelden: 'python maintenance/authenticate_google.py' auf dem PC ausfuehren "
+                        "und die neue token.json auf den Server kopieren. Dauerhaft vermeiden: in der "
+                        "Google Cloud Console den OAuth-Zustimmungsbildschirm auf 'In Produktion' stellen "
+                        f"(im Testmodus laufen Tokens nach 7 Tagen ab). Details: {e}"
+                    ) from e
             else:
                 if not os.path.exists('credentials.json'):
                     raise FileNotFoundError(

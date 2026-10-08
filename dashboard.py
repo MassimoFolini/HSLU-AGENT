@@ -851,11 +851,14 @@ def save_live_meetings():
 @requires_auth
 def detect_subjects():
     cmd = ["/opt/KiAgentHSLU/venv/bin/python", "-u", "detect_live_courses.py"]
-    res = subprocess.run(cmd, capture_output=True, text=True)
+    try:
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=420,
+                             cwd=os.path.dirname(os.path.abspath(__file__)))
+    except subprocess.TimeoutExpired:
+        return jsonify({"message": "Fehler bei Erkennung: Zeitlimit (7 Min) überschritten, ILIAS antwortet zu langsam."}), 504
     if res.returncode == 0:
-        return jsonify({"message": "Fächer erfolgreich erkannt!"})
-    else:
-        return jsonify({"message": f"Fehler bei Erkennung: {res.stderr}"}), 500
+        return jsonify({"message": "Fächer erfolgreich erkannt! " + (res.stdout.strip().splitlines() or [""])[-1]})
+    return jsonify({"message": "Fehler bei Erkennung: " + (res.stdout + res.stderr)[-500:]}), 500
 
 if __name__ == '__main__':
     # Standard: nur lokal erreichbar. Auf dem Server DASHBOARD_HOST=0.0.0.0 in .env setzen

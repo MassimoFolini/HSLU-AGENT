@@ -11,13 +11,14 @@ Ein automatisierter Agent für Studierende der Hochschule Luzern (HSLU). Er logg
 | `scraper.py` | Playwright-Scraper für ILIAS (edu-ID, TOTP, verschachtelte Ordner, `cmd=sendfile`-Downloads). |
 | `registry.py` | `ilias_registry.json`: merkt sich, was bereits heruntergeladen wurde. |
 | `zoom_downloader.py`, `live_zoom_bot.py`, `scripts/run_live_zoom.sh` | Zoom-Aufzeichnungen und Live-Meetings (Xvfb, PulseAudio, ffmpeg). |
+| `live_scheduler.py` | Stundenplan-Scheduler (systemd `hslu-scheduler`): liest `live_meetings.json`, startet den Zoom-Bot pünktlich, verlässt das Meeting zur Endzeit und lädt die MP3 nach Drive (`<Fach>/Live-Aufnahmen`). |
 | `detect_live_courses.py` | Erkennt Fächer und Live-Kurse. |
 | `google_integration.py` | Google Drive und Docs API. |
 | `llm_processor.py`, `transcriber.py` | Gemini-Dossiers und Transkription. |
 | `notebooklm_integration.py` | NotebookLM-Anbindung. |
 | `dashboard.py` | Flask-Dashboard (Port 5000, Basic Auth): Läufe starten, Logs lesen, Konfiguration bearbeiten. |
 | `checks/` | Verbindungschecks (Google, Gemini, ILIAS, Zoom), werden von den Test-Buttons im Dashboard gestartet. |
-| `maintenance/` | Wartungs- und Migrationsskripte (Backfill, Duplikate bereinigen, NotebookLM-Sync, Google-Auth usw.). Aus dem Projektroot starten: `python maintenance/<skript>.py`. |
+| `maintenance/` | Wartungs- und Migrationsskripte (`sync_drive_only.py` holt fehlende Uploads nach, `clean_drive_zips.py` räumt alte ZIPs in Drive auf, Google-Auth usw.). Aus dem Projektroot starten: `python maintenance/<skript>.py`. |
 | `scripts/` | Shell-Skripte (`start_run.sh`, `run_fetcher.sh`, `run_live_zoom.sh`). |
 | `deploy/` | `setup_server.sh` und systemd-Units für Ubuntu. |
 
@@ -60,3 +61,12 @@ Das Dashboard läuft unter http://localhost:5000 (Benutzer `admin`). Die Konfigu
 
 3. Das Skript richtet ein Virtual Environment mit Playwright und zwei systemd-Dienste ein: `hslu-dashboard.service` und `hslu-agent.service`.
 4. Das Dashboard über den Reverse-Proxy auf Port 443 erreichbar machen. Port 5000 nicht direkt freigeben.
+
+## Google-Anmeldung (Token abgelaufen)
+
+Fehler `invalid_grant: Token has been expired or revoked` bedeutet: Das OAuth-Token ist ungültig. Im Testmodus des OAuth-Zustimmungsbildschirms laufen Tokens nach 7 Tagen ab. Dauerhafte Lösung: In der Google Cloud Console unter "APIs & Dienste, OAuth-Zustimmungsbildschirm" den Veröffentlichungsstatus auf "In Produktion" stellen. Danach einmalig neu anmelden:
+
+```bash
+python maintenance/authenticate_google.py
+scp token.json ubuntu@<server>:/opt/KiAgentHSLU/token.json
+```

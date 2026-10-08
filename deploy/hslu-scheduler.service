@@ -1,0 +1,15 @@
+[Unit]
+Description=HSLU Live-Meeting Scheduler (Zoom-Aufnahmen nach Stundenplan)
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/opt/KiAgentHSLU
+ExecStart=/opt/KiAgentHSLU/venv/bin/python -u live_scheduler.py
+Restart=always
+RestartSec=30
+EnvironmentFile=/opt/KiAgentHSLU/.env
+
+[Install]
+WantedBy=multi-user.target
