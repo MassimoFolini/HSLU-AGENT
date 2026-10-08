@@ -121,10 +121,10 @@ class LLMProcessor:
         ---
         QUELLENMATERIAL:
         Transkript:
-        {transcript_text[:15000]}
+        {transcript_text[:150000]}
 
         Modulinhalte / Folien:
-        {pdf_text_content[:8000]}
+        {pdf_text_content[:60000]}
         """
         
         import time

@@ -12,7 +12,7 @@ load_dotenv()
 BASE_URL = "https://elearning.hslu.ch/ilias/"
 
 # ILIAS-Objekttypen, in die der Crawler hineingeht (Container)
-CONTAINER_TYPES = {"fold", "grp", "cat"}
+CONTAINER_TYPES = {"fold", "grp", "cat", "mcst"}
 # Externe Medien-Plattformen (keine direkten Dateien) -> nur als Referenz merken
 STREAM_HINTS = ["panopto", "mediaspace", "xlti_", "/xlti/", "kaltura", "switch.tube", "tube.switch.ch"]
 
@@ -39,6 +39,12 @@ def parse_ilias_object(href):
     m = re.search(r'ref_id=(\d+)', href)
     if m:
         low = href.lower()
+        if "ilobjmediacastgui" in low:
+            item = re.search(r'item_id=(\d+)', href)
+            if "cmd=downloaditem" in low and item:
+                return "file", "mc" + item.group(1)      # Mediacast-Video: wie eine Datei behandeln
+            if "cmd=showcontent" in low:
+                return "mcst", m.group(1)                # Mediacast-Seite: wie ein Ordner behandeln
         if "illinkresourcehandlergui" in low or "calldirectlink" in low:
             return "webr", m.group(1)
         if "ilobjfilegui" in low or "cmd=sendfile" in low:
