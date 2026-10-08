@@ -7,8 +7,8 @@ import re
 class Transcriber:
     def __init__(self):
         genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
-        # We use flash because it is almost free and fast for audio
-        self.model = genai.GenerativeModel('gemini-1.5-flash')
+        # Flash ist guenstig und schnell fuer Audio; Modell per GEMINI_TRANSCRIBE_MODEL aenderbar
+        self.model = genai.GenerativeModel(os.environ.get("GEMINI_TRANSCRIBE_MODEL", "gemini-3.5-flash"))
 
     def download_audio_from_url(self, url, cookies_file, output_dir):
         """Downloads audio directly from a URL (Panopto, Zoom) using yt-dlp."""
@@ -58,36 +58,64 @@ class Transcriber:
                 return None
         return audio_path
 
+    CHUNK_SECONDS = 1200  # 20-Minuten-Segmente: bleibt unter dem Ausgabelimit und macht Neustarts billig
+
+    def _split_audio(self, audio_path, work_dir):
+        os.makedirs(work_dir, exist_ok=True)
+        pattern = os.path.join(work_dir, "part_%03d.mp3")
+        subprocess.run(["ffmpeg", "-y", "-i", audio_path, "-f", "segment", "-segment_time", str(self.CHUNK_SECONDS),
+                        "-ac", "1", "-ar", "16000", "-c:a", "libmp3lame", "-b:a", "48k", pattern], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return sorted(os.path.join(work_dir, f) for f in os.listdir(work_dir) if f.startswith("part_") and f.endswith(".mp3"))
+
+    def _transcribe_chunk(self, path, retries=4):
+        prompt = ("Transkribiere diese Vorlesungsaufzeichnung vollstaendig und wortgetreu in der gesprochenen Sprache "
+                  "(meist Deutsch, Fachbegriffe auf Englisch bleiben). Gib nur den Text aus, in Absaetzen, "
+                  "ohne Kommentare, ohne Zusammenfassung, ohne Erfindungen. Unverstaendliches als [unverstaendlich] markieren.")
+        last = None
+        with open(path, "rb") as f:
+            audio = {"mime_type": "audio/mp3", "data": f.read()}
+        for attempt in range(1, retries + 1):
+            try:
+                response = self.model.generate_content([prompt, audio], request_options={"timeout": 900})
+                return response.text
+            except Exception as e:
+                last = str(e).split("key=")[0][:300]  # nie den API-Key ins Log schreiben
+                print(f"   [Transkript] Versuch {attempt}/{retries} fehlgeschlagen: {last}", flush=True)
+                time.sleep(20 * attempt)
+        raise RuntimeError(f"Segment nicht transkribierbar: {last}")
+
     def transcribe(self, audio_path):
-        """Transcribes audio using Gemini 1.5 Flash via File API and caches locally."""
+        """Transkribiert eine MP3 in Segmenten per Gemini. Ergebnis wird als .txt neben der MP3 gespeichert.
+        Fertige Segmente werden zwischengespeichert, ein Abbruch verliert also nichts."""
         txt_path = audio_path.rsplit('.', 1)[0] + '.txt'
-        if os.path.exists(txt_path):
+        if os.path.exists(txt_path) and os.path.getsize(txt_path) > 0:
             print(f"Lade lokales Transkript: {txt_path}")
             with open(txt_path, 'r', encoding='utf-8') as f:
                 return f.read()
 
-        print(f"Uploading {audio_path} to Gemini File API...")
-        try:
-            audio_file = genai.upload_file(path=audio_path)
-            
-            while audio_file.state.name == "PROCESSING":
-                print("Waiting for audio processing...")
-                time.sleep(2)
-                audio_file = genai.get_file(audio_file.name)
-            
-            print("Audio uploaded. Generating transcription...")
-            prompt = "Bitte transkribiere diese Vorlesungsaufzeichnung vollständig und wortgetreu auf Deutsch."
-            
-            response = self.model.generate_content([prompt, audio_file])
-            transcript_text = response.text
-            
-            genai.delete_file(audio_file.name)
-            
-            # Cache locally
-            with open(txt_path, 'w', encoding='utf-8') as f:
-                f.write(transcript_text)
-                
-            return transcript_text
-        except Exception as e:
-            print(f"Transcription error with Gemini: {e}")
-            return "Fehler bei der Transkription."
+        work_dir = audio_path.rsplit('.', 1)[0] + '_chunks'
+        parts = self._split_audio(audio_path, work_dir)
+        texts = []
+        for i, part in enumerate(parts):
+            cache = part + ".txt"
+            if os.path.exists(cache) and os.path.getsize(cache) > 0:
+                with open(cache, 'r', encoding='utf-8') as f:
+                    texts.append((i, f.read()))
+                continue
+            print(f"   [Transkript] Segment {i + 1}/{len(parts)} ...", flush=True)
+            text = self._transcribe_chunk(part)
+            with open(cache, 'w', encoding='utf-8') as f:
+                f.write(text)
+            texts.append((i, text))
+
+        out = []
+        for i, text in texts:
+            start = i * self.CHUNK_SECONDS
+            out.append(f"[{start // 3600:02d}:{start % 3600 // 60:02d}:{start % 60:02d}]" + chr(10) + text.strip())
+        transcript = (chr(10) * 2).join(out)
+        with open(txt_path, 'w', encoding='utf-8') as f:
+            f.write(transcript)
+        for f in os.listdir(work_dir):
+            os.remove(os.path.join(work_dir, f))
+        os.rmdir(work_dir)
+        return transcript
