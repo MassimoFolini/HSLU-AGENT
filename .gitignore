@@ -1,4 +1,4 @@
-﻿.env
+.env
 __pycache__/
 *.pyc
 venv/
@@ -21,3 +21,7 @@ notebooklm_cookies.json
 .notebooklm/
 .notebooklm_auth
 *.mp3
+__pycache__/
+tools/oneoff/*.png
+*.png
+*.html.bak

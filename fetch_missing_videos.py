@@ -57,7 +57,9 @@ def fetch_missing_videos():
                 folder_id = gw.get_or_create_folder(clean_name)
                 unterlagen_id = gw.get_or_create_folder("Unterlagen", parent_id=folder_id)
                 doc_id = gw.upload_file(md_path, unterlagen_id, as_google_doc=True)
-                print(f"-> Erfolgreich im Google Drive (Unterlagen) gespeichert! ID: {doc_id}")
+                print(f"-> Transkript hochgeladen! ID: {doc_id}")
+                audio_id = gw.upload_file(audio_path, unterlagen_id, as_google_doc=False)
+                print(f"-> MP3-Audio hochgeladen! ID: {audio_id}")
             except Exception as e:
                 print(f"-> Fehler beim Google Drive Upload: {e}")
                 

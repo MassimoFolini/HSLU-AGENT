@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 while pgrep -f crawl_videos.py > /dev/null; do
     sleep 10
 done

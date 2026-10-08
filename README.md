@@ -1,73 +1,61 @@
-# HSLU KI-Studienassistent 🎓🤖
+# HSLU KI-Studienassistent
 
-Ein vollautomatisierter KI-Agent für Studierende der Hochschule Luzern (HSLU). Das System loggt sich selbstständig auf ILIAS ein, scrapt alle Vorlesungsinhalte, transkribiert Vorlesungen, fasst die Inhalte mit der Gemini KI zusammen und speichert fertige "Wochen-Dossiers" sowie alle Original-Dokumente sauber strukturiert in Google Drive.
+Ein automatisierter Agent für Studierende der Hochschule Luzern (HSLU). Er loggt sich per SWITCH edu-ID (mit TOTP) in ILIAS ein, lädt alle Kursunterlagen herunter, sichert Zoom-Aufzeichnungen (Microsoft-365-SSO) und synchronisiert alles in eine Ordnerstruktur (Fach, Woche) auf Google Drive. Optional erstellt Gemini daraus Wochen-Dossiers, und NotebookLM kann die Unterlagen als Quellen nutzen.
 
-## 🚀 Für KI-Assistenten (Claude, Antigravity, ChatGPT)
-Hallo Kollege! Wenn du gebeten wurdest, dieses Projekt zu warten oder zu erweitern, hier ist die **Architektur-Übersicht**:
-*   main.py: Der Haupt-Daemon. Enthält den Cron-Job (schedule), der jeden Sonntag um 18:00 Uhr die weekly_job() Routine triggert. 
-*   
-un_weeks.py: Führt die Logik aus main.py manuell (einmalig) ohne Cron-Warteschleife aus.
-*   dashboard.py: Eine Flask-Webanwendung (Port 5000) mit Tailwind-UI. Dient als Control-Center, um das System manuell zu starten, Logs (gent_run.log) live zu lesen und die Konfiguration (.env, service_account.json) komfortabel über den Browser einzutragen.
-*   scraper.py: Playwright-basierter Scraper für das HSLU ILIAS. Nutzt die SWITCH edu-ID (mit 2FA TOTP). Navigiert tief in verschachtelte Kursordner und fängt PDF-Downloads ab (auch solche, die hinter cmd=sendfile versteckt sind).
-*   google_integration.py: Handhabt Google Drive & Docs API. Überschreibt Duplikate (	rashed=True) und generiert automatisch die Ordnerstruktur (Fach -> Woche).
-*   llm_processor.py: Übergibt die extrahierten Skripte und Transkripte an Google Gemini (Flash/Pro) und generiert das Markdown-Dossier.
-*   	ests/ & 	ools/: Beinhaltet isolierte Test-Skripte für APIs (Google, Gemini, Login) und Einmal-Skripte zur Datenbereinigung.
-*   deploy/: Enthält setup_server.sh und .service Files für ein nahtloses Deployment auf einem Ubuntu Server.
+## Architektur
 
----
+| Datei | Aufgabe |
+|---|---|
+| `main.py` | Daemon mit `weekly_job()`. Läuft jeden Sonntag um 18:00 (Scraping, Zoom-Download, Drive-Sync, optional Dossier). |
+| `run_weeks.py` | Einmaliger manueller Lauf. Optional mit Wochenbezeichnung als Argument: `python run_weeks.py "KW 41 (08.10.2026)"`. |
+| `scraper.py` | Playwright-Scraper für ILIAS (edu-ID, TOTP, verschachtelte Ordner, `cmd=sendfile`-Downloads). |
+| `registry.py` | `ilias_registry.json`: merkt sich, was bereits heruntergeladen wurde. |
+| `zoom_downloader.py`, `live_zoom_bot.py`, `run_live_zoom.sh` | Zoom-Aufzeichnungen und Live-Meetings (Xvfb, PulseAudio, ffmpeg). |
+| `detect_live_courses.py` | Erkennt Fächer und Live-Kurse. |
+| `google_integration.py` | Google Drive und Docs API. |
+| `llm_processor.py`, `transcriber.py` | Gemini-Dossiers und Transkription. |
+| `notebooklm_integration.py`, `sync_notebooklm.py` | NotebookLM-Sync. |
+| `dashboard.py` | Flask-Dashboard (Port 5000, Basic Auth): Läufe starten, Logs lesen, Konfiguration bearbeiten. |
+| `tests/` | Verbindungs- und Login-Tests (Google, Gemini, ILIAS, Zoom). |
+| `tools/` | Wartungsskripte. `tools/oneoff/` enthält archivierte Einmal-Patches und Debug-Skripte. |
+| `deploy/` | `setup_server.sh` und systemd-Units für Ubuntu. |
 
-## 🛠️ Installation & Setup (Human Guide)
+## Installation
 
-Dieses System ist auf absolute Einfachheit ausgelegt. Du musst im Code **keine** Keys oder Passwörter anpassen.
+Voraussetzungen: Python 3.10+, ein Google-Cloud-Projekt mit aktivierter Drive- und Docs-API (Service Account oder OAuth), HSLU-Login samt TOTP-Secret.
 
-### 1. Voraussetzungen
-* Python 3.10 oder höher
-* Ein Google Cloud Platform (GCP) Projekt mit aktivierter **Google Drive API** & **Google Docs API**.
-* Einen **Google Service Account JSON Key** (Oder normale OAuth Credentials).
-* Deinen HSLU Login und deinen **TOTP-Secret Code** (für den 2FA Login).
+```bash
+git clone https://github.com/MassimoFolini/HSLU-AGENT.git
+cd HSLU-AGENT
+pip install -r requirements.txt
+playwright install chromium
+cp .env.example .env
+```
 
-### 2. Projekt starten
-1. Klone das Repository:
-   `ash
-   git clone https://github.com/MassimoFolini/HSLU-AGENT.git
-   cd HSLU-AGENT
-   `
-2. Installiere die Abhängigkeiten:
-   `ash
-   pip install -r requirements.txt
-   playwright install chromium
-   `
-3. Starte das Web-Dashboard:
-   `ash
-   python dashboard.py
-   `
-4. Öffne im Browser: http://localhost:5000 (bzw. die IP deines Servers).
+Trage in `.env` mindestens `DASHBOARD_PASS` ein und fülle die übrigen Werte (siehe `.env.example`). Danach:
 
-### 3. Konfiguration via Webinterface
-Gehe im Browser-Dashboard auf den Tab **Konfiguration**.
-Dort trägst du ein:
-* HSLU Mail & Passwort
-* HSLU TOTP-Secret (Wichtig: Das ist der Setup-Code, den du beim Einrichten des Authenticator-Apps erhältst)
-* Gemini API Key
-* Google Drive Root-Ordner ID
-* Den Text-Inhalt deiner Google service_account.json (oder credentials.json)
+```bash
+python dashboard.py
+```
 
-Klicke auf **Einstellungen Speichern**. Das Dashboard speichert alles sicher und lokal in der .env und service_account.json. Das System ist jetzt einsatzbereit!
+Das Dashboard läuft unter http://localhost:5000 (Benutzer `admin`). Die Konfiguration lässt sich dort im Tab Konfiguration bearbeiten.
 
-## 🌍 Server-Deployment (Ubuntu)
-Wenn du das System dauerhaft auf einem Cloud-Server laufen lassen willst:
+## Sicherheit
 
-1. Projekt auf den Server kopieren (nach /opt/KiAgentHSLU).
-2. Setup-Skript ausführen:
-   `ash
+* Das Dashboard hat kein Standardpasswort. Ohne `DASHBOARD_PASS` in `.env` ist der Zugang gesperrt.
+* Es bindet standardmässig nur an `127.0.0.1`. Für den Serverbetrieb `DASHBOARD_HOST=0.0.0.0` setzen und einen HTTPS-Reverse-Proxy (Caddy oder nginx) davorschalten. Basic Auth über HTTP überträgt das Passwort im Klartext.
+* `.env`, `credentials*.json`, `token*.json` und `service_account.json` sind in `.gitignore` und dürfen nie committet werden.
+
+## Server-Deployment (Ubuntu)
+
+1. Projekt nach `/opt/KiAgentHSLU` kopieren.
+2. Setup ausführen:
+
+   ```bash
    cd /opt/KiAgentHSLU/deploy
    sudo chmod +x setup_server.sh
    sudo ./setup_server.sh
-   `
-3. Das Skript installiert Playwright (inkl. Systemabhängigkeiten) in einem Virtual Environment und richtet zwei Systemd-Dienste ein:
-   * hslu-dashboard.service (Die Website auf Port 5000)
-   * hslu-agent.service (Der Background-Cronjob)
-4. Denke daran, Port 5000 in deiner Firewall freizugeben (sudo ufw allow 5000/tcp).
+   ```
 
----
-*Gebaut mit 🤖 von Antigravity / Claude für das entspannteste Semester aller Zeiten.*
+3. Das Skript richtet ein Virtual Environment mit Playwright und zwei systemd-Dienste ein: `hslu-dashboard.service` und `hslu-agent.service`.
+4. Das Dashboard über den Reverse-Proxy auf Port 443 erreichbar machen. Port 5000 nicht direkt freigeben.
