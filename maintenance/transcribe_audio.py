@@ -14,6 +14,17 @@ from transcriber import Transcriber
 load_dotenv()
 
 
+VIDEO_EXTS = (".mp4", ".m4v", ".mov", ".mkv", ".webm")
+
+
+def is_lecture(mp3_path):
+    """Nur Vorlesungsaufnahmen: Live-Aufnahmen oder MP3s, die aus einem Video stammen (nicht Hoertests/Podcasts)."""
+    if "live_recordings" in mp3_path.replace("\\", "/"):
+        return True
+    base = os.path.splitext(mp3_path)[0]
+    return any(os.path.exists(base + e) for e in VIDEO_EXTS)
+
+
 def main():
     keyword = next((a for a in sys.argv[1:] if not a.startswith("--")), "")
     mp3s = []
@@ -21,7 +32,7 @@ def main():
         if (keyword and keyword not in dp) or dp.endswith("_chunks"):
             continue
         for fn in fns:
-            if fn.lower().endswith(".mp3"):
+            if fn.lower().endswith(".mp3") and is_lecture(os.path.join(dp, fn)):
                 mp3s.append(os.path.join(dp, fn))
     mp3s.sort()
     print(f"{len(mp3s)} MP3-Datei(en) gefunden.", flush=True)

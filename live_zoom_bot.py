@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import time
 import pyotp
@@ -124,9 +125,27 @@ def join_meeting(page, context, ilias_link, passcode, email, password, totp_secr
     leave = page.locator(LEAVE_SEL[0]).or_(page.locator(LEAVE_SEL[1])).or_(page.locator(LEAVE_SEL[2])).first
     try:
         leave.wait_for(timeout=15000)
+        ensure_silent(page)
         return True
     except Exception:
         return False
+
+
+MUTE_BTN = re.compile(r"^(Mute|Stummschalten)", re.I)          # Button zeigt "Mute" = Mikrofon ist AN
+STOP_VIDEO_BTN = re.compile(r"^(Stop Video|Video beenden|Video stoppen)", re.I)
+
+
+def ensure_silent(page):
+    """Mikrofon stumm und Kamera aus, auch wenn Zoom sie von selbst einschaltet."""
+    for pattern in (MUTE_BTN, STOP_VIDEO_BTN):
+        try:
+            btn = page.get_by_role("button", name=pattern).first
+            if btn.is_visible():
+                btn.click()
+                print("   Mikrofon/Kamera war an, jetzt aus.", flush=True)
+                page.wait_for_timeout(500)
+        except Exception:
+            pass
 
 
 def meeting_ended(page):
@@ -171,17 +190,18 @@ def main():
             args=['--no-sandbox', '--autoplay-policy=no-user-gesture-required', '--disable-gpu']
         )
         context = browser.new_context(
-            permissions=["microphone", "camera"],
+            permissions=["microphone"],  # kein Kamera-Zugriff; Mikrofon ist eine stumme virtuelle Quelle
             viewport={"width": 1280, "height": 800},
             storage_state=storage_file if os.path.exists(storage_file) else None
         )
         page = context.new_page()
 
         joined = False
-        for attempt in range(1, 4):
+        MAX_ATTEMPTS = 15   # ca. 15 Minuten: Dozent startet spaeter oder Warteraum
+        for attempt in range(1, MAX_ATTEMPTS + 1):
             if time.time() >= end_ts:
                 break
-            print(f"Beitritts-Versuch {attempt}/3")
+            print(f"Beitritts-Versuch {attempt}/{MAX_ATTEMPTS}")
             try:
                 joined = join_meeting(page, context, ilias_link, passcode, email, password, totp_secret, storage_file)
             except Exception as e:
@@ -189,7 +209,7 @@ def main():
                 page.screenshot(path=f"downloads/live_error_{attempt}.png")
             if joined:
                 break
-            page.wait_for_timeout(10000)
+            page.wait_for_timeout(45000)
 
         if not joined:
             print("FEHLER: Meeting konnte nicht betreten werden.")
@@ -202,6 +222,7 @@ def main():
             if meeting_ended(page):
                 print("Meeting wurde vom Host beendet.")
                 break
+            ensure_silent(page)
             time.sleep(15)
 
         leave_meeting(page)

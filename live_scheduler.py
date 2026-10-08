@@ -10,6 +10,7 @@ import re
 import subprocess
 import time
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from dotenv import load_dotenv
 
@@ -21,6 +22,7 @@ RUN_SCRIPT = os.path.join(BASE, "scripts", "run_live_zoom.sh")
 REC_DIR = os.path.join(BASE, "downloads", "live_recordings")
 JOIN_LEAD_MIN = 2          # so viele Minuten vor Beginn beitreten
 CHECK_INTERVAL_S = 30
+TZ = ZoneInfo("Europe/Zurich")   # Stundenplan gilt in Schweizer Zeit, der Server laeuft in UTC
 
 
 def load_meetings():
@@ -71,16 +73,38 @@ def safe(name):
 
 
 def upload_recording(title, mp3_path):
+    """MP3 nach Drive; danach (AUTO_AI=1) Transkript und Dossier erzeugen und ebenfalls hochladen."""
     try:
         from google_integration import GoogleWorkspace
         from main import clean_subject_name
         gw = GoogleWorkspace()
-        subject = gw.get_or_create_folder(clean_subject_name(title.replace("I.", "", 1)))
+        subject_name = clean_subject_name(title.replace("I.", "", 1))
+        subject = gw.get_or_create_folder(subject_name)
         folder = gw.get_or_create_folder("Live-Aufnahmen", parent_id=subject)
         gw.upload_file(mp3_path, folder, as_google_doc=False)
         print(f"[Scheduler] Aufnahme hochgeladen: {os.path.basename(mp3_path)}", flush=True)
     except Exception as e:
         print(f"[Scheduler] Upload fehlgeschlagen ({e}). Datei bleibt lokal: {mp3_path}", flush=True)
+        return
+
+    if os.environ.get("AUTO_AI", "0").strip() != "1":
+        return
+    try:
+        from transcriber import Transcriber
+        from llm_processor import LLMProcessor
+        transcript = Transcriber().transcribe(mp3_path)
+        txt_path = os.path.splitext(mp3_path)[0] + ".txt"
+        gw.upload_file(txt_path, folder, as_google_doc=False)
+        base = os.path.splitext(os.path.basename(mp3_path))[0]
+        dossier = LLMProcessor().generate_dossier(week_title=f"{subject_name} - Live {base}", transcript_text=transcript,
+                                                  pdf_text_content="", subject_code=title)
+        md_path = os.path.join(os.path.dirname(mp3_path), f"Dossier_{base}.md")
+        with open(md_path, "w", encoding="utf-8") as f:
+            f.write(dossier)
+        gw.upload_file(md_path, folder, as_google_doc=True)
+        print(f"[Scheduler] Transkript und Dossier hochgeladen: {base}", flush=True)
+    except Exception as e:
+        print(f"[Scheduler] Transkript/Dossier fehlgeschlagen ({e}). MP3 ist gesichert.", flush=True)
 
 
 def run_meeting(meeting, now):
@@ -105,7 +129,7 @@ def main():
     print("[Scheduler] Live-Meeting-Scheduler aktiv.", flush=True)
     state = load_state()
     while True:
-        now = datetime.now()
+        now = datetime.now(TZ)
         for m in load_meetings():
             key = f"{m.get('title')}|{now.strftime('%Y-%m-%d')}|{m.get('time_start')}"
             if key in state or not due(m, now):
@@ -116,7 +140,7 @@ def main():
                 run_meeting(m, now)
             except Exception as e:
                 print(f"[Scheduler] FEHLER bei {m.get('title')}: {e}", flush=True)
-            now = datetime.now()
+            now = datetime.now(TZ)
         time.sleep(CHECK_INTERVAL_S)
 
 

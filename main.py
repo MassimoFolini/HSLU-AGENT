@@ -250,6 +250,14 @@ def weekly_job(force_week_str=None):
                 gworkspace.upload_file(path, unterlagen_id, as_google_doc=True)
             time.sleep(15)  # Gemini-Ratenlimit
 
+    # Automatisch: neue MP3 transkribieren, danach Dossiers (beides ueberspringt Vorhandenes), alles nach Drive
+    if os.environ.get("AUTO_AI", "0").strip() == "1" and gworkspace:
+        import sys
+        here = os.path.dirname(os.path.abspath(__file__))
+        for script in ("transcribe_audio.py", "generate_dossiers.py"):
+            print(f"\n[Auto] {script} ...", flush=True)
+            subprocess.run([sys.executable, "-u", os.path.join(here, "maintenance", script), "--sync"], cwd=here)
+
     print("\n" + "=" * 75)
     print(f"DURCHLAUF FÜR {week_str} BEENDET.")
     print("=" * 75 + "\n")

@@ -46,8 +46,10 @@ def find_transcripts(keyword):
         if dp.endswith("_chunks") or (keyword and keyword not in dp):
             continue
         for fn in fns:
-            if fn.lower().endswith(".txt") and not fn.startswith("Dossier_"):
-                out.append(os.path.join(dp, fn))
+            full = os.path.join(dp, fn)
+            # nur Transkripte: .txt mit gleichnamiger MP3 daneben (keine Datensaetze oder Lizenztexte)
+            if fn.lower().endswith(".txt") and not fn.startswith("Dossier_") and os.path.exists(os.path.splitext(full)[0] + ".mp3"):
+                out.append(full)
     return sorted(out)
 
 
