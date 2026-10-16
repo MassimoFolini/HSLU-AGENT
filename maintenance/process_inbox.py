@@ -6,7 +6,8 @@ So benutzt du es:
      (die Fachordner legt dieses Skript beim ersten Lauf selbst an).
   2. Alle 15 Minuten prueft der Server den Eingang (systemd-Timer hslu-inbox.timer).
   3. Ergebnis im Drive, jeweils im Fachordner:
-        Live-Aufnahmen/   MP3, Rohtranskript (.txt), Dossier (Google Doc)
+        Live-Aufnahmen/   MP3 und Rohtranskript (.txt)
+        Dossiers/         Dossier (Google Doc), alle Dossiers des Fachs in einem Ordner
         Transkripte/      saubere Lesefassung (Google Doc)
      Die Originaldatei wandert nach _Eingang/_Verarbeitet.
 
@@ -140,7 +141,7 @@ def process_file(gw, f, subject, sub_id, done_id):
     tr_folder = gw.get_or_create_folder("Transkripte", parent_id=subject_folder)
     gw.upload_file(mp3, rec_folder, as_google_doc=False)
     gw.upload_file(txt, rec_folder, as_google_doc=False)
-    gw.upload_file(dossier_md, rec_folder, as_google_doc=True)
+    gw.upload_file(dossier_md, gw.get_or_create_folder("Dossiers", parent_id=subject_folder), as_google_doc=True)
     gw.upload_file(clean_md, tr_folder, as_google_doc=True)
 
     gw.drive_service.files().update(fileId=f["id"], addParents=done_id, removeParents=sub_id, fields="id").execute()

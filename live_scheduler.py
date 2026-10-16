@@ -101,7 +101,7 @@ def upload_recording(title, mp3_path):
         md_path = os.path.join(os.path.dirname(mp3_path), f"Dossier_{base}.md")
         with open(md_path, "w", encoding="utf-8") as f:
             f.write(dossier)
-        gw.upload_file(md_path, folder, as_google_doc=True)
+        gw.upload_file(md_path, gw.get_or_create_folder("Dossiers", parent_id=subject), as_google_doc=True)
         print(f"[Scheduler] Transkript und Dossier hochgeladen: {base}", flush=True)
     except Exception as e:
         print(f"[Scheduler] Transkript/Dossier fehlgeschlagen ({e}). MP3 ist gesichert.", flush=True)

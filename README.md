@@ -20,6 +20,7 @@ Ein automatisierter Agent für Studierende der Hochschule Luzern (HSLU). Er logg
 | `checks/` | Verbindungschecks (Google, Gemini, ILIAS, Zoom), werden von den Test-Buttons im Dashboard gestartet. |
 | `maintenance/` | Wartungs- und Migrationsskripte (`sync_drive_only.py` holt fehlende Uploads nach, `clean_drive_zips.py` räumt alte ZIPs in Drive auf, Google-Auth usw.). Aus dem Projektroot starten: `python maintenance/<skript>.py`. |
 | `scripts/` | Shell-Skripte (`start_run.sh`, `run_fetcher.sh`, `run_live_zoom.sh`). |
+| `maintenance/move_dossiers.py` | Sammelt alle Dossiers eines Fachs in `<Fach>/Dossiers/` (Trockenlauf ohne `--apply`). Neue Dossiers landen automatisch dort. |
 | `maintenance/process_inbox.py` | Drive-Eingang für eigene Aufnahmen (systemd-Timer `hslu-inbox.timer`, alle 15 Minuten). |
 | `deploy/` | `setup_server.sh` und systemd-Units für Ubuntu. |
 
@@ -78,6 +79,6 @@ Live-Zoom-Beitritte per Bot sind bei den HSLU-Meetings nicht möglich (Zoom bloc
 
 1. Lege die Datei (mp3, mp4, m4a, wav ...) in Drive unter `HSLU Agent/_Eingang/<Fach>/` ab. Die Fachordner legt das Skript beim ersten Lauf an.
 2. Der Server prüft den Eingang alle 15 Minuten und erzeugt Transkript, saubere Lesefassung und Dossier.
-3. Ergebnis im Fachordner: `Live-Aufnahmen/` (MP3, Rohtranskript, Dossier) und `Transkripte/` (saubere Fassung als Google Doc). Das Original landet in `_Eingang/_Verarbeitet`.
+3. Ergebnis im Fachordner: `Live-Aufnahmen/` (MP3, Rohtranskript), `Dossiers/` (alle Dossiers des Fachs) und `Transkripte/` (saubere Fassung als Google Doc). Das Original landet in `_Eingang/_Verarbeitet`.
 
 Aufnahmen ohne Ton (z. B. Mikrofon statt Systemton aufgenommen) werden abgelehnt und bleiben im Eingang liegen. Status pro Datei: `inbox_state.json`. Manuell starten: `python maintenance/process_inbox.py`.

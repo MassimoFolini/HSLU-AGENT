@@ -117,11 +117,9 @@ def main():
         gw = GoogleWorkspace()
         sync = DriveSync(gw)
         for path, course_dir in made:
-            local_root = os.path.join(course_dir, "Unterlagen")
-            rel_dir = os.path.relpath(os.path.dirname(path), local_root)
             subject = clean_subject_name(os.path.basename(course_dir))
-            parent = sync.folder_path(sync.folder("Unterlagen", sync.folder(subject, None)), rel_dir)
-            sync.upload(path, parent, f"{subject}/{os.path.relpath(path, local_root)}", as_google_doc=True)
+            folder = sync.folder("Dossiers", sync.folder(subject, None))   # alle Dossiers eines Fachs in EINEM Ordner
+            sync.upload(path, folder, f"{subject}/Dossiers/{os.path.basename(path)}", as_google_doc=True)
     print("\nFertig.")
 
 
