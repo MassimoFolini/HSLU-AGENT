@@ -58,6 +58,18 @@ class Transcriber:
                 return None
         return audio_path
 
+    SILENCE_DB = -55.0  # mittlere Lautstaerke darunter = keine Sprache; Gemini wuerde sonst Text erfinden
+
+    @staticmethod
+    def mean_volume_db(path):
+        """Mittlere Lautstaerke in dB (volumedetect). None, wenn nicht messbar."""
+        res = subprocess.run(["ffmpeg", "-hide_banner", "-i", path, "-af", "volumedetect", "-f", "null", "-"],
+                             capture_output=True, text=True)
+        m = re.search(r"mean_volume:\s*(-?[\d.]+|-inf) dB", res.stderr)
+        if not m:
+            return None
+        return float("-inf") if m.group(1) == "-inf" else float(m.group(1))
+
     CHUNK_SECONDS = 1200  # 20-Minuten-Segmente: bleibt unter dem Ausgabelimit und macht Neustarts billig
 
     def _split_audio(self, audio_path, work_dir):
@@ -92,6 +104,10 @@ class Transcriber:
             print(f"Lade lokales Transkript: {txt_path}")
             with open(txt_path, 'r', encoding='utf-8') as f:
                 return f.read()
+
+        level = self.mean_volume_db(audio_path)
+        if level is not None and level < self.SILENCE_DB:
+            raise RuntimeError(f"Audio ist praktisch still ({level:.0f} dB), kein Transkript erzeugt: {os.path.basename(audio_path)}")
 
         work_dir = audio_path.rsplit('.', 1)[0] + '_chunks'
         parts = self._split_audio(audio_path, work_dir)

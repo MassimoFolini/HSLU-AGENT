@@ -27,3 +27,4 @@ tools/oneoff/*.png
 *.html.bak
 live_scheduler_state.json
 zoom_storage_state.json
+repify_prozess.*

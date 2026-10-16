@@ -89,6 +89,7 @@ def main():
         out_path = os.path.join(os.path.dirname(txt), f"Transkript_{base}.md")
         if os.path.exists(out_path) and os.path.getsize(out_path) > 500:
             print(f"Vorhanden: {out_path}")
+            made.append((out_path, course_root(txt)))   # --sync gleicht auch Vorhandenes mit Drive ab
             continue
         with open(txt, "r", encoding="utf-8") as f:
             raw = f.read()

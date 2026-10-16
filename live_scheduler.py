@@ -122,7 +122,11 @@ def run_meeting(meeting, now):
     print(f"[Scheduler] Starte Aufnahme: {title} -> {mp3} (bis {end_dt:%H:%M})", flush=True)
     res = subprocess.run(["bash", RUN_SCRIPT, link, ("" if len(passcode) > 12 else passcode), mp3, str(int(end_dt.timestamp()))],
                          cwd=BASE)
-    if os.path.exists(mp3) and os.path.getsize(mp3) > 10_000:
+    from transcriber import Transcriber
+    level = Transcriber.mean_volume_db(mp3) if os.path.exists(mp3) else None
+    if level is not None and level < Transcriber.SILENCE_DB:
+        print(f"[Scheduler] Aufnahme ist still ({level:.0f} dB), wird nicht hochgeladen: {mp3}", flush=True)
+    elif os.path.exists(mp3) and os.path.getsize(mp3) > 10_000:
         upload_recording(title, mp3)
     else:
         print(f"[Scheduler] Keine brauchbare Aufnahme (Exit {res.returncode}).", flush=True)
