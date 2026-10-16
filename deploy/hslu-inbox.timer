@@ -1,0 +1,10 @@
+[Unit]
+Description=Drive-Eingang alle 15 Minuten pruefen
+
+[Timer]
+OnBootSec=2min
+OnUnitInactiveSec=15min
+Unit=hslu-inbox.service
+
+[Install]
+WantedBy=timers.target

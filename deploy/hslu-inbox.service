@@ -1,0 +1,11 @@
+[Unit]
+Description=HSLU Drive-Eingang: Aufnahmen transkribieren und zusammenfassen
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/opt/KiAgentHSLU
+EnvironmentFile=/opt/KiAgentHSLU/.env
+ExecStart=/usr/bin/flock -n /tmp/hslu-inbox.lock /opt/KiAgentHSLU/venv/bin/python -u maintenance/process_inbox.py
+TimeoutStartSec=infinity

@@ -71,6 +71,25 @@ def clean_segment(model, raw, retries=4):
     raise RuntimeError(f"Segment nicht bereinigbar: {last}")
 
 
+def build_clean_doc(model, txt_path, subject, base, out_path):
+    """Bereinigt ein Rohtranskript segmentweise und schreibt die saubere Fassung nach out_path."""
+    with open(txt_path, "r", encoding="utf-8") as f:
+        raw = f.read()
+    segments = split_segments(raw)
+    print(f"\n=== {subject} - {base} | {len(segments)} Segmente", flush=True)
+    parts = [f"# {subject} - {base}",
+             "*Bereinigtes Transkript. Quelle: Vorlesungsaufzeichnung, automatisch transkribiert und sprachlich geglaettet.*"]
+    for i, (stamp, text) in enumerate(segments, 1):
+        if not text:
+            continue
+        print(f"   Segment {i}/{len(segments)} ...", flush=True)
+        cleaned = clean_segment(model, text)
+        cleaned = re.sub(r"^##\s*", f"## [{stamp}] ", cleaned, count=1) if cleaned.startswith("##") else f"## [{stamp}]\n\n{cleaned}"
+        parts.append(cleaned)
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write("\n\n".join(parts) + "\n")
+
+
 def course_root(path):
     parts = path.split(os.sep)
     return os.sep.join(parts[:parts.index("Unterlagen")]) if "Unterlagen" in parts else os.path.dirname(path)
@@ -91,22 +110,9 @@ def main():
             print(f"Vorhanden: {out_path}")
             made.append((out_path, course_root(txt)))   # --sync gleicht auch Vorhandenes mit Drive ab
             continue
-        with open(txt, "r", encoding="utf-8") as f:
-            raw = f.read()
         course_dir = course_root(txt)
         subject = clean_subject_name(os.path.basename(course_dir))
-        segments = split_segments(raw)
-        print(f"\n=== {subject} - {base} | {len(segments)} Segmente", flush=True)
-        parts = [f"# {subject} - {base}", f"*Bereinigtes Transkript. Quelle: Vorlesungsaufzeichnung, automatisch transkribiert und sprachlich geglaettet.*"]
-        for i, (stamp, text) in enumerate(segments, 1):
-            if not text:
-                continue
-            print(f"   Segment {i}/{len(segments)} ...", flush=True)
-            cleaned = clean_segment(model, text)
-            cleaned = re.sub(r"^##\s*", f"## [{stamp}] ", cleaned, count=1) if cleaned.startswith("##") else f"## [{stamp}]\n\n{cleaned}"
-            parts.append(cleaned)
-        with open(out_path, "w", encoding="utf-8") as f:
-            f.write("\n\n".join(parts) + "\n")
+        build_clean_doc(model, txt, subject, base, out_path)
         made.append((out_path, course_dir))
         print(f"   Gespeichert: {out_path}", flush=True)
 
