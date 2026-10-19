@@ -15,7 +15,8 @@ Ein automatisierter Agent für Studierende der Hochschule Luzern (HSLU). Er logg
 | `detect_live_courses.py` | Erkennt Fächer und Live-Kurse. |
 | `google_integration.py` | Google Drive und Docs API. |
 | `llm_processor.py`, `transcriber.py` | Gemini-Dossiers und Transkription. |
-| `notebooklm_integration.py` | NotebookLM-Anbindung. |
+| `notebooklm_integration.py` | Alte inoffizielle NotebookLM-Anbindung (nicht mehr genutzt, auf Servern gesperrt). |
+| `maintenance/sync_notebooklm_api.py` | Offizieller Sync nach NotebookLM Enterprise (Timer `hslu-notebooks.timer`, stündlich): ein Notebook pro Fach mit Dossiers, Transkripten, Notebooks und Folien. |
 | `dashboard.py` | Flask-Dashboard (Port 5000, Basic Auth): Läufe starten, Logs lesen, Konfiguration bearbeiten. |
 | `checks/` | Verbindungschecks (Google, Gemini, ILIAS, Zoom), werden von den Test-Buttons im Dashboard gestartet. |
 | `maintenance/` | Wartungs- und Migrationsskripte (`sync_drive_only.py` holt fehlende Uploads nach, `clean_drive_zips.py` räumt alte ZIPs in Drive auf, Google-Auth usw.). Aus dem Projektroot starten: `python maintenance/<skript>.py`. |
@@ -82,3 +83,10 @@ Live-Zoom-Beitritte per Bot sind bei den HSLU-Meetings nicht möglich (Zoom bloc
 3. Ergebnis im Fachordner: `Live-Aufnahmen/` (MP3, Rohtranskript), `Dossiers/` (alle Dossiers des Fachs) und `Transkripte/` (saubere Fassung als Google Doc). Das Original landet in `_Eingang/_Verarbeitet`.
 
 Aufnahmen ohne Ton (z. B. Mikrofon statt Systemton aufgenommen) werden abgelehnt und bleiben im Eingang liegen. Status pro Datei: `inbox_state.json`. Manuell starten: `python maintenance/process_inbox.py`.
+
+## NotebookLM Enterprise (offizielle API)
+
+- Projekt `hslu-511808` (Nummer `584077347614`) im Gelso-Konto, Region **eu**, Endpunkt `eu-discoveryengine.googleapis.com`, Ort in der Adresse `locations/eu`.
+- Voraussetzung: Abo Gemini Enterprise Standard mit einer Lizenz, die dem Konto zugewiesen ist (Cloud Console, Gemini Enterprise, Nutzer verwalten, Standort eu). Auch ein Dienstkonto braucht eine eigene Lizenz.
+- Anmeldung: OAuth-Token des Gelso-Kontos in `token_gelso.json` (Client `client_secret_*.json`, beide nur lokal und auf dem Server, nie ins Repo). Google verlangt nach 16 Stunden eine neue Anmeldung, wenn die App nicht als vertrauenswürdig markiert ist (Admin-Konsole, Sitzungssteuerung für Google Cloud, "Vertrauenswürdige Apps ausgenommen", und App-Zugriffskontrolle).
+- Oberfläche: `https://notebooklm.cloud.google.com/eu/?project=584077347614`

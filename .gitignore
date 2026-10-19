@@ -28,3 +28,5 @@ tools/oneoff/*.png
 live_scheduler_state.json
 zoom_storage_state.json
 repify_prozess.*
+client_secret*.json
+token_gelso*.json

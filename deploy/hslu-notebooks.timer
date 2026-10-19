@@ -1,0 +1,10 @@
+[Unit]
+Description=NotebookLM-Sync stuendlich
+
+[Timer]
+OnBootSec=5min
+OnUnitInactiveSec=1h
+Unit=hslu-notebooks.service
+
+[Install]
+WantedBy=timers.target

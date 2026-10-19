@@ -1,0 +1,10 @@
+[Unit]
+Description=HSLU Sync nach NotebookLM Enterprise (Dossiers, Transkripte, Folien)
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/opt/KiAgentHSLU
+ExecStart=/usr/bin/flock -n /tmp/hslu-notebooks.lock /opt/KiAgentHSLU/venv/bin/python -u maintenance/sync_notebooklm_api.py
+TimeoutStartSec=infinity
