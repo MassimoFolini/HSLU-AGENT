@@ -151,6 +151,8 @@ def collect(subject_dirs):
                     out.append((f"{lab} - Dossier - {fn[len('Dossier_'):-3]}", full, "text", wk))
                 elif low.endswith(".md") and fn.startswith("Vorlesungsskript_"):
                     out.append((f"{lab} - Vorlesungsskript (Audio)", full, "text", wk))
+                elif low.endswith("_vorlesung.mp3") and os.path.getsize(full) <= MAX_PDF_BYTES:
+                    out.append((f"{lab} - Vorlesung (Audio).mp3", full, "file", wk))
                 elif low.endswith((".pdf", ".pptx", ".docx")) and os.path.getsize(full) <= MAX_PDF_BYTES:
                     out.append((f"{lab} - {fn}", full, "file", wk))
                 elif low.endswith(".ipynb") and os.path.getsize(full) < 5_000_000:
