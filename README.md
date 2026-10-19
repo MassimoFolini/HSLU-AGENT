@@ -16,6 +16,8 @@ Ein automatisierter Agent für Studierende der Hochschule Luzern (HSLU). Er logg
 | `google_integration.py` | Google Drive und Docs API. |
 | `llm_processor.py`, `transcriber.py` | Gemini-Dossiers und Transkription. |
 | `notebooklm_integration.py` | Alte inoffizielle NotebookLM-Anbindung (nicht mehr genutzt, auf Servern gesperrt). |
+| `weeks.py` | Ordnet Dateien einer Schulwoche zu (SW01 = Woche ab 14.09.2026, aus Pfad oder Datum). |
+| `maintenance/weekly_audio.py` | Audio-Vorlesung pro Fach und Schulwoche (ca. 30 Minuten): Skript mit Gemini, Sprache mit Cloud Text-to-Speech, Ablage in Drive `<Fach>/Audio-Vorlesungen` (Timer `hslu-audio.timer`). |
 | `maintenance/sync_notebooklm_api.py` | Offizieller Sync nach NotebookLM Enterprise (Timer `hslu-notebooks.timer`, stündlich): ein Notebook pro Fach mit Dossiers, Transkripten, Notebooks und Folien. |
 | `dashboard.py` | Flask-Dashboard (Port 5000, Basic Auth): Läufe starten, Logs lesen, Konfiguration bearbeiten. |
 | `checks/` | Verbindungschecks (Google, Gemini, ILIAS, Zoom), werden von den Test-Buttons im Dashboard gestartet. |
@@ -90,3 +92,7 @@ Aufnahmen ohne Ton (z. B. Mikrofon statt Systemton aufgenommen) werden abgelehnt
 - Voraussetzung: Abo Gemini Enterprise Standard mit einer Lizenz, die dem Konto zugewiesen ist (Cloud Console, Gemini Enterprise, Nutzer verwalten, Standort eu). Auch ein Dienstkonto braucht eine eigene Lizenz.
 - Anmeldung: OAuth-Token des Gelso-Kontos in `token_gelso.json` (Client `client_secret_*.json`, beide nur lokal und auf dem Server, nie ins Repo). Google verlangt nach 16 Stunden eine neue Anmeldung, wenn die App nicht als vertrauenswürdig markiert ist (Admin-Konsole, Sitzungssteuerung für Google Cloud, "Vertrauenswürdige Apps ausgenommen", und App-Zugriffskontrolle).
 - Oberfläche: `https://notebooklm.cloud.google.com/eu/?project=584077347614`
+
+## Audio-Vorlesungen pro Schulwoche
+
+`python maintenance/weekly_audio.py --dry-run` zeigt, für welche Fächer und Wochen Audio entstehen würde. Pro Lauf entstehen höchstens 3 neue Vorlesungen (`--max`), eine Woche wird nur neu erzeugt, wenn sich das Material geändert hat und die letzte Fassung älter als 3 Tage ist. Kosten: Cloud Text-to-Speech (Chirp 3 HD, ca. 1 USD pro Vorlesung) im Gelso-Projekt plus das Gemini-Skript. Der Timer `hslu-audio.timer` (täglich 03:30) ist nur installiert, wenn er bewusst aktiviert wurde: `sudo systemctl enable --now hslu-audio.timer`.

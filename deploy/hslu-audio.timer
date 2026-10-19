@@ -1,0 +1,10 @@
+[Unit]
+Description=Audio-Vorlesungen taeglich nachts erzeugen
+
+[Timer]
+OnCalendar=*-*-* 03:30:00
+Persistent=true
+Unit=hslu-audio.service
+
+[Install]
+WantedBy=timers.target

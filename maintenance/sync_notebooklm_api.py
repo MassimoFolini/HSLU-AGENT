@@ -19,6 +19,8 @@ import warnings
 
 import requests
 
+import weeks
+
 warnings.filterwarnings("ignore")
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -81,12 +83,13 @@ class Api:
         r.raise_for_status()
         return r.json()["sources"][0]["sourceId"]["id"]
 
-    def add_file(self, notebook_id, path):
+    def add_file(self, notebook_id, path, display_name=None):
         mime = mimetypes.guess_type(path)[0] or "application/octet-stream"
+        upload_name = display_name or os.path.basename(path)
         with open(path, "rb") as f:
             data = f.read()
         r = self.call("POST", f"{UPLOAD}/notebooks/{notebook_id}/sources:uploadFile", data=data,
-                      extra={"Content-Type": mime, "X-Goog-Upload-File-Name": os.path.basename(path), "X-Goog-Upload-Protocol": "raw"})
+                      extra={"Content-Type": mime, "X-Goog-Upload-File-Name": upload_name, "X-Goog-Upload-Protocol": "raw"})
         r.raise_for_status()
         return r.json()["sourceId"]["id"]
 
@@ -140,15 +143,26 @@ def collect(subject_dirs):
                 if ident in seen:
                     continue
                 seen.add(ident)
+                wk = weeks.week_of_file(os.path.relpath(full, BASE))
+                lab = weeks.label(wk)
                 if low.endswith(".md") and fn.startswith("Transkript_"):
-                    out.append((f"Transkript - {fn[len('Transkript_'):-3]}", full, "text"))
+                    out.append((f"{lab} - Transkript - {fn[len('Transkript_'):-3]}", full, "text", wk))
                 elif low.endswith(".md") and fn.startswith("Dossier_"):
-                    out.append((f"Dossier - {fn[len('Dossier_'):-3]}", full, "text"))
+                    out.append((f"{lab} - Dossier - {fn[len('Dossier_'):-3]}", full, "text", wk))
+                elif low.endswith(".md") and fn.startswith("Vorlesungsskript_"):
+                    out.append((f"{lab} - Vorlesungsskript (Audio)", full, "text", wk))
                 elif low.endswith((".pdf", ".pptx", ".docx")) and os.path.getsize(full) <= MAX_PDF_BYTES:
-                    out.append((fn, full, "file"))
+                    out.append((f"{lab} - {fn}", full, "file", wk))
                 elif low.endswith(".ipynb") and os.path.getsize(full) < 5_000_000:
-                    out.append((f"Notebook - {fn[:-6]}", full, "notebook"))
-    return out
+                    out.append((f"{lab} - Notebook - {fn[:-6]}", full, "notebook", wk))
+    out.sort(key=lambda x: (x[3] or 0, x[0]))      # nach Schulwoche sortiert hinzufuegen
+    unique, names = [], set()
+    for n, p, k, w in out:
+        if n in names:                                  # gleicher Anzeigename (z.B. zwei Fassungen): nur eine Quelle
+            continue
+        names.add(n)
+        unique.append((n, p, k))
+    return unique
 
 
 def subjects_on_disk():
@@ -167,6 +181,10 @@ def subjects_on_disk():
             cd = os.path.join(wd, course)
             if os.path.isdir(cd):
                 subjects.setdefault(clean_subject_name(course), []).append(cd)
+    audio = os.path.join(downloads, "audio")
+    if os.path.isdir(audio):
+        for fach in os.listdir(audio):
+            subjects.setdefault(clean_subject_name(fach), []).append(os.path.join(audio, fach))
     return subjects
 
 
@@ -198,7 +216,7 @@ def main():
             key = f"{subject}|{os.path.relpath(path, BASE)}"
             size = os.path.getsize(path)
             known = state["files"].get(key)
-            if known and known["size"] == size:
+            if known and known["size"] == size and known.get("name") == name and (kind != "file" or known.get("v") == 2):
                 skipped += 1
                 continue
             try:
@@ -214,15 +232,23 @@ def main():
                         continue
                     sid = api.add_text(nb, name, body)
                 else:
-                    sid = api.add_file(nb, path)
-                state["files"][key] = {"size": size, "source": sid, "name": name}
+                    sid = api.add_file(nb, path, name)
+                state["files"][key] = {"size": size, "source": sid, "name": name, "v": 2}
                 save_state(state)
                 added += 1
                 print(f"   + {name}", flush=True)
             except Exception as e:
                 failed += 1
                 print(f"   FEHLER bei {name}: {str(e)[:160]}", flush=True)
-        print(f"   {added} neu, {skipped} unveraendert, {failed} Fehler", flush=True)
+        current = {f"{subject}|{os.path.relpath(path, BASE)}" for _, path, _ in items}
+        removed = 0
+        for key in [k for k in state["files"] if k.startswith(subject + "|") and k not in current]:
+            if api.delete_sources(nb, [state["files"][key]["source"]]):    # Datei verschwunden oder Doppelgaenger
+                state["files"].pop(key)
+                removed += 1
+        if removed:
+            save_state(state)
+        print(f"   {added} neu, {skipped} unveraendert, {failed} Fehler, {removed} entfernt", flush=True)
     print("\nFertig.")
 
 

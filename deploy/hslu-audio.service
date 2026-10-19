@@ -1,0 +1,10 @@
+[Unit]
+Description=HSLU Audio-Vorlesungen pro Schulwoche erzeugen
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/opt/KiAgentHSLU
+ExecStart=/usr/bin/flock -n /tmp/hslu-audio.lock /opt/KiAgentHSLU/venv/bin/python -u maintenance/weekly_audio.py --max 3
+TimeoutStartSec=infinity
