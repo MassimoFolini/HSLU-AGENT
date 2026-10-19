@@ -253,11 +253,14 @@ def main():
     only_week = int(args[args.index("--week") + 1]) if "--week" in args else None
     limit = int(args[args.index("--max") + 1]) if "--max" in args else 3
     state = load_state()
+    current_week = weeks.week_of_date(datetime.now()) or 0
     todo = []
     for (subject, wk), items in sorted(materials_by_week().items(), key=lambda kv: (kv[0][1], kv[0][0])):
         if keyword and keyword.lower() not in subject.lower():
             continue
         if only_week and wk != only_week:
+            continue
+        if not only_week and wk > current_week:           # Wochen, die noch nicht stattgefunden haben, bekommen kein Audio
             continue
         fp = fingerprint(items)
         key = f"{subject}|{weeks.label(wk)}"
