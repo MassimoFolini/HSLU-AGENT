@@ -6,6 +6,7 @@ Quellen genau dieser Woche; die Audio-Zusammenfassung erzeugt NotebookLM (Studio
   python maintenance/weekly_notebooklm_audio.py --dry-run
   python maintenance/weekly_notebooklm_audio.py --subject Applied --week 3
   python maintenance/weekly_notebooklm_audio.py --max 3        # hoechstens 3 neue Wochen-Notebooks pro Lauf
+  --no-total                                                   # Gesamt-Audio pro Fach nicht aktualisieren
 
 Aus dem Projektroot starten. Zustand: weekly_nlm_state.json. Nur Wochen bis zur aktuellen Schulwoche.
 """
@@ -13,6 +14,7 @@ import os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+import hashlib
 import json
 from datetime import datetime
 
@@ -51,6 +53,35 @@ def week_items():
     return out
 
 
+TOTAL_FOCUS = ("Fasse das gesamte Fach bis heute wie eine zusammenhaengende Vorlesung zusammen: Woche fuer Woche der Reihe nach, "
+               "mit den wichtigsten Konzepten und Zusammenhaengen, so ausfuehrlich wie moeglich. Kein Organisatorisches.")
+
+
+def refresh_totals(get_api, state, keyword, dry):
+    """Gesamt-Audio pro Fach im Notebook "HSLU - <Fach>": bei neuem Material (hoechstens alle 3 Tage) alte loeschen, neu erzeugen."""
+    notebooks = nlm.load_state().get("notebooks", {})
+    for subject, dirs in sorted(nlm.subjects_on_disk().items()):
+        nb = notebooks.get(subject)
+        if not nb or (keyword and keyword.lower() not in subject.lower()):
+            continue
+        items = [it for it in nlm.collect(dirs) if "(Audio)" not in it[0]]
+        h = hashlib.sha1("|".join(f"{n}{os.path.getsize(p)}" for n, p, _ in sorted(items)).encode()).hexdigest()
+        known = state.get(f"GESAMT|{subject}")
+        if known and (known["hash"] == h or (datetime.now() - datetime.fromisoformat(known["made"])).days < 3):
+            continue
+        print(f"\n=== Gesamt-Audio {subject} ({len(items)} Quellen)", flush=True)
+        if dry:
+            continue
+        api = get_api()
+        api.call("DELETE", f"{nlm.API}/notebooks/{nb}/audioOverviews/default")
+        r = api.call("POST", f"{nlm.API}/notebooks/{nb}/audioOverviews", extra={"Content-Type": "application/json"},
+                     json={"generationOptions": {"episodeFocus": TOTAL_FOCUS, "languageCode": "de"}})
+        print(f"   {'gestartet' if r.ok else 'FEHLER ' + r.text[:160]}", flush=True)
+        if r.ok:
+            state[f"GESAMT|{subject}"] = {"hash": h, "made": datetime.now().isoformat()}
+            save_state(state)
+
+
 def main():
     args = sys.argv[1:]
     dry = "--dry-run" in args
@@ -59,6 +90,13 @@ def main():
     limit = int(args[args.index("--max") + 1]) if "--max" in args else 3
     current = weeks.week_of_date(datetime.now()) or 0
     state = load_state()
+    apis = []
+
+    def get_api():
+        if not apis:
+            apis.append(nlm.Api())
+        return apis[0]
+
     todo = []
     for (subject, wk), items in sorted(week_items().items(), key=lambda kv: (kv[0][1], kv[0][0])):
         if keyword and keyword.lower() not in subject.lower():
@@ -78,7 +116,7 @@ def main():
             for name, _, kind in items:
                 print(f"   [{kind}] {name}")
             continue
-        api = nlm.Api()
+        api = get_api()
         nb = api.create_notebook(title)
         added = 0
         for name, path, kind in items:
@@ -99,6 +137,8 @@ def main():
         print(f"   {added} Quellen, Audio-Zusammenfassung: {'gestartet' if ok else 'FEHLER ' + r.text[:200]}", flush=True)
         state[f"{subject}|{weeks.label(wk)}"] = {"notebook": nb, "sources": added, "audio": ok, "made": datetime.now().isoformat()}
         save_state(state)
+    if not only_week and "--no-total" not in args:
+        refresh_totals(get_api, state, keyword, dry)
     print("\nFertig.")
 
 

@@ -1,0 +1,10 @@
+[Unit]
+Description=Wochen-Notebooks und Audio taeglich
+
+[Timer]
+OnCalendar=*-*-* 04:30:00
+Persistent=true
+Unit=hslu-weekly-nlm.service
+
+[Install]
+WantedBy=timers.target

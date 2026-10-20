@@ -1,0 +1,10 @@
+[Unit]
+Description=HSLU Wochen-Notebooks mit NotebookLM-Audio-Zusammenfassung
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/opt/KiAgentHSLU
+ExecStart=/usr/bin/flock -n /tmp/hslu-notebooks.lock /opt/KiAgentHSLU/venv/bin/python -u maintenance/weekly_notebooklm_audio.py
+TimeoutStartSec=infinity
