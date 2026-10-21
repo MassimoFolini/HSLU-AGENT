@@ -96,3 +96,14 @@ Aufnahmen ohne Ton (z. B. Mikrofon statt Systemton aufgenommen) werden abgelehnt
 ## Audio-Vorlesungen pro Schulwoche
 
 `python maintenance/weekly_audio.py --dry-run` zeigt, für welche Fächer und Wochen Audio entstehen würde. Pro Lauf entstehen höchstens 3 neue Vorlesungen (`--max`), eine Woche wird nur neu erzeugt, wenn sich das Material geändert hat und die letzte Fassung älter als 3 Tage ist. Kosten: Cloud Text-to-Speech (Chirp 3 HD, ca. 1 USD pro Vorlesung) im Gelso-Projekt plus das Gemini-Skript. Der Timer `hslu-audio.timer` (täglich 03:30) ist nur installiert, wenn er bewusst aktiviert wurde: `sudo systemctl enable --now hslu-audio.timer`.
+
+## Systemton des Laptops aufnehmen (verpasste oder eigene Vorlesungen)
+
+`laptop/record_system_audio.py` nimmt auf dem Windows-Laptop auf, was abgespielt wird (z. B. dein eigener Zoom-Client), und legt die MP3 in den Drive-Eingang `_Eingang/<Fach>/`. Der Server macht daraus Transkript, saubere Fassung und Dossier. Voraussetzungen: ffmpeg im PATH, `pip install -r laptop/requirements-laptop.txt`.
+
+```bash
+python laptop/record_system_audio.py --subject Applied_Statistics
+python laptop/record_system_audio.py --subject Datenbanksysteme --at 12:50 --minutes 140
+```
+
+Es nimmt nur den Ton auf, der ueber den Standard-Lautsprecher laeuft. Zu leise Aufnahmen werden nicht hochgeladen. Nur aufnehmen, wenn der Dozent es erlaubt.
