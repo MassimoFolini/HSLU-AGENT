@@ -82,6 +82,8 @@ Live-Zoom-Beitritte per Bot sind bei den HSLU-Meetings nicht möglich (Zoom bloc
 
 1. Lege die Datei (mp3, mp4, m4a, wav ...) in Drive unter `HSLU Agent/_Eingang/<Fach>/` ab. Die Fachordner legt das Skript beim ersten Lauf an.
 2. Der Server prüft den Eingang alle 15 Minuten und erzeugt Transkript, saubere Lesefassung und Dossier.
+Ablage im Eingang nach Schulwoche: `_Eingang/<Fach>/SW01 … SW14` (SW01 = Woche ab 14.09.2026). Neben Audio und Video nimmt der Eingang auch fertige Texttranskripte an (.txt, .vtt, .md, z. B. der Zoom-Download). Hilfsskript: `python maintenance/upload_to_inbox.py <Fach> <Woche> <Datei>`.
+
 3. Ergebnis im Fachordner: `Live-Aufnahmen/` (MP3, Rohtranskript), `Dossiers/` (alle Dossiers des Fachs) und `Transkripte/` (saubere Fassung als Google Doc). Das Original landet in `_Eingang/_Verarbeitet`.
 
 Aufnahmen ohne Ton (z. B. Mikrofon statt Systemton aufgenommen) werden abgelehnt und bleiben im Eingang liegen. Status pro Datei: `inbox_state.json`. Manuell starten: `python maintenance/process_inbox.py`.
