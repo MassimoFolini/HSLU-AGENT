@@ -46,11 +46,15 @@ def test_drive():
         if os.path.exists(dossier_path):
             print("\n3. Lade generiertes DBS-Dossier hoch...")
             gw.upload_file(dossier_path, folder_id=test_folder)
-            
+
+        # Testordner wieder in den Papierkorb, damit sich im Drive nichts ansammelt
+        gw.drive_service.files().update(fileId=test_folder, body={"trashed": True}).execute()
+        print("\nTestordner wurde wieder in den Drive-Papierkorb verschoben.")
+
         print("\n" + "=" * 60)
-        print("FERTIG! Bitte öffne dein Google Drive und überprüfe den Ordner!")
+        print("FERTIG! Die Verbindung zu Drive und Docs funktioniert.")
         print("=" * 60)
-        
+
     except Exception as e:
         print(f"[FEHLER] Beim Drive-Test aufgetreten: {e}")
 
