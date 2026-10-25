@@ -46,10 +46,17 @@ def main():
         if hits:
             print("\nTrockenlauf. Mit --apply in den Papierkorb verschieben.")
         return
-    ids = {fid for fid, _ in hits}
+    ids, failed = set(), []
     for fid, path in hits:
-        gw.drive_service.files().update(fileId=fid, body={"trashed": True}).execute()
-        print("Papierkorb:", path)
+        try:
+            gw.drive_service.files().update(fileId=fid, body={"trashed": True}).execute()
+            ids.add(fid)
+            print("Papierkorb:", path)
+        except Exception as e:                       # z. B. Datei gehoert einem anderen Konto: weiter mit dem Rest
+            failed.append(path)
+            print(f"UEBERSPRUNGEN ({str(e)[:90]}): {path}")
+    if failed:
+        print(f"\n{len(failed)} Eintrag/Eintraege konnten nicht verschoben werden (Rechte).")
     try:
         with open(SYNC_FILE, "r", encoding="utf-8") as f:
             state = json.load(f)

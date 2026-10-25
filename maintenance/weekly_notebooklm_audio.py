@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import hashlib
 import json
+import time
 from datetime import datetime
 
 import sync_notebooklm_api as nlm
@@ -23,6 +24,8 @@ import weeks
 
 STATE_FILE = os.path.join(nlm.BASE, "weekly_nlm_state.json")
 MIN_SOURCES = 2
+MAX_TRIES = 3             # so oft wird eine gescheiterte Audio-Zusammenfassung wiederholt
+SETTLE_SECONDS = 45       # Wartezeit nach dem Hinzufuegen der Quellen
 FOCUS = ("Erklaere die Inhalte dieser Schulwoche wie eine ausfuehrliche Vorlesung: alle Themen der Reihe nach, "
          "mit Beispielen und Zwischenfazits, so ausfuehrlich und lang wie moeglich. Nur Fachinhalt, "
          "kein Organisatorisches (Termine, Abgaben, Raeume, Aufzeichnungen).")
@@ -105,8 +108,9 @@ def main():
             continue
         if not only_week and wk > current:
             continue
-        if f"{subject}|{weeks.label(wk)}" in state or len(items) < MIN_SOURCES:
-            continue
+        known = state.get(f"{subject}|{weeks.label(wk)}")
+        if len(items) < MIN_SOURCES or (known and (known.get("audio") or known.get("tries", 1) >= MAX_TRIES)):
+            continue                                   # fertig, oder zu oft gescheitert
         todo.append((subject, wk, items))
     print(f"{len(todo)} Wochen-Notebook(s) faellig (Maximum pro Lauf: {limit}).", flush=True)
     for subject, wk, items in todo[:limit]:
@@ -117,8 +121,13 @@ def main():
                 print(f"   [{kind}] {name}")
             continue
         api = get_api()
-        nb = api.create_notebook(title)
-        added = 0
+        key = f"{subject}|{weeks.label(wk)}"
+        known = state.get(key)
+        if known:                                      # Notebook steht schon, nur die Audio-Zusammenfassung war gescheitert
+            nb, added, tries = known["notebook"], known["sources"], known.get("tries", 1) + 1
+            items = []
+        else:
+            nb, added, tries = api.create_notebook(title), 0, 1
         for name, path, kind in items:
             try:
                 if kind == "file":
@@ -131,11 +140,12 @@ def main():
                 added += 1
             except Exception as e:
                 print(f"   FEHLER bei {name}: {str(e)[:140]}", flush=True)
+        time.sleep(SETTLE_SECONDS)                     # Quellen (v. a. PDFs) muessen verarbeitet sein, sonst 400
         r = api.call("POST", f"{nlm.API}/notebooks/{nb}/audioOverviews", extra={"Content-Type": "application/json"},
                      json={"generationOptions": {"episodeFocus": FOCUS, "languageCode": "de"}})
         ok = r.ok
         print(f"   {added} Quellen, Audio-Zusammenfassung: {'gestartet' if ok else 'FEHLER ' + r.text[:200]}", flush=True)
-        state[f"{subject}|{weeks.label(wk)}"] = {"notebook": nb, "sources": added, "audio": ok, "made": datetime.now().isoformat()}
+        state[key] = {"notebook": nb, "sources": added, "audio": ok, "tries": tries, "made": datetime.now().isoformat()}
         save_state(state)
     if not only_week and "--no-total" not in args:
         refresh_totals(get_api, state, keyword, dry)
