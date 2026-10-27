@@ -21,7 +21,11 @@ class GoogleWorkspace:
         self._authenticate()
         self.drive_service = build('drive', 'v3', credentials=self.creds)
         self.docs_service = build('docs', 'v1', credentials=self.creds)
-        self.root_folder_id = os.environ.get("GOOGLE_DRIVE_FOLDER_ID")
+        self.root_folder_id = (os.environ.get("GOOGLE_DRIVE_FOLDER_ID") or "").strip().strip("'\"")
+        if not self.root_folder_id:
+            # Ohne Zielordner wuerde alles in die Wurzel von "Meine Ablage" geschrieben. Lieber sofort abbrechen.
+            raise RuntimeError("GOOGLE_DRIVE_FOLDER_ID fehlt in .env: Ohne Zielordner wuerden Dateien in die Wurzel "
+                               "von 'Meine Ablage' geschrieben. Bitte die Ordner-ID eintragen.")
 
     def _authenticate(self):
         # 1. Option: Service Account (ideal für Server, kein Browser nötig)
