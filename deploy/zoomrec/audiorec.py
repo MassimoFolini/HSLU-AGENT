@@ -33,6 +33,23 @@ def start_client():
 
 
 _misses = 0
+PRECHECK_MINUTES = 3                                        # nur so kurz vor einem Termin wird neu angemeldet (kein Ping-Pong)
+
+
+def relogin():
+    """Klickt Sign in -> SSO -> Domaene "hslu". Kein Passwort: klappt nur, solange Firefox die HSLU-Sitzung noch hat."""
+    import pyautogui
+    logging.info("Versuche automatische Neuanmeldung (SSO hslu, ohne Passwort)")
+    subprocess.run(["wmctrl", "-a", "Zoom Workplace"], capture_output=True)
+    time.sleep(2)
+    pyautogui.click(370, 346)                               # "Sign in" bzw. "You previously signed in as ..."
+    time.sleep(6)
+    pyautogui.click(370, 304)                               # Feld "company domain"
+    pyautogui.hotkey("ctrl", "a")
+    pyautogui.write("hslu", interval=0.05)
+    time.sleep(1)
+    pyautogui.click(370, 366)                               # Continue -> Firefox -> zoommtg:// zurueck an den Client
+    time.sleep(15)
 
 
 def write_status():
@@ -49,14 +66,15 @@ def write_status():
     else:
         signed_in = None                                    # Zoom-Fenster gerade nicht da (Neustart)
     if signed_in is None:
-        return
+        return None
     try:
         with open(STATUS_FILE, "w", encoding="utf-8") as f:
             json.dump({"signed_in": signed_in, "checked": datetime.now().isoformat(timespec="seconds")}, f)
     except OSError as e:
         logging.error(f"Status nicht schreibbar: {e}")
     if not signed_in:
-        logging.warning("Zoom ist NICHT angemeldet: bitte per VNC neu einloggen")
+        logging.warning("Zoom ist NICHT angemeldet")
+    return signed_in
 
 
 def snapshot():
@@ -128,7 +146,7 @@ def record(row, end):
 
 def main():
     start_client()
-    done = set()
+    done, prechecked = set(), set()
     logging.info("audiorec bereit")
     last_check = 0
     while True:
@@ -146,6 +164,13 @@ def main():
                 logging.error(f"Ungueltige Zeile {row}: {e}")
                 continue
             key = (row["description"], start)
+            if start - timedelta(minutes=PRECHECK_MINUTES) <= now < start and key not in prechecked:
+                st = write_status()                       # None = noch unklar, im naechsten Durchlauf (20 s) erneut
+                if st is not None:
+                    prechecked.add(key)                   # einmal pro Termin: angemeldet? sonst passwortlos neu anmelden
+                if st is False:
+                    relogin()
+                    logging.info(f"Nach Neuanmeldung angemeldet: {bool(write_status())}")
             if start <= now < end - timedelta(minutes=2) and key not in done:
                 done.add(key)
                 record(row, end)

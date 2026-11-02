@@ -32,20 +32,35 @@ def env():
 
 
 def send(cfg, title, text, urgent):
+    """Schickt ueber alle eingerichteten Kanaele. True, wenn mindestens einer geklappt hat."""
+    sent = False
     if cfg.get("NTFY_TOPIC"):
-        req = urllib.request.Request(f"https://ntfy.sh/{cfg['NTFY_TOPIC']}", data=text.encode("utf-8"), method="POST",
-                                     headers={"Title": title, "Priority": "urgent" if urgent else "default",
-                                              "Tags": "rotating_light" if urgent else "white_check_mark"})
-        urllib.request.urlopen(req, timeout=20).read()
+        try:
+            req = urllib.request.Request(f"https://ntfy.sh/{cfg['NTFY_TOPIC']}", data=text.encode("utf-8"), method="POST",
+                                         headers={"Title": title, "Priority": "urgent" if urgent else "default",
+                                                  "Tags": "rotating_light" if urgent else "white_check_mark"})
+            urllib.request.urlopen(req, timeout=20).read()
+            sent = True
+        except Exception as e:                        # z. B. 429 Tageskontingent: Mail trotzdem versuchen
+            print("ntfy fehlgeschlagen:", e, flush=True)
     if cfg.get("SMTP_HOST") and cfg.get("MAIL_TO"):
-        msg = EmailMessage()
-        msg["Subject"], msg["From"], msg["To"] = title, cfg.get("SMTP_USER", cfg["MAIL_TO"]), cfg["MAIL_TO"]
-        msg.set_content(text)
-        with smtplib.SMTP(cfg["SMTP_HOST"], int(cfg.get("SMTP_PORT", 587)), timeout=30) as s:
-            s.starttls()
-            if cfg.get("SMTP_USER"):
-                s.login(cfg["SMTP_USER"], cfg.get("SMTP_PASS", ""))
-            s.send_message(msg)
+        try:
+            send_mail(cfg, title, text)
+            sent = True
+        except Exception as e:
+            print("Mail fehlgeschlagen:", e, flush=True)
+    return sent
+
+
+def send_mail(cfg, title, text):
+    msg = EmailMessage()
+    msg["Subject"], msg["From"], msg["To"] = title, cfg.get("SMTP_USER", cfg["MAIL_TO"]), cfg["MAIL_TO"]
+    msg.set_content(text)
+    with smtplib.SMTP(cfg["SMTP_HOST"], int(cfg.get("SMTP_PORT", 587)), timeout=30) as s:
+        s.starttls()
+        if cfg.get("SMTP_USER"):
+            s.login(cfg["SMTP_USER"], cfg.get("SMTP_PASS", ""))
+        s.send_message(msg)
 
 
 def main():
@@ -67,10 +82,13 @@ def main():
         last = state.get("alerted")
         if last and now - datetime.fromisoformat(last) < REPEAT:
             return
-        send(cfg, "HSLU Zoom-Aufnahme: neu einloggen!",
+        ok = send(cfg, "HSLU Zoom-Aufnahme: neu einloggen!",
              f"{problem}.\nDie Vorlesungen werden NICHT aufgenommen, bis du dich per VNC neu anmeldest:\n"
              "ssh -i ~/.ssh/id_ed25519 -L 5901:127.0.0.1:5901 ubuntu@179.237.110.120\n"
              "dann VNC-Viewer auf localhost:5901, in Zoom: Sign in -> SSO -> hslu.", True)
+        if not ok:
+            print(now, "Warnung konnte ueber keinen Kanal gesendet werden:", problem, flush=True)
+            return                                    # naechster Lauf versucht es wieder
         state["alerted"] = now.isoformat(timespec="seconds")
         print(now, "Warnung gesendet:", problem, flush=True)
     elif state.get("alerted"):

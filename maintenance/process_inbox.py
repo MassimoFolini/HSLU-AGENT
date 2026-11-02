@@ -7,11 +7,12 @@ So benutzt du es:
      SWnn ist die Schulwoche (SW01 = Woche ab 14.09.2026). Die Fach- und Wochenordner legt dieses Skript selbst an.
      Dateien direkt im Fachordner gehen auch: die Woche kommt dann aus dem Dateinamen oder dem Datum.
   2. Alle 15 Minuten prueft der Server den Eingang (systemd-Timer hslu-inbox.timer).
-  3. Ergebnis im Drive, jeweils im Fachordner:
-        Live-Aufnahmen/   MP3 und Rohtranskript (.txt)
+  3. Ergebnis im Drive, jeweils im Fachordner (nur Text, keine Audio- oder Videodateien):
+        Transkripte/      Rohtranskript mit Zeitmarken (.txt) und saubere Lesefassung (Google Doc)
         Dossiers/         Dossier (Google Doc), alle Dossiers des Fachs in einem Ordner
-        Transkripte/      saubere Lesefassung (Google Doc)
-     Die Originaldatei wandert nach _Eingang/_Verarbeitet.
+     Audio/Video wandert nach dem Transkribieren in den Drive-Papierkorb und wird lokal geloescht.
+     Texttranskripte wandern nach _Eingang/_Verarbeitet.
+  Zusaetzlich: fertige Aufnahmen des Zoom-Rekorders (/opt/zoomrec/recordings) laufen denselben Weg, die MP3 wird danach geloescht.
 
 Manuell: python maintenance/process_inbox.py          (aus dem Projektroot)
 Stille Aufnahmen (z. B. Mikrofon statt Systemton aufgenommen) werden abgelehnt und bleiben im Eingang liegen.
@@ -159,8 +160,6 @@ def process_file(gw, f, subject, sub_id, done_id, folder_week=None):
     os.makedirs(out_dir, exist_ok=True)
     mp3 = os.path.join(out_dir, base + ".mp3")
     txt = os.path.join(out_dir, base + ".txt")
-    clean_md = os.path.join(out_dir, f"Transkript_{base}.md")
-    dossier_md = os.path.join(out_dir, f"Dossier_{base}.md")
 
     text_input = is_text(f)
     if text_input:
@@ -175,17 +174,37 @@ def process_file(gw, f, subject, sub_id, done_id, folder_week=None):
         with open(txt, "r", encoding="utf-8") as fh:
             transcript = fh.read()
     else:
-        if not os.path.exists(mp3):
+        if not os.path.exists(txt) and not os.path.exists(mp3):
             raw = os.path.join(out_dir, base + os.path.splitext(f["name"])[1].lower())
             print(f"   Lade herunter: {f['name']} ({int(f.get('size', 0)) / 1e6:.0f} MB)", flush=True)
             download(gw, f["id"], raw)
             print("   Wandle in MP3 um ...", flush=True)
             to_mp3(raw, mp3)
-        from transcriber import Transcriber
-        transcript = Transcriber().transcribe(mp3)          # wirft bei Stille
+        transcript = transcribe_checked(mp3)
+    publish(gw, subject, stem, base, out_dir, txt, transcript)
+    if os.path.exists(mp3):
+        os.remove(mp3)                                    # erst nach erfolgreichem Upload: nur der Text bleibt
+    if text_input:
+        gw.drive_service.files().update(fileId=f["id"], addParents=done_id, removeParents=sub_id, fields="id").execute()
+    else:
+        # Nur der Text wird gebraucht: Audio/Video in den Drive-Papierkorb (30 Tage wiederherstellbar)
+        gw.drive_service.files().update(fileId=f["id"], body={"trashed": True}).execute()
+    print(f"   Fertig: {f['name']} -> {subject}/Transkripte und {subject}/Dossiers", flush=True)
+
+
+def transcribe_checked(mp3):
+    """Transkribiert (Ergebnis .txt neben der MP3, dient auch als Cache fuer Wiederholungen)."""
+    from transcriber import Transcriber
+    transcript = Transcriber().transcribe(mp3)              # wirft bei Stille
     if len(transcript.split()) < 30:
         raise RuntimeError("Transkript praktisch leer, vermutlich keine Sprache")
+    return transcript
 
+
+def publish(gw, subject, stem, base, out_dir, txt, transcript):
+    """Saubere Lesefassung und Dossier erzeugen und mit dem Rohtranskript nach Drive laden."""
+    clean_md = os.path.join(out_dir, f"Transkript_{base}.md")
+    dossier_md = os.path.join(out_dir, f"Dossier_{base}.md")
     import google.generativeai as genai
     import clean_transcripts
     genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
@@ -203,16 +222,59 @@ def process_file(gw, f, subject, sub_id, done_id, folder_week=None):
             fh.write(dossier)
 
     subject_folder = gw.get_or_create_folder(subject)
-    rec_folder = gw.get_or_create_folder("Live-Aufnahmen", parent_id=subject_folder)
     tr_folder = gw.get_or_create_folder("Transkripte", parent_id=subject_folder)
-    if not text_input:
-        gw.upload_file(mp3, rec_folder, as_google_doc=False)
-        gw.upload_file(txt, rec_folder, as_google_doc=False)
-    gw.upload_file(dossier_md, gw.get_or_create_folder("Dossiers", parent_id=subject_folder), as_google_doc=True)
+    gw.upload_file(txt, tr_folder, as_google_doc=False)                  # Rohtranskript mit Zeitmarken
     gw.upload_file(clean_md, tr_folder, as_google_doc=True)
+    gw.upload_file(dossier_md, gw.get_or_create_folder("Dossiers", parent_id=subject_folder), as_google_doc=True)
 
-    gw.drive_service.files().update(fileId=f["id"], addParents=done_id, removeParents=sub_id, fields="id").execute()
-    print(f"   Fertig: {f['name']} -> {subject}/Live-Aufnahmen und {subject}/Transkripte", flush=True)
+
+ZOOMREC_DIR = "/opt/zoomrec/recordings"
+ZOOMREC_SUBJECTS = {"ASTAT": "Applied_Statistics", "DBS": "Datenbanksysteme", "VSK": "Verteilte_Systeme",
+                    "AEDCIT": "Academic_English", "KRR": "Logical_Reasoning_in_AI", "PREN": "Produktentwicklung_PREN1"}
+
+
+def process_zoomrec(gw, state):
+    """Fertige zoomrec-Aufnahmen (YYYY-MM-DD_HH-MM_<Kurz>.mp3) transkribieren, Text ablegen, MP3 loeschen."""
+    if not os.path.isdir(ZOOMREC_DIR):
+        return 0
+    done = 0
+    for name in sorted(os.listdir(ZOOMREC_DIR)):
+        m = re.match(r"(\d{4}-\d\d-\d\d)_(\d\d-\d\d)_([A-Za-z]+)", name)
+        path = os.path.join(ZOOMREC_DIR, name)
+        if not (m and name.endswith(".mp3")) or time.time() - os.path.getmtime(path) < 300:
+            continue                                      # laeuft noch (ffmpeg schreibt) oder kein zoomrec-Name
+        key = "zoomrec:" + name
+        st = state.get(key, {})
+        if st.get("attempts", 0) >= MAX_ATTEMPTS:
+            continue
+        subject = ZOOMREC_SUBJECTS.get(m.group(3).upper())
+        if not subject:
+            print(f"   zoomrec: unbekanntes Fach in {name}, uebersprungen", flush=True)
+            continue
+        label = weeks.label(weeks.week_of_date(datetime.fromisoformat(m.group(1))) or 0)
+        base = f"{label}_{m.group(1)}_Vorlesung_{m.group(2)}"
+        out_dir = os.path.join(OUT_ROOT, subject, label)
+        os.makedirs(out_dir, exist_ok=True)
+        mp3, txt = os.path.join(out_dir, base + ".mp3"), os.path.join(out_dir, base + ".txt")
+        print(f"\n=== zoomrec {subject}: {name}", flush=True)
+        try:
+            if os.path.getsize(path) < MIN_SIZE:
+                raise RuntimeError("Aufnahme zu klein, vermutlich still")
+            os.replace(path, mp3)
+            transcript = transcribe_checked(mp3)
+            publish(gw, subject, f"Vorlesung {m.group(1)} {m.group(2)}", base, out_dir, txt, transcript)
+            os.remove(mp3)                                # nur der Text wird gebraucht
+            state[key] = {"status": "fertig", "subject": subject, "at": datetime.now().isoformat()}
+            done += 1
+        except Exception as e:
+            print(f"   FEHLER: {e}", flush=True)
+            if os.path.exists(mp3) and not os.path.exists(path):
+                os.replace(mp3, path)                     # fuer den naechsten Versuch zurueck
+            still = "still" in str(e).lower()
+            state[key] = {"status": "still" if still else "fehler", "error": str(e)[:300],
+                          "attempts": st.get("attempts", 0) + (MAX_ATTEMPTS if still else 1)}
+        save_state(state)
+    return done
 
 
 def main():
@@ -255,6 +317,7 @@ def main():
                 state[f["id"]] = {"status": "fehler", "attempts": st.get("attempts", 0) + 1,
                                   "error": str(e)[:300], "modified": f["modifiedTime"], "name": f["name"]}
             save_state(state)
+    todo += process_zoomrec(gw, state)
     print(f"\nEingang geprueft: {todo} Datei(en) bearbeitet.", flush=True)
 
 
