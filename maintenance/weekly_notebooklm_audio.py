@@ -6,6 +6,7 @@ Quellen genau dieser Woche; die Audio-Zusammenfassung erzeugt NotebookLM (Studio
   python maintenance/weekly_notebooklm_audio.py --dry-run
   python maintenance/weekly_notebooklm_audio.py --subject Applied --week 3
   python maintenance/weekly_notebooklm_audio.py --max 3        # hoechstens 3 neue Wochen-Notebooks pro Lauf
+  --all                                                        # auch kommende Wochen, schon wenn Material da ist
   --no-total                                                   # Gesamt-Audio pro Fach nicht aktualisieren
 
 Aus dem Projektroot starten. Zustand: weekly_nlm_state.json. Nur Wochen bis zur aktuellen Schulwoche.
@@ -91,7 +92,8 @@ def main():
     keyword = args[args.index("--subject") + 1] if "--subject" in args else ""
     only_week = int(args[args.index("--week") + 1]) if "--week" in args else None
     limit = int(args[args.index("--max") + 1]) if "--max" in args else 3
-    current = weeks.week_of_date(datetime.now()) or 0
+    current = 99 if "--all" in args else (weeks.week_of_date(datetime.now()) or 0)
+    min_sources = 1 if "--all" in args else MIN_SOURCES
     state = load_state()
     apis = []
 
@@ -109,7 +111,7 @@ def main():
         if not only_week and wk > current:
             continue
         known = state.get(f"{subject}|{weeks.label(wk)}")
-        if len(items) < MIN_SOURCES or (known and (known.get("audio") or known.get("tries", 1) >= MAX_TRIES)):
+        if len(items) < min_sources or (known and (known.get("audio") or known.get("tries", 1) >= MAX_TRIES)):
             continue                                   # fertig, oder zu oft gescheitert
         todo.append((subject, wk, items))
     print(f"{len(todo)} Wochen-Notebook(s) faellig (Maximum pro Lauf: {limit}).", flush=True)

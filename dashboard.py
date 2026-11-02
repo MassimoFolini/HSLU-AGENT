@@ -327,6 +327,31 @@ HTML_TEMPLATE = """
     </script>
 </head>
 <body class="h-full">
+    <div id="zoom-alert" class="hidden bg-red-600 text-white text-center font-bold text-xl py-4 px-4">
+        ZOOM IST ABGEMELDET: Vorlesungen werden NICHT aufgenommen. Bitte per VNC neu einloggen
+        (Tunnel auf Port 5901, VNC-Viewer auf localhost:5901, in Zoom: Sign in &rarr; SSO &rarr; hslu).
+        <div id="zoom-alert-detail" class="text-sm font-normal mt-1"></div>
+    </div>
+    <script>
+        function checkZoom() {
+            fetch('/api/zoom_status').then(r => r.json()).then(s => {
+                document.getElementById('zoom-alert').classList.toggle('hidden', s.ok);
+                const card = document.getElementById('card-zoomrec-status');
+                if (card) card.innerHTML = s.ok
+                    ? '<span class="text-green-600 font-medium"><i class="fas fa-check-circle mr-1"></i>Angemeldet</span>'
+                    : '<span class="text-red-600 font-bold"><i class="fas fa-exclamation-triangle mr-1"></i>' + (s.stale ? 'Keine Meldung' : 'Abgemeldet') + '</span>';
+                document.getElementById('zoom-alert-detail').textContent =
+                    s.stale ? 'Der Aufnahme-Container meldet sich nicht (letzter Stand: ' + (s.checked || 'nie') + ').'
+                            : 'Letzte Pruefung: ' + s.checked;
+            }).catch(() => {});
+        }
+        checkZoom();
+        setInterval(checkZoom, 60000);
+        setInterval(() => {
+            const img = document.getElementById('live-view');
+            if (img) img.src = '/api/current_view?t=' + Date.now();
+        }, 15000);
+    </script>
     <div class="min-h-full">
         <!-- Navbar -->
         <nav class="bg-gray-900 border-b border-gray-800">
@@ -426,6 +451,10 @@ HTML_TEMPLATE = """
                                 <div class="flex justify-between items-center py-1">
                                     <span class="text-gray-600"><i class="fab fa-google text-red-500 mr-2"></i>Google Drive Cloud</span>
                                     <span id="card-drive-status"><i class="fas fa-spinner fa-spin text-gray-400"></i></span>
+                                </div>
+                                <div class="flex justify-between items-center py-1">
+                                    <span class="text-gray-600"><i class="fas fa-microphone text-blue-500 mr-2"></i>Zoom-Aufnahme (Server)</span>
+                                    <span id="card-zoomrec-status"><i class="fas fa-spinner fa-spin text-gray-400"></i></span>
                                 </div>
                             </div>
                             <button onclick="switchTab('settings-tab')" class="mt-4 w-full flex justify-center py-2 px-3 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg-gray-50 hover:bg-gray-100">
@@ -708,18 +737,41 @@ def index():
 @app.route('/api/current_view')
 @requires_auth
 def get_current_view():
-    path = os.path.join("downloads", "current_view.png")
-    if os.path.exists(path):
-        return send_file(path, mimetype='image/png')
+    # Neuester Screen gewinnt: Scraper-Browser oder Zoom-Aufnahme-Container
+    paths = [p for p in (os.path.join("downloads", "current_view.png"), ZOOMREC_LIVE_PNG) if os.path.exists(p)]
+    if paths:
+        return send_file(max(paths, key=os.path.getmtime), mimetype='image/png', max_age=0)
     return "", 404
 
 @app.route('/log')
 @requires_auth
 def get_log():
-    if not os.path.exists(LOG_FILE):
-        return "System bereit. Noch keine Log-Einträge vorhanden."
-    with open(LOG_FILE, "r", encoding="utf-8", errors="replace") as f:
-        return "".join(f.readlines()[-300:])
+    text = "System bereit. Noch keine Log-Einträge vorhanden.\n"
+    if os.path.exists(LOG_FILE):
+        with open(LOG_FILE, "r", encoding="utf-8", errors="replace") as f:
+            text = "".join(f.readlines()[-300:])
+    if os.path.exists(ZOOMREC_LOG):
+        with open(ZOOMREC_LOG, "r", encoding="utf-8", errors="replace") as f:
+            text += "\n===== Zoom-Aufnahme (zoomrec) =====\n" + "".join(f.readlines()[-40:])
+    return text
+
+ZOOMREC_DIR = "/opt/zoomrec/recordings"
+ZOOMREC_LIVE_PNG = os.path.join(ZOOMREC_DIR, "live.png")
+ZOOMREC_LOG = os.path.join(ZOOMREC_DIR, "audiorec.log")
+ZOOM_STATUS_FILE = os.path.join(ZOOMREC_DIR, "zoom_status.json")
+
+@app.route('/api/zoom_status')
+@requires_auth
+def zoom_status():
+    # Schreibt audiorec.py im zoomrec-Container alle 2 Minuten; aelter als 20 Minuten = Container meldet nicht
+    try:
+        with open(ZOOM_STATUS_FILE, "r", encoding="utf-8") as f:
+            st = json.load(f)
+        stale = datetime.now() - datetime.fromisoformat(st["checked"]) > timedelta(minutes=20)
+        return jsonify({"ok": bool(st.get("signed_in")) and not stale, "signed_in": st.get("signed_in"),
+                        "checked": st["checked"], "stale": stale})
+    except Exception as e:
+        return jsonify({"ok": False, "signed_in": None, "checked": None, "stale": True, "error": str(e)})
 
 @app.route('/status')
 @requires_auth

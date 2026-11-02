@@ -1,0 +1,10 @@
+[Unit]
+Description=HTTPS reverse proxy for HSLU dashboard
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/nginx -c /etc/hslu-proxy/nginx.conf -g "daemon off;"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

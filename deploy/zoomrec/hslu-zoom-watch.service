@@ -1,0 +1,6 @@
+[Unit]
+Description=HSLU Warnung, wenn Zoom in zoomrec abgemeldet ist
+[Service]
+Type=oneshot
+User=ubuntu
+ExecStart=/usr/bin/python3 /opt/zoomrec/notify_signout.py

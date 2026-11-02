@@ -1,0 +1,7 @@
+testresources
+pyautogui
+schedule
+psutil
+opencv-python
+pillow>=9.2.0,<11
+requests

@@ -31,3 +31,7 @@ repify_prozess.*
 client_secret*.json
 token_gelso*.json
 recordings/
+stray_root_candidates.json
+meetings.csv
+notify.env
+.vnc_pw

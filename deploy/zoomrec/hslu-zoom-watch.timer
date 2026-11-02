@@ -1,0 +1,7 @@
+[Unit]
+Description=Zoom-Login alle 5 Minuten pruefen
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=5min
+[Install]
+WantedBy=timers.target
