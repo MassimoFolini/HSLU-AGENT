@@ -162,7 +162,9 @@ Das Dashboard zeigt unabhängig davon einen roten Balken und in "Zugangsdaten-St
 
 - Todoist: Projekt `HSLU`, ein Abschnitt pro Fach, Label `SWnn`. Fristen stehen als Fälligkeitsdatum.
 - Doppelte Aufgaben verhindert `weekly_tasks_state.json` plus ein Vergleich mit den offenen Aufgaben.
+- Pro Fach und Woche wird nur einmal angelegt (Gemini formuliert jedes Mal anders, sonst gäbe es Doppelte). Nochmal erzwingen: `--force`.
 - Manuell: `python maintenance/weekly_tasks.py --dry-run` (zeigt nur an), `--week 9`, `--subject Datenbank`.
+- **Warnung:** Das Ergebnis jedes Laufs steht in `weekly_tasks_status.json`. Bei einem Fehler (z. B. Token ungültig, Gemini oder Todoist nicht erreichbar) zeigt das Dashboard einen orangen Balken und schickt eine Nachricht über die Kanäle in `/opt/zoomrec/notify.env` (ntfy, Mail). Der Balken erscheint auch, wenn der Lauf während des Semesters länger als 8 Tage ausbleibt.
 - Todoist wurde gewählt, weil der Gratis-Plan, eine offene REST-API (`https://api.todoist.com/api/v1`, Bearer-Token) und eine Web-Oberfläche vorhanden sind.
 
 ## Schulwochen und Ablage

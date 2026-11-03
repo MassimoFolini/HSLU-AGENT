@@ -336,6 +336,23 @@ HTML_TEMPLATE = """
         </button>
         <div id="zoom-alert-detail" class="text-sm font-normal mt-1"></div>
     </div>
+    <div id="tasks-alert" class="hidden bg-amber-500 text-white text-center font-bold text-lg py-3 px-4">
+        WOCHEN-AUFGABEN: Der Sonntagslauf ist <span id="tasks-alert-what">fehlgeschlagen</span>. Es sind evtl. keine neuen Aufgaben in Todoist.
+        <div id="tasks-alert-detail" class="text-sm font-normal mt-1"></div>
+    </div>
+    <script>
+        function checkTasks() {
+            fetch('/api/tasks_status').then(r => r.json()).then(s => {
+                document.getElementById('tasks-alert').classList.toggle('hidden', s.ok);
+                document.getElementById('tasks-alert-what').textContent = s.failed ? 'fehlgeschlagen' : 'ausgeblieben';
+                document.getElementById('tasks-alert-detail').textContent =
+                    (s.problems && s.problems.length ? s.problems.join(' | ') + '  ' : '') +
+                    'Letzter Lauf: ' + (s.at || 'nie') + '. Log auf dem Server: journalctl -u hslu-tasks';
+            }).catch(() => {});
+        }
+        document.addEventListener('DOMContentLoaded', checkTasks);
+        setInterval(checkTasks, 300000);
+    </script>
     <script>
         let zoomVncPw = null;
         fetch('/api/zoom_vnc_password').then(r => r.json()).then(d => { zoomVncPw = d.password; }).catch(() => {});
@@ -809,6 +826,31 @@ def zoom_vnc_password():
             return jsonify({"password": f.read().strip()})
     except OSError:
         return jsonify({"password": None})
+
+TASKS_STATUS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'weekly_tasks_status.json')
+
+@app.route('/api/tasks_status')
+@requires_auth
+def tasks_status():
+    # Ergebnis des letzten Sonntagslaufs (weekly_tasks.py). Warnung bei Fehler oder wenn der Lauf in der Schulzeit
+    # laenger als 8 Tage nicht stattgefunden hat. Nach Semesterende (keine Schulwoche mehr) keine Warnung.
+    try:
+        import weeks
+        in_semester = weeks.week_of_date(datetime.now().date()) is not None
+    except Exception:
+        in_semester = True
+    try:
+        with open(TASKS_STATUS_FILE, "r", encoding="utf-8") as f:
+            st = json.load(f)
+        age_days = (datetime.now() - datetime.fromisoformat(st["at"])).days
+        stale = in_semester and age_days > 8
+        return jsonify({"ok": bool(st.get("ok")) and not stale, "failed": not st.get("ok"), "stale": stale,
+                        "at": st["at"], "week": st.get("week"), "created": st.get("created"), "problems": st.get("problems", [])})
+    except Exception:
+        # Noch nie gelaufen: erst warnen, wenn der erste Sonntag seit Einrichtung vorbei ist (Einrichtung 03.11.2026)
+        overdue = in_semester and datetime.now().date() > datetime(2026, 11, 9).date()
+        return jsonify({"ok": not overdue, "failed": False, "stale": overdue, "at": None, "week": None,
+                        "created": 0, "problems": []})
 
 @app.route('/api/zoom_status')
 @requires_auth

@@ -7,9 +7,12 @@ Folien, Uebungen und Notebooks der Zielwoche. Todoist: Projekt "HSLU", ein Absch
   python maintenance/weekly_tasks.py                    # naechste Woche (am Sonntag), sonst die laufende
   python maintenance/weekly_tasks.py --week 9           # bestimmte Schulwoche
   python maintenance/weekly_tasks.py --subject Applied  # nur Faecher mit diesem Stichwort
+  python maintenance/weekly_tasks.py --force            # auch Faecher, die diese Woche schon angelegt wurden
 
 Aus dem Projektroot starten. Braucht TODOIST_API_TOKEN und GEMINI_API_KEY in der .env.
-Zustand: weekly_tasks_state.json (verhindert doppelte Aufgaben).
+Zustand: weekly_tasks_state.json (verhindert doppelte Aufgaben). Ergebnis des letzten Laufs: weekly_tasks_status.json
+(das Dashboard zeigt einen Warnbalken, wenn er fehlgeschlagen oder zu alt ist; bei Fehlern kommt zusaetzlich eine
+Nachricht ueber die Kanaele in /opt/zoomrec/notify.env, siehe notify_signout.py).
 """
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -33,6 +36,7 @@ import weeks
 
 BASE = nlm.BASE
 STATE_FILE = os.path.join(BASE, "weekly_tasks_state.json")
+STATUS_FILE = os.path.join(BASE, "weekly_tasks_status.json")
 TODOIST = "https://api.todoist.com/api/v1"
 PROJECT = "HSLU"
 MAX_TASKS = 6               # pro Fach und Woche
@@ -202,8 +206,44 @@ def clean_due(value, mon):
     return d.isoformat() if mon - timedelta(days=7) <= d <= mon + timedelta(days=35) else None
 
 
+def write_status(ok, label, created, problems):
+    with open(STATUS_FILE, "w", encoding="utf-8") as f:
+        json.dump({"ok": ok, "at": datetime.now().isoformat(timespec="seconds"), "week": label, "created": created,
+                   "problems": problems[:10]}, f, indent=2, ensure_ascii=False)
+
+
+def alert(label, problems):
+    """Nachricht ueber die gleichen Kanaele wie die Zoom-Warnung (ntfy, Mail). Fehler hier brechen nichts ab."""
+    try:
+        sys.path.insert(0, "/opt/zoomrec")
+        import notify_signout as ns
+        ns.send(ns.env(), f"HSLU Wochen-Aufgaben ({label}) fehlgeschlagen",
+                "Die Sonntags-Aufgaben konnten nicht (vollstaendig) angelegt werden:\n- " + "\n- ".join(problems[:8]) +
+                "\nLog: journalctl -u hslu-tasks", True)
+    except Exception as e:
+        print(f"   Warnung konnte nicht gesendet werden: {e}", flush=True)
+
+
 def main():
     args = sys.argv[1:]
+    dry = "--dry-run" in args
+    wk = target_week(args)
+    label = weeks.label(wk) if wk else "?"
+    created, problems = [0], []
+    try:
+        run(args, created, problems)
+    except Exception as e:                                   # z. B. Token fehlt, Todoist nicht erreichbar
+        problems.append(str(e)[:200])
+    if dry:
+        return
+    write_status(not problems, label, created[0], problems)
+    if problems:
+        print("\nPROBLEME:\n- " + "\n- ".join(problems), flush=True)
+        alert(label, problems)
+        sys.exit(1)
+
+
+def run(args, created_box, problems):
     dry = "--dry-run" in args
     keyword = args[args.index("--subject") + 1] if "--subject" in args else ""
     wk = target_week(args)
@@ -216,10 +256,13 @@ def main():
     td = None if dry else Todoist()
     project_id = None if dry else td.project()
     existing = None if dry else td.open_titles(project_id)
-    created = 0
     for subject, dirs in sorted(nlm.subjects_on_disk().items()):
         if keyword and keyword.lower() not in subject.lower():
             continue
+        done_key = f"_fertig|{subject}|{label}"
+        if not dry and done_key in state and "--force" not in args:
+            print(f"\n=== {subject}: {label} schon angelegt (mit --force trotzdem neu)", flush=True)
+            continue                                         # Gemini formuliert jedes Mal anders: nie zweimal pro Woche
         material = material_for(subject, dirs, wk)
         if not material:
             print(f"\n=== {subject}: kein Material fuer {label}", flush=True)
@@ -229,6 +272,7 @@ def main():
             tasks = ask_gemini(subject, wk, material)
         except RuntimeError as e:
             print(f"   FEHLER: {e}", flush=True)
+            problems.append(f"{subject}: {str(e)[:120]}")
             continue
         if not tasks:
             print("   keine konkreten Aufgaben", flush=True)
@@ -244,13 +288,21 @@ def main():
             if key in state or title.lower() in existing:
                 print(line + "  [schon vorhanden]", flush=True)
                 continue
-            section_id = section_id or td.section(project_id, subject.replace("_", " "))
-            state[key] = td.add(project_id, section_id, title, note, due, label)
+            try:
+                section_id = section_id or td.section(project_id, subject.replace("_", " "))
+                state[key] = td.add(project_id, section_id, title, note, due, label)
+            except RuntimeError as e:
+                print(f"   FEHLER: {e}", flush=True)
+                problems.append(f"{subject}: {str(e)[:120]}")
+                break
             existing.add(title.lower())
             save_state(state)
-            created += 1
+            created_box[0] += 1
             print(line, flush=True)
-    print(f"\nFertig. {created} neue Aufgabe(n) in Todoist." if not dry else "\nFertig (nichts angelegt).")
+        if not dry and tasks and not any(pr.startswith(subject + ":") for pr in problems):
+            state[done_key] = datetime.now().isoformat(timespec="seconds")
+            save_state(state)
+    print(f"\nFertig. {created_box[0]} neue Aufgabe(n) in Todoist." if not dry else "\nFertig (nichts angelegt).")
 
 
 if __name__ == "__main__":
