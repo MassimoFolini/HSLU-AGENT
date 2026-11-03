@@ -36,9 +36,12 @@ class GoogleWorkspace:
             )
             return
 
-        # 2. Option: Standard OAuth 2.0 Flow
-        if os.path.exists('token.json'):
-            self.creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+        # 2. Option: Standard OAuth 2.0 Flow. GOOGLE_TOKEN_FILE waehlt das Konto (Standard: token_gelso.json fuer das
+        #    Gelso-Konto, dem der Zielordner gehoert; dessen Sitzung laeuft nicht nach 7 Tagen ab).
+        default_token = "token_gelso.json" if os.path.exists("token_gelso.json") else "token.json"
+        token_file = os.environ.get("GOOGLE_TOKEN_FILE", default_token)
+        if os.path.exists(token_file):
+            self.creds = Credentials.from_authorized_user_file(token_file)
             
         if not self.creds or not self.creds.valid:
             if self.creds and self.creds.expired and self.creds.refresh_token:
@@ -63,7 +66,7 @@ class GoogleWorkspace:
                 flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
                 self.creds = flow.run_local_server(port=0)
                 
-            with open('token.json', 'w', encoding='utf-8') as token:
+            with open(token_file, 'w', encoding='utf-8') as token:
                 token.write(self.creds.to_json())
 
     def get_or_create_folder(self, folder_name, parent_id=None):

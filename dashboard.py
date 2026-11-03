@@ -328,24 +328,36 @@ HTML_TEMPLATE = """
 </head>
 <body class="h-full">
     <div id="zoom-alert" class="hidden bg-red-600 text-white text-center font-bold text-xl py-4 px-4">
-        ZOOM IST ABGEMELDET: Vorlesungen werden NICHT aufgenommen. Bitte per VNC neu einloggen
-        (Tunnel auf Port 5901, VNC-Viewer auf localhost:5901, in Zoom: Sign in &rarr; SSO &rarr; hslu).
+        ZOOM IST ABGEMELDET: Vorlesungen werden NICHT aufgenommen.
+        <button onclick="openZoomLogin()" class="ml-3 bg-white text-red-700 font-bold text-base px-4 py-2 rounded shadow hover:bg-red-50">
+            <i class="fas fa-sign-in-alt mr-1"></i> Jetzt in Zoom anmelden
+        </button>
         <div id="zoom-alert-detail" class="text-sm font-normal mt-1"></div>
     </div>
     <script>
+        let zoomVncPw = null;
+        fetch('/api/zoom_vnc_password').then(r => r.json()).then(d => { zoomVncPw = d.password; }).catch(() => {});
+        function openZoomLogin() {
+            // Bildschirm des Aufnahme-Containers (noVNC) im neuen Tab; VNC-Passwort in die Zwischenablage
+            if (zoomVncPw && navigator.clipboard) navigator.clipboard.writeText(zoomVncPw).catch(() => {});
+            window.open('/vnc/vnc.html?path=vnc/websockify&autoconnect=1&resize=scale', '_blank');
+            alert('VNC-Passwort: ' + (zoomVncPw || '(nicht gefunden)') + '  (liegt in der Zwischenablage, mit Strg+V einfuegen)' +
+                  '\\n\\nIm Zoom-Fenster: auf deine E-Mail bzw. "Sign in" klicken, dann SSO, Domaene "hslu", ' +
+                  'im Firefox anmelden und den Link mit Zoom oeffnen. Fertig, wenn oben "Licensed account" steht.');
+        }
         function checkZoom() {
             fetch('/api/zoom_status').then(r => r.json()).then(s => {
                 document.getElementById('zoom-alert').classList.toggle('hidden', s.ok);
                 const card = document.getElementById('card-zoomrec-status');
                 if (card) card.innerHTML = s.ok
-                    ? '<span class="text-green-600 font-medium"><i class="fas fa-check-circle mr-1"></i>Angemeldet</span>'
+                    ? '<span class="text-green-600 font-semibold"><i class="fas fa-check-circle mr-1"></i>' + (s.idle ? 'Aktiv (Standby)' : 'Aktiv') + '</span>'
                     : '<span class="text-red-600 font-bold"><i class="fas fa-exclamation-triangle mr-1"></i>' + (s.stale ? 'Keine Meldung' : 'Abgemeldet') + '</span>';
                 document.getElementById('zoom-alert-detail').textContent =
                     s.stale ? 'Der Aufnahme-Container meldet sich nicht (letzter Stand: ' + (s.checked || 'nie') + ').'
                             : 'Letzte Pruefung: ' + s.checked;
             }).catch(() => {});
         }
-        checkZoom();
+        document.addEventListener('DOMContentLoaded', checkZoom);   // erst wenn die Status-Zeile existiert
         setInterval(checkZoom, 60000);
         setInterval(() => {
             const img = document.getElementById('live-view');
@@ -456,6 +468,9 @@ HTML_TEMPLATE = """
                                     <span class="text-gray-600"><i class="fas fa-microphone text-blue-500 mr-2"></i>Zoom-Aufnahme (Server)</span>
                                     <span id="card-zoomrec-status"><i class="fas fa-spinner fa-spin text-gray-400"></i></span>
                                 </div>
+                                <button onclick="openZoomLogin()" class="mt-2 w-full flex justify-center py-2 px-3 rounded-md shadow-sm text-xs font-medium text-white bg-blue-600 hover:bg-blue-700">
+                                    <i class="fas fa-sign-in-alt mr-2"></i> Zoom anmelden (Server-Bildschirm)
+                                </button>
                             </div>
                             <button onclick="switchTab('settings-tab')" class="mt-4 w-full flex justify-center py-2 px-3 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg-gray-50 hover:bg-gray-100">
                                 <i class="fas fa-key mr-2 text-amber-500"></i> Zugangsdaten öffnen & ändern
@@ -759,6 +774,22 @@ ZOOMREC_DIR = "/opt/zoomrec/recordings"
 ZOOMREC_LIVE_PNG = os.path.join(ZOOMREC_DIR, "live.png")
 ZOOMREC_LOG = os.path.join(ZOOMREC_DIR, "audiorec.log")
 ZOOM_STATUS_FILE = os.path.join(ZOOMREC_DIR, "zoom_status.json")
+ZOOMREC_VNC_PW = "/opt/zoomrec/.vnc_pw"
+
+@app.route('/api/auth_check')
+@requires_auth
+def auth_check():
+    # nginx (auth_request) fragt hier, bevor es /vnc/ (noVNC auf den zoomrec-Bildschirm) durchlaesst
+    return "", 204
+
+@app.route('/api/zoom_vnc_password')
+@requires_auth
+def zoom_vnc_password():
+    try:
+        with open(ZOOMREC_VNC_PW, "r", encoding="utf-8") as f:
+            return jsonify({"password": f.read().strip()})
+    except OSError:
+        return jsonify({"password": None})
 
 @app.route('/api/zoom_status')
 @requires_auth
@@ -769,7 +800,7 @@ def zoom_status():
             st = json.load(f)
         stale = datetime.now() - datetime.fromisoformat(st["checked"]) > timedelta(minutes=20)
         return jsonify({"ok": bool(st.get("signed_in")) and not stale, "signed_in": st.get("signed_in"),
-                        "checked": st["checked"], "stale": stale})
+                        "idle": bool(st.get("idle")), "checked": st["checked"], "stale": stale})
     except Exception as e:
         return jsonify({"ok": False, "signed_in": None, "checked": None, "stale": True, "error": str(e)})
 

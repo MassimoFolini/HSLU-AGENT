@@ -2,6 +2,9 @@
 
 Liest meetings.csv (weekday;time;duration;id;password;description;record;) in Europe/Zurich.
 Login, "Automatisch mit Computeraudio verbinden" und "Mikrofon stumm" werden einmalig per VNC im Zoom-Client gesetzt.
+
+On-Demand-Lebenszyklus: Zoom laeuft nur kurz vor und waehrend einer Vorlesung. Im Leerlauf ist der Client beendet, damit
+kein 120-Minuten-Inaktivitaets-Timer der HSLU-Kontorichtlinie laeuft. Es werden keine Aktivitaeten vorgetaeuscht.
 """
 import csv
 import json
@@ -33,13 +36,42 @@ def start_client():
 
 
 _misses = 0
-PRECHECK_MINUTES = 3                                        # nur so kurz vor einem Termin wird neu angemeldet (kein Ping-Pong)
+PRECHECK_MINUTES = 3                                        # Zoom startet so lange vor dem Termin (Laden + Anmeldepruefung ca. 1 Min.)
+IDLE_CLOSE_SECONDS = 120                                    # angemeldet und kein Termin in Sicht: Client so lange danach beenden
+_last_signed_in = None                                      # letzter bekannter Login-Zustand (Zoom ist im Leerlauf aus)
+_idle_since = None
+
+
+def zoom_running():
+    return subprocess.run(["pgrep", "-f", "/opt/zoom/zoom"], capture_output=True).returncode == 0
+
+
+def stop_client():
+    if zoom_running():
+        logging.info("Beende Zoom-Client")
+        subprocess.run(["pkill", "-f", "/opt/zoom/zoom"])
+        time.sleep(8)
+        subprocess.run(["pkill", "-9", "-f", "/opt/zoom/zoom"], capture_output=True)
+
+
+def load_last_state():
+    global _last_signed_in
+    try:
+        with open(STATUS_FILE, encoding="utf-8") as f:
+            _last_signed_in = json.load(f).get("signed_in")
+    except Exception:
+        _last_signed_in = None
 
 
 def relogin():
     """Klickt Sign in -> SSO -> Domaene "hslu". Kein Passwort: klappt nur, solange Firefox die HSLU-Sitzung noch hat."""
     import pyautogui
     logging.info("Versuche automatische Neuanmeldung (SSO hslu, ohne Passwort)")
+    # Nach "signed out for being inactive" zeigt Zoom "Try again"; nach einem Neustart immer die Anmeldekarte
+    subprocess.run(["pkill", "-f", "/opt/zoom/zoom"])
+    time.sleep(5)
+    start_client()
+    time.sleep(25)
     subprocess.run(["wmctrl", "-a", "Zoom Workplace"], capture_output=True)
     time.sleep(2)
     pyautogui.click(370, 346)                               # "Sign in" bzw. "You previously signed in as ..."
@@ -52,9 +84,22 @@ def relogin():
     time.sleep(15)
 
 
+def save_status(signed_in, idle=False):
+    try:
+        with open(STATUS_FILE, "w", encoding="utf-8") as f:
+            json.dump({"signed_in": signed_in, "idle": idle, "checked": datetime.now().isoformat(timespec="seconds")}, f)
+    except OSError as e:
+        logging.error(f"Status nicht schreibbar: {e}")
+
+
 def write_status():
-    """Login-Zustand aus den Fenstertiteln: angemeldet heisst das Hauptfenster "Zoom Workplace - <Kontotyp>"."""
-    global _misses
+    """Login-Zustand aus den Fenstertiteln: angemeldet heisst das Hauptfenster "Zoom Workplace - <Kontotyp>".
+    Ist Zoom bewusst aus (Leerlauf), gilt der letzte bekannte Zustand."""
+    global _misses, _last_signed_in
+    if not zoom_running():
+        if _last_signed_in is not None:
+            save_status(_last_signed_in, idle=True)
+        return _last_signed_in
     titles = subprocess.run(["wmctrl", "-l"], capture_output=True, text=True).stdout.splitlines()
     titles = [t.split(None, 3)[3] if len(t.split(None, 3)) == 4 else "" for t in titles]
     if any(t.startswith("Zoom Workplace - ") for t in titles):
@@ -64,14 +109,11 @@ def write_status():
         _misses += 1                                        # kurz nach dem Start fehlt der Kontotyp noch
         signed_in = False if _misses >= 2 else None
     else:
-        signed_in = None                                    # Zoom-Fenster gerade nicht da (Neustart)
+        signed_in = None                                    # Zoom-Fenster gerade nicht da (Start)
     if signed_in is None:
         return None
-    try:
-        with open(STATUS_FILE, "w", encoding="utf-8") as f:
-            json.dump({"signed_in": signed_in, "checked": datetime.now().isoformat(timespec="seconds")}, f)
-    except OSError as e:
-        logging.error(f"Status nicht schreibbar: {e}")
+    _last_signed_in = signed_in
+    save_status(signed_in)
     if not signed_in:
         logging.warning("Zoom ist NICHT angemeldet")
     return signed_in
@@ -109,12 +151,8 @@ def window(row, now):
 
 
 def leave_meeting():
-    # Zoom 7 nennt das Fenster nur "Meeting"; sauberstes Verlassen ist Client beenden und neu starten
-    subprocess.run(["pkill", "-f", "/opt/zoom/zoom"])
-    time.sleep(8)
-    subprocess.run(["pkill", "-9", "-f", "/opt/zoom/zoom"], capture_output=True)
-    time.sleep(2)
-    start_client()
+    # Zoom 7 nennt das Fenster nur "Meeting"; sauberstes Verlassen ist den Client zu beenden. Im Leerlauf bleibt er aus.
+    stop_client()
 
 
 def record(row, end):
@@ -122,6 +160,9 @@ def record(row, end):
     mp3 = os.path.join(REC_PATH, f"{datetime.now():%Y-%m-%d_%H-%M}_{name}.mp3")
     uri = join_uri(row["id"].strip(), row["password"].strip())
     logging.info(f"Trete bei: {name} (bis {end:%H:%M})")
+    if not zoom_running():                                  # Container wurde mitten im Termin gestartet
+        start_client()
+        time.sleep(30)
     subprocess.Popen(["xdg-open", uri], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     ffmpeg = subprocess.Popen(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-f", "pulse", "-i", SOURCE, "-vn",
                                "-acodec", "libmp3lame", "-b:a", "128k", mp3], stdin=subprocess.DEVNULL)
@@ -144,17 +185,41 @@ def record(row, end):
     leave_meeting()
 
 
+def next_window(now):
+    """True, wenn gerade ein aufzunehmender Termin laeuft oder in PRECHECK_MINUTES + 3 Minuten beginnt."""
+    for row in meetings():
+        if (row.get("record") or "").strip().lower() != "true":
+            continue
+        try:
+            start, end = window(row, now)
+        except Exception:
+            continue
+        if start - timedelta(minutes=PRECHECK_MINUTES + 3) <= now < end:
+            return True
+    return False
+
+
 def main():
-    start_client()
+    global _idle_since
+    load_last_state()
     done, prechecked = set(), set()
-    logging.info("audiorec bereit")
+    logging.info(f"audiorec bereit (letzter Login-Zustand: {_last_signed_in})")
     last_check = 0
     while True:
+        now = datetime.now()
         if time.time() - last_check >= 120:
             write_status()
             last_check = time.time()
         snapshot()
-        now = datetime.now()
+        # Angemeldet und kein Termin in Sicht: Client beenden, damit der 120-Minuten-Leerlauf-Timer nicht laeuft
+        if zoom_running() and _last_signed_in and not next_window(now):
+            _idle_since = _idle_since or time.time()
+            if time.time() - _idle_since >= IDLE_CLOSE_SECONDS:
+                stop_client()
+                write_status()
+                _idle_since = None
+        else:
+            _idle_since = None
         for row in meetings():
             if (row.get("record") or "").strip().lower() != "true":
                 continue
@@ -165,6 +230,9 @@ def main():
                 continue
             key = (row["description"], start)
             if start - timedelta(minutes=PRECHECK_MINUTES) <= now < start and key not in prechecked:
+                if not zoom_running():
+                    start_client()
+                    time.sleep(30)
                 st = write_status()                       # None = noch unklar, im naechsten Durchlauf (20 s) erneut
                 if st is not None:
                     prechecked.add(key)                   # einmal pro Termin: angemeldet? sonst passwortlos neu anmelden

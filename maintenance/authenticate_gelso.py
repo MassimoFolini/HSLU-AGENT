@@ -1,4 +1,5 @@
-"""Einmalige Anmeldung des Gelso-Kontos fuer NotebookLM Enterprise: erzeugt token_gelso.json.
+"""Einmalige Anmeldung des Gelso-Kontos: erzeugt token_gelso.json fuer NotebookLM Enterprise UND die Drive-Ablage
+(Scopes cloud-platform, drive, documents). Die Ablage nutzt es ueber GOOGLE_TOKEN_FILE=token_gelso.json in der .env.
 
   python maintenance/authenticate_gelso.py
 
@@ -13,7 +14,9 @@ import sys
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
+SCOPES = ["https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/drive",
+          "https://www.googleapis.com/auth/documents"]
 
 files = glob.glob(os.path.join(BASE, "client_secret_*.json"))
 if not files:

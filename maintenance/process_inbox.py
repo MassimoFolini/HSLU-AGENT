@@ -22,6 +22,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import json
 import re
+import shutil
 import subprocess
 import time
 import traceback
@@ -260,7 +261,7 @@ def process_zoomrec(gw, state):
         try:
             if os.path.getsize(path) < MIN_SIZE:
                 raise RuntimeError("Aufnahme zu klein, vermutlich still")
-            os.replace(path, mp3)
+            shutil.move(path, mp3)                         # andere Platte als /opt/zoomrec: kein os.replace
             transcript = transcribe_checked(mp3)
             publish(gw, subject, f"Vorlesung {m.group(1)} {m.group(2)}", base, out_dir, txt, transcript)
             os.remove(mp3)                                # nur der Text wird gebraucht
@@ -269,7 +270,7 @@ def process_zoomrec(gw, state):
         except Exception as e:
             print(f"   FEHLER: {e}", flush=True)
             if os.path.exists(mp3) and not os.path.exists(path):
-                os.replace(mp3, path)                     # fuer den naechsten Versuch zurueck
+                shutil.move(mp3, path)                     # fuer den naechsten Versuch zurueck
             still = "still" in str(e).lower()
             state[key] = {"status": "still" if still else "fehler", "error": str(e)[:300],
                           "attempts": st.get("attempts", 0) + (MAX_ATTEMPTS if still else 1)}

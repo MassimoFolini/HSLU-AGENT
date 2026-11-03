@@ -23,7 +23,8 @@ Stand: 02.11.2026. Server: Infomaniak, `ubuntu@179.237.110.120`, Projekt unter `
 ILIAS (edu-ID + TOTP) ──► scraper.py ──► downloads/KW_xx/<Kurs>/ ──► Google Drive "HSLU Agent/<Fach>/SWnn"
                                                          │
 Zoom-Vorlesung ──► zoomrec (Server, Ton als MP3) ────────┤
-Eigene Aufnahme / Zoom-Transkript ──► Drive _Eingang ──► process_inbox.py ──► Transkript + Dossier (Gemini)
+Eigene Aufnahme / Zoom-Transkript ──► Drive _Eingang ──► process_inbox.py ──► nur Text: Transkript + Dossier (Gemini)
+                                                         (Audio/Video wird nach dem Transkribieren gelöscht)
                                                          │
                                                          ▼
                          sync_notebooklm_api.py ──► NotebookLM "HSLU - <Fach>" (alle Quellen)
@@ -37,7 +38,8 @@ Das Dashboard (`dashboard.py`) zeigt Status, Logs, Live-Bildschirm und den Login
 | Verbindung | Konto | Wo hinterlegt | Erneuern |
 |---|---|---|---|
 | ILIAS / SWITCH edu-ID | HSLU-Studierendenkonto | `.env`: `HSLU_USERNAME`, `HSLU_PASSWORD`, `HSLU_TOTP_SECRET` | Nur bei Passwortwechsel |
-| Google Drive + Docs (Ablage) | `mg.folini@gmail.com` | `token.json` (OAuth, Client `credentials.json`) | Siehe [Google-Token](#google-token-abgelaufen) |
+| Google Drive + Docs (Ablage) | `massimo.folini@gelso.ch` (Besitzer des Zielordners) | `token_gelso.json` (Scopes cloud-platform, drive, documents), gewählt über `.env`: `GOOGLE_TOKEN_FILE=token_gelso.json` | `python maintenance/authenticate_gelso.py`, dann nach `/opt/KiAgentHSLU/` kopieren. Läuft nicht nach 7 Tagen ab (App ist als vertrauenswürdig markiert). |
+| Alter Drive-Zugang | `mg.folini@gmail.com` | `token.json` (Client `credentials.json`), nur noch Rückfall ohne `GOOGLE_TOKEN_FILE`, und `upload_to_inbox.py` | Siehe [Google-Token](#google-token-abgelaufen) |
 | Drive-Zielordner | Ordner `HSLU/Fächer/HSLU Agent` (gehört `massimo.folini@gelso.ch`) | `.env`: `GOOGLE_DRIVE_FOLDER_ID` | Pflicht: ohne ID bricht `GoogleWorkspace` ab und schreibt nie in "Meine Ablage" |
 | NotebookLM Enterprise, Cloud TTS | `massimo.folini@gelso.ch` | `token_gelso.json` (OAuth, Scope `cloud-platform`, Client `client_secret_*.json`) | `python maintenance/authenticate_gelso.py`, dann nach `/opt/KiAgentHSLU/` kopieren |
 | Gemini (Transkription, Dossiers) | API-Key | `.env`: `GEMINI_API_KEY`, optional `GEMINI_TRANSCRIBE_MODEL`, `GEMINI_LECTURE_MODEL` | Bei Bedarf |
@@ -100,6 +102,8 @@ Zustandsdateien auf dem Server: `notebooklm_api_state.json` (Fach-Notebooks), `w
 
 Der Server tritt den Vorlesungen mit dem echten Zoom-Client (Zoom Workplace 7.x) als angemeldeter Nutzer "Massimo Folini" bei und nimmt nur den Ton auf. Er beruht auf [kastldratza/zoomrec](https://github.com/kastldratza/zoomrec), stark angepasst. Die geänderten Dateien liegen in `deploy/zoomrec/`.
 
+**Lebenszyklus (On-Demand):** HSLU meldet Zoom-Konten nach **120 Minuten Inaktivität** ab (Kontorichtlinie, Meldung "signed out for being inactive"). Diese Regel wird nicht umgangen und es werden keine Aktivitäten vorgetäuscht. Stattdessen läuft Zoom nur kurz vor und während der Vorlesungen: Im Leerlauf ist der Client beendet (sobald er angemeldet ist, nach 2 Minuten), 3 Minuten vor einem Termin startet `audiorec.py` ihn, prüft den Login und meldet bei Bedarf über SSO (Domäne `hslu`) neu an, nach der Aufnahme wird er wieder beendet. Die Microsoft-/HSLU-Sitzung im Firefox bleibt erhalten (`user.js` im Profil: Cookies und Sitzung werden beim Schliessen nicht gelöscht). Ob Zoom die Anmeldung über Tage ohne laufenden Client behält, ist erst mit dem Termin Do 12:50 bestätigt.
+
 **Ablauf** (`audiorec.py`): Er liest `/opt/zoomrec/meetings.csv` (`weekday;time;duration;id;password;description;record;`, Zeiten Europe/Zurich). Zur Startzeit öffnet er `zoommtg://zoom.us/join?action=join&confno=<ID>&pwd=<Passcode>` und nimmt `speaker.monitor` mit ffmpeg als MP3 (128k) nach `/opt/zoomrec/recordings/` auf. Am Ende beendet er den Zoom-Client und startet ihn neu, denn Zoom 7 nennt das Meeting-Fenster nur "Meeting". Alle 2 Minuten schreibt er den Login-Zustand nach `zoom_status.json`, alle 30 Sekunden ein Bildschirmfoto nach `live.png` (für die Live-Ansicht im Dashboard).
 
 **Termine** (Herbstsemester 2026, je 140 Minuten): Mo 15:30 ASTAT, Do 12:50 DBS, Do 15:30 VSK, Do 18:30 AEDCIT, Fr 09:05 VSK. Die Passcodes stehen nur auf dem Server, nicht im Repository. Die Meetings verlangen ein angemeldetes Zoom-Konto, Gäste werden abgewiesen.
@@ -148,7 +152,7 @@ docker run -d --name zoomrec --restart unless-stopped --memory 3g --shm-size 512
 
 Das Dashboard zeigt unabhängig davon einen roten Balken und in "Zugangsdaten-Status" die Zeile "Zoom-Aufnahme (Server)".
 
-**Noch offen:** Die MP3s werden noch nicht automatisch in den Drive-Eingang übernommen, nur abgelegt in `/opt/zoomrec/recordings`. Das Aufnehmen fremder Vorlesungen ist nur mit Erlaubnis der Dozierenden zulässig.
+**Weiterverarbeitung:** Fertige MP3s (Name `YYYY-MM-DD_HH-MM_<Kürzel>.mp3`, Kürzel ASTAT, DBS, VSK, AEDCIT, KRR, PREN) holt `process_inbox.py` (alle 15 Minuten) frühestens 5 Minuten nach dem Ende ab. Er transkribiert, legt Rohtranskript (mit Zeitmarken), Lesefassung und Dossier unter `<Fach>/Transkripte` und `<Fach>/Dossiers` ab und **löscht danach die MP3**. Die Schulwoche kommt aus dem Datum. Das Aufnehmen fremder Vorlesungen ist nur mit Erlaubnis der Dozierenden zulässig.
 
 ## Schulwochen und Ablage
 
@@ -160,6 +164,7 @@ Das Dashboard zeigt unabhängig davon einen roten Balken und in "Zugangsdaten-St
   - `<Fach>/Live-Aufnahmen/`
   - `_Eingang/<Fach>/SWnn/` für eigene Aufnahmen oder Zoom-Transkripte
   - `_Eingang/_Verarbeitet/`
+- In Drive und auf dem Server bleibt nur Text. Eigene Audio- oder Videodateien im Eingang werden nach dem Transkribieren in den Drive-Papierkorb gelegt (30 Tage wiederherstellbar) und lokal gelöscht, erst nach erfolgreichem Upload.
 - Der Drive-Eingang nimmt Audio und Video (mp3, mp4, m4a, wav …) und Texttranskripte (.txt, .vtt, .md, auch das Zoom-Docs-Format `HH:MM:SS --> HH:MM:SS`). Aufnahmen ohne Ton werden abgelehnt. Hochladen vom PC:
   ```bash
   python maintenance/upload_to_inbox.py <Fach> <Woche> <Datei> [Name]
@@ -229,7 +234,7 @@ Einzelne Dateien aktualisieren: `scp <datei> ubuntu@179.237.110.120:/opt/KiAgent
 
 ### Google-Token abgelaufen
 
-Der Fehler `invalid_grant: Token has been expired or revoked` im Drive-Eingang oder Drive-Sync betrifft `token.json` (Gmail-Konto). Die OAuth-App steht im Testmodus, deshalb laufen Tokens nach 7 Tagen ab. Erneuern auf dem PC:
+Seit dem 03.11.2026 nutzt die Ablage `token_gelso.json` (kein 7-Tage-Ablauf). Der folgende Abschnitt gilt nur noch, wenn `GOOGLE_TOKEN_FILE` nicht gesetzt ist und das alte Gmail-Token `token.json` verwendet wird. Der Fehler `invalid_grant: Token has been expired or revoked` betrifft dann `token.json`. Die OAuth-App steht im Testmodus, deshalb laufen Tokens nach 7 Tagen ab. Erneuern auf dem PC:
 
 ```bash
 python maintenance/authenticate_google.py
@@ -244,7 +249,7 @@ Dauerhaft lösen: In der Google Cloud Console unter APIs & Dienste → OAuth-Zus
 |---|---|---|
 | NotebookLM-Sync meldet "Gelso-Token ungueltig" | `token_gelso.json` abgelaufen | `python maintenance/authenticate_gelso.py`, kopieren. Prüfen, ob die App in der Admin-Konsole noch vertrauenswürdig ist. |
 | Wochen-Audio fehlt (`audio: false` in `weekly_nlm_state.json`) | Quellen waren noch nicht verarbeitet | Wird beim nächsten Lauf wiederholt, höchstens 3 Versuche. |
-| Dashboard: roter Balken "Zoom ist abgemeldet" | Zoom-Sitzung abgelaufen | VNC-Anmeldung (siehe zoomrec). |
+| Dashboard: roter Balken "Zoom ist abgemeldet" | Zoom-Sitzung abgelaufen (z. B. 120-Minuten-Regel oder Microsoft verlangt Passwort) | VNC-Anmeldung (siehe zoomrec): Passwort und 2FA gibst du selbst ein. |
 | Zoom: "Sign in to join this meeting" | Client nicht angemeldet | VNC-Anmeldung. |
 | zoomrec-Aufnahme still | Zoom-Audio nicht verbunden | In Zoom-Settings "Automatically join audio by computer" prüfen. |
 | Dateien landen in "Meine Ablage" | `GOOGLE_DRIVE_FOLDER_ID` fehlt | Der Code bricht jetzt ab. ID in `.env` eintragen. |
