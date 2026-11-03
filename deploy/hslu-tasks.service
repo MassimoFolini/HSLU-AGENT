@@ -1,0 +1,9 @@
+[Unit]
+Description=HSLU Wochen-Aufgaben nach Todoist
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/opt/KiAgentHSLU
+ExecStart=/usr/bin/flock -n /tmp/hslu-tasks.lock /opt/KiAgentHSLU/venv/bin/python -u maintenance/weekly_tasks.py

@@ -45,6 +45,7 @@ Das Dashboard (`dashboard.py`) zeigt Status, Logs, Live-Bildschirm und den Login
 | Gemini (Transkription, Dossiers) | API-Key | `.env`: `GEMINI_API_KEY`, optional `GEMINI_TRANSCRIBE_MODEL`, `GEMINI_LECTURE_MODEL` | Bei Bedarf |
 | Zoom (Aufnahme) | HSLU-Zoom per SSO (Domäne `hslu`) | Zoom-Client im Container, Profil unter `/opt/zoomrec/profile/` | Per VNC neu anmelden, siehe [zoomrec](#zoom-aufnahme-zoomrec) |
 | Warnungen | ntfy-Thema und optional Gmail-SMTP | `/opt/zoomrec/notify.env` | Gmail-App-Passwort trägt der Nutzer selbst ein |
+| Todoist (Aufgaben) | persönliches API-Token | `.env`: `TODOIST_API_TOKEN` (Dashboard, Logins & Zugangsdaten) | Todoist → Einstellungen → Integrationen → Entwickler |
 | Dashboard | Benutzer `admin` | `.env`: `DASHBOARD_PASS` | Beliebig ändern, dann `sudo systemctl restart hslu-dashboard` |
 | Server | SSH-Schlüssel `~/.ssh/id_ed25519` | Laptop | |
 
@@ -81,6 +82,7 @@ Oberfläche (mit dem Gelso-Konto öffnen): `https://notebooklm.cloud.google.com/
 | `hslu-inbox.timer` | alle 15 Min | `maintenance/process_inbox.py` | Drive-Eingang: Transkript, Lesefassung, Dossier |
 | `hslu-notebooks.timer` | stündlich | `maintenance/sync_notebooklm_api.py` | Quellen in die Fach-Notebooks `HSLU - <Fach>` |
 | `hslu-weekly-nlm.timer` | täglich 04:30 UTC | `maintenance/weekly_notebooklm_audio.py` | Wochen-Notebooks + Audio, Gesamt-Audio pro Fach (höchstens alle 3 Tage) |
+| `hslu-tasks.timer` | Sonntag 20:00 (Zürich) | `maintenance/weekly_tasks.py` | Aufgaben der kommenden Schulwoche nach Todoist (siehe unten) |
 | `hslu-zoom-watch.timer` | alle 5 Min | `/opt/zoomrec/notify_signout.py` | Warnung, wenn Zoom abgemeldet ist |
 | Docker-Container `zoomrec` | Dauerlauf | `/opt/zoomrec/audiorec.py` | Zoom-Vorlesungen nach `meetings.csv` als MP3 aufnehmen |
 | `hslu-scheduler.service` | **deaktiviert** | `live_scheduler.py` | Alter Browser-Zoom-Bot, ersetzt durch zoomrec |
@@ -154,6 +156,15 @@ Das Dashboard zeigt unabhängig davon einen roten Balken und in "Zugangsdaten-St
 
 **Weiterverarbeitung:** Fertige MP3s (Name `YYYY-MM-DD_HH-MM_<Kürzel>.mp3`, Kürzel ASTAT, DBS, VSK, AEDCIT, KRR, PREN) holt `process_inbox.py` (alle 15 Minuten) frühestens 5 Minuten nach dem Ende ab. Er transkribiert, legt Rohtranskript (mit Zeitmarken), Lesefassung und Dossier unter `<Fach>/Transkripte` und `<Fach>/Dossiers` ab und **löscht danach die MP3**. Die Schulwoche kommt aus dem Datum. Das Aufnehmen fremder Vorlesungen ist nur mit Erlaubnis der Dozierenden zulässig.
 
+## Wochen-Aufgaben (Todoist)
+
+`maintenance/weekly_tasks.py` (Timer `hslu-tasks.timer`, jeden Sonntag 20:00) legt die Aufgaben der kommenden Schulwoche an. Pro Fach schickt es das Material der Zielwoche (Folien, Übungen, Notebooks, Dossiers, Transkripte) und die Mitschriften der Vorwoche an Gemini (Flash, höchstens 60'000 Zeichen pro Fach, wenige Rappen pro Woche). Gemini schreibt höchstens 6 einfache Aufgaben mit Titel, Frist und einem Satz Erklärung. Nichts wird erfunden: ohne konkretes Material gibt es keine Aufgaben.
+
+- Todoist: Projekt `HSLU`, ein Abschnitt pro Fach, Label `SWnn`. Fristen stehen als Fälligkeitsdatum.
+- Doppelte Aufgaben verhindert `weekly_tasks_state.json` plus ein Vergleich mit den offenen Aufgaben.
+- Manuell: `python maintenance/weekly_tasks.py --dry-run` (zeigt nur an), `--week 9`, `--subject Datenbank`.
+- Todoist wurde gewählt, weil der Gratis-Plan, eine offene REST-API (`https://api.todoist.com/api/v1`, Bearer-Token) und eine Web-Oberfläche vorhanden sind.
+
 ## Schulwochen und Ablage
 
 - `weeks.py` ordnet jede Datei einer Schulwoche zu: SW01 ist die Woche ab Montag 14.09.2026, SW00 steht für Allgemeines. Die Zuordnung kommt aus dem Ordnerpfad, dem Dateinamen oder dem Datum.
@@ -191,6 +202,7 @@ Das Dashboard zeigt unabhängig davon einen roten Balken und in "Zugangsdaten-St
 | `notebooklm_integration.py` | Alte inoffizielle NotebookLM-Anbindung, nicht mehr genutzt. |
 | `maintenance/sync_notebooklm_api.py` | Offizieller Sync in die Fach-Notebooks. |
 | `maintenance/weekly_notebooklm_audio.py` | Wochen-Notebooks und Audio-Zusammenfassungen (`--dry-run`, `--subject`, `--week`, `--max`, `--all`, `--no-total`). |
+| `maintenance/weekly_tasks.py` | Wochen-Aufgaben nach Todoist. |
 | `maintenance/process_inbox.py`, `maintenance/upload_to_inbox.py` | Drive-Eingang verarbeiten und befüllen. |
 | `maintenance/authenticate_google.py`, `maintenance/authenticate_gelso.py` | OAuth-Login für `token.json` (Gmail-Drive) und `token_gelso.json` (NotebookLM). |
 | `maintenance/clean_drive_zips.py` | Räumt ZIPs und Junk-Ordner (.venv, .ipynb_checkpoints …) im Drive-Zielordner auf (Trockenlauf ohne `--apply`). |

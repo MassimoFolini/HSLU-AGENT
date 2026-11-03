@@ -246,6 +246,7 @@ HTML_TEMPLATE = """
                     document.getElementById('HSLU_MS_TOTP_SECRET').value = data.HSLU_MS_TOTP_SECRET || '';
                     document.getElementById('DASHBOARD_PASS').value = data.DASHBOARD_PASS || '';
                     document.getElementById('GEMINI_API_KEY').value = data.GEMINI_API_KEY || '';
+                    document.getElementById('TODOIST_API_TOKEN').value = data.TODOIST_API_TOKEN || '';
                     document.getElementById('GOOGLE_DRIVE_FOLDER_ID').value = data.GOOGLE_DRIVE_FOLDER_ID || '';
                     document.getElementById('GOOGLE_SERVICE_JSON').value = data.GOOGLE_SERVICE_JSON || '';
                     document.getElementById('NOTEBOOKLM_COOKIES').value = data.NOTEBOOKLM_COOKIES || '';
@@ -282,6 +283,7 @@ HTML_TEMPLATE = """
                 HSLU_MS_TOTP_SECRET: document.getElementById('HSLU_MS_TOTP_SECRET').value.trim(),
                 DASHBOARD_PASS: document.getElementById('DASHBOARD_PASS').value.trim(),
                 GEMINI_API_KEY: document.getElementById('GEMINI_API_KEY').value.trim(),
+                TODOIST_API_TOKEN: document.getElementById('TODOIST_API_TOKEN').value.trim(),
                 GOOGLE_DRIVE_FOLDER_ID: document.getElementById('GOOGLE_DRIVE_FOLDER_ID').value.trim(),
                 GOOGLE_SERVICE_JSON: document.getElementById('GOOGLE_SERVICE_JSON').value.trim(),
                 NOTEBOOKLM_COOKIES: document.getElementById('NOTEBOOKLM_COOKIES').value.trim()
@@ -700,6 +702,23 @@ HTML_TEMPLATE = """
                             </div>
                         </div>
 
+                        <!-- Todoist: Wochen-Aufgaben -->
+                        <div class="bg-white rounded-lg p-5 border border-red-100 bg-red-50/20">
+                            <h4 class="text-base font-semibold text-gray-900 mb-3 flex items-center border-b pb-2">
+                                <i class="fas fa-list-check text-red-500 mr-2 text-lg"></i> Todoist (Wochen-Aufgaben)
+                            </h4>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Todoist API Token</label>
+                                <p class="text-xs text-gray-500 mb-1">Todoist &rarr; Einstellungen &rarr; Integrationen &rarr; Entwickler &rarr; API-Token. Damit legt der Agent jeden Sonntag die Aufgaben der kommenden Schulwoche an.</p>
+                                <div class="relative mt-1">
+                                    <input type="password" id="TODOIST_API_TOKEN" autocomplete="off" class="block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2 pr-10 border font-mono text-xs focus:ring-brand focus:border-brand">
+                                    <button type="button" onclick="toggleVisibility('TODOIST_API_TOKEN', this)" class="absolute inset-y-0 right-0 px-3 flex items-center">
+                                        <i class="fas fa-eye text-gray-400"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- 6. NotebookLM -->
                         <div class="bg-white rounded-lg p-5 border border-gray-200">
                             <h4 class="text-base font-semibold text-gray-900 mb-3 flex items-center border-b pb-2">
@@ -865,6 +884,7 @@ def get_settings():
         "HSLU_MS_TOTP_SECRET": config.get("HSLU_MS_TOTP_SECRET", ""),
         "DASHBOARD_PASS": config.get("DASHBOARD_PASS", ""),
         "GEMINI_API_KEY": config.get("GEMINI_API_KEY", ""),
+        "TODOIST_API_TOKEN": config.get("TODOIST_API_TOKEN", ""),
         "GOOGLE_DRIVE_FOLDER_ID": config.get("GOOGLE_DRIVE_FOLDER_ID", "").strip("'").strip('"'),
         "GOOGLE_SERVICE_JSON": service_json_content,
         "NOTEBOOKLM_COOKIES": "" if not os.path.exists('notebooklm_cookies.json') else open('notebooklm_cookies.json').read()

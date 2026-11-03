@@ -1,0 +1,9 @@
+[Unit]
+Description=Jeden Sonntag die Aufgaben der naechsten Schulwoche anlegen
+
+[Timer]
+OnCalendar=Sun *-*-* 20:00:00 Europe/Zurich
+Persistent=true
+
+[Install]
+WantedBy=timers.target
