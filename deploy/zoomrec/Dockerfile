@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 
 ENV HOME=/home/zoomrec \
-    TZ=Europe/Berlin \
+    TZ=Europe/Zurich \
     TERM=xfce4-terminal \
     START_DIR=/start \
     DEBIAN_FRONTEND=noninteractive \
@@ -100,7 +100,7 @@ RUN apt-get update && \
         scrot && \
     pip3 install --upgrade --no-cache-dir -r ${HOME}/res/requirements.txt && \
 # Install VLC - optional
-    apt-get install --no-install-recommends -y vlc firefox xdg-utils wmctrl && \
+    apt-get install --no-install-recommends -y vlc firefox xdg-utils wmctrl xdotool && \
 # Clean up
     apt-get autoremove --purge -y && \
     apt-get autoclean -y && \

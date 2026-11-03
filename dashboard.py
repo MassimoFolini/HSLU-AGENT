@@ -5,6 +5,7 @@ import threading
 from datetime import datetime, timedelta
 from dotenv import set_key, dotenv_values
 import json
+import re
 import hmac
 from functools import wraps
 
@@ -331,8 +332,11 @@ HTML_TEMPLATE = """
 <body class="h-full">
     <div id="zoom-alert" class="hidden bg-red-600 text-white text-center font-bold text-xl py-4 px-4">
         ZOOM IST ABGEMELDET: Vorlesungen werden NICHT aufgenommen.
-        <button onclick="openZoomLogin()" class="ml-3 bg-white text-red-700 font-bold text-base px-4 py-2 rounded shadow hover:bg-red-50">
-            <i class="fas fa-sign-in-alt mr-1"></i> Jetzt in Zoom anmelden
+        <button onclick="zoomAction('login')" class="ml-3 bg-white text-green-700 font-bold text-base px-4 py-2 rounded shadow hover:bg-green-50">
+            <i class="fas fa-bolt mr-1"></i> Auto-Login starten
+        </button>
+        <button onclick="openZoomLogin()" class="ml-2 bg-red-800 text-white font-semibold text-sm px-3 py-2 rounded shadow hover:bg-red-900">
+            <i class="fas fa-desktop mr-1"></i> VNC-Bildschirm
         </button>
         <div id="zoom-alert-detail" class="text-sm font-normal mt-1"></div>
     </div>
@@ -364,6 +368,25 @@ HTML_TEMPLATE = """
                   '\\n\\nIm Zoom-Fenster: auf deine E-Mail bzw. "Sign in" klicken, dann SSO, Domaene "hslu", ' +
                   'im Firefox anmelden und den Link mit Zoom oeffnen. Fertig, wenn oben "Licensed account" steht.');
         }
+        function zoomAction(action) {
+            const msg = action === 'logout' ? 'Zoom auf dem Server jetzt abmelden?' : 'Automatischen Zoom-SSO-Login jetzt starten/prüfen?';
+            if (!confirm(msg)) return;
+            const card = document.getElementById('card-zoomrec-status');
+            if (card) card.innerHTML = '<span class="text-blue-600 font-semibold"><i class="fas fa-spinner fa-spin mr-1"></i>' + (action === 'logout' ? 'Melde ab...' : 'Melde an...') + '</span>';
+            fetch('/api/zoom_action', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({action: action})
+            }).then(r => r.json()).then(res => {
+                let tries = 0;
+                const poll = setInterval(() => {
+                    checkZoom();
+                    const img = document.getElementById('live-view');
+                    if (img) img.src = '/api/current_view?t=' + Date.now();
+                    if (++tries >= 18) clearInterval(poll);
+                }, 4000);
+            }).catch(e => alert('Fehler: ' + e));
+        }
         function checkZoom() {
             fetch('/api/zoom_status').then(r => r.json()).then(s => {
                 document.getElementById('zoom-alert').classList.toggle('hidden', s.ok);
@@ -377,11 +400,11 @@ HTML_TEMPLATE = """
             }).catch(() => {});
         }
         document.addEventListener('DOMContentLoaded', checkZoom);   // erst wenn die Status-Zeile existiert
-        setInterval(checkZoom, 60000);
+        setInterval(checkZoom, 15000);
         setInterval(() => {
             const img = document.getElementById('live-view');
             if (img) img.src = '/api/current_view?t=' + Date.now();
-        }, 15000);
+        }, 10000);
     </script>
     <div class="min-h-full">
         <!-- Navbar -->
@@ -487,8 +510,16 @@ HTML_TEMPLATE = """
                                     <span class="text-gray-600"><i class="fas fa-microphone text-blue-500 mr-2"></i>Zoom-Aufnahme (Server)</span>
                                     <span id="card-zoomrec-status"><i class="fas fa-spinner fa-spin text-gray-400"></i></span>
                                 </div>
+                                <div class="grid grid-cols-2 gap-2 pt-1">
+                                    <button onclick="zoomAction('login')" class="flex justify-center items-center py-2 px-2 rounded-md shadow-sm text-xs font-medium text-white bg-green-600 hover:bg-green-700">
+                                        <i class="fas fa-bolt mr-1"></i> Auto-Login
+                                    </button>
+                                    <button onclick="zoomAction('logout')" class="flex justify-center items-center py-2 px-2 rounded-md shadow-sm text-xs font-medium text-gray-700 bg-gray-100 border border-gray-300 hover:bg-gray-200">
+                                        <i class="fas fa-sign-out-alt mr-1"></i> Abmelden
+                                    </button>
+                                </div>
                                 <button onclick="openZoomLogin()" class="mt-2 w-full flex justify-center py-2 px-3 rounded-md shadow-sm text-xs font-medium text-white bg-blue-600 hover:bg-blue-700">
-                                    <i class="fas fa-sign-in-alt mr-2"></i> Zoom anmelden (Server-Bildschirm)
+                                    <i class="fas fa-desktop mr-2"></i> Zoom Server-Bildschirm (VNC)
                                 </button>
                             </div>
                             <button onclick="switchTab('settings-tab')" class="mt-4 w-full flex justify-center py-2 px-3 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg-gray-50 hover:bg-gray-100">
@@ -974,6 +1005,74 @@ def save_settings():
     return jsonify({"success": True})
 
 
+ZOOM_CMD_FILE = os.path.join(ZOOMREC_DIR, "zoom_cmd.json")
+ZOOMREC_CSV = "/opt/zoomrec/meetings.csv"
+
+def sync_zoomrec_csv(data):
+    """Synchronisiert gespeicherte Live-Meetings in-place nach /opt/zoomrec/meetings.csv (Inode bleibt fuer Docker erhalten)."""
+    if not os.path.exists(ZOOMREC_CSV):
+        return
+    day_names = {"1": "monday", "2": "tuesday", "3": "wednesday", "4": "thursday", "5": "friday", "6": "saturday", "0": "sunday"}
+    day_order = {"monday": 0, "tuesday": 1, "wednesday": 2, "thursday": 3, "friday": 4, "saturday": 5, "sunday": 6}
+    day_short = {"1": "Mo", "2": "Di", "3": "Mi", "4": "Do", "5": "Fr", "6": "Sa", "0": "So"}
+
+    def short_code(title):
+        u = (title or "").upper()
+        for code in ("ASTAT", "DBS", "VSK", "AEDCIT", "KRR", "PREN"):
+            if code in u:
+                return code
+        return re.sub(r"[^A-Za-z]+", "", title or "")[:12] or "Meeting"
+
+    valid = []
+    counts = {}
+    for m in data:
+        mid = (m.get("meeting_id") or "").strip()
+        ts = (m.get("time_start") or "").strip()
+        if not mid or ":" not in ts or not m.get("record"):
+            continue
+        code = short_code(m.get("title"))
+        counts[code] = counts.get(code, 0) + 1
+        valid.append((m, code))
+
+    rows = []
+    for m, code in valid:
+        d_key = str(m.get("day", "1")).strip()
+        wday = day_names.get(d_key, "monday")
+        ts = m["time_start"].strip()
+        te = (m.get("time_end") or "").strip()
+        h1, m1 = map(int, ts.split(":"))
+        dur = 140
+        if ":" in te:
+            h2, m2 = map(int, te.split(":"))
+            if (h2 * 60 + m2) - (h1 * 60 + m1) > 0:
+                dur = (h2 * 60 + m2) - (h1 * 60 + m1)
+        desc = f"{code}_{day_short.get(d_key, '')}" if counts.get(code, 0) > 1 else code
+        pw = (m.get("passcode") or "").strip()
+        mid = m["meeting_id"].strip()
+        rows.append((day_order[wday], ts, f"{wday};{ts};{dur};{mid};{pw};{desc};true;"))
+
+    rows.sort(key=lambda x: (x[0], x[1]))
+    with open(ZOOMREC_CSV, "w", encoding="utf-8", newline="\n") as f:
+        f.write("weekday;time;duration;id;password;description;record;\n")
+        for _, _, line in rows:
+            f.write(line + "\n")
+
+@app.route('/api/zoom_action', methods=['POST'])
+@requires_auth
+def zoom_action():
+    action = ((request.json or {}).get("action") or "").strip().lower()
+    if action not in ("login", "logout"):
+        return jsonify({"success": False, "error": "Ungültige Aktion"}), 400
+    try:
+        os.makedirs(ZOOMREC_DIR, exist_ok=True)
+        tmp = ZOOM_CMD_FILE + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump({"action": action, "requested_at": datetime.now().isoformat(timespec="seconds")}, f)
+        os.replace(tmp, ZOOM_CMD_FILE)
+        return jsonify({"success": True, "action": action})
+    except OSError as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
 @app.route('/api/live_meetings', methods=['GET'])
 @requires_auth
 def get_live_meetings():
@@ -990,6 +1089,10 @@ def save_live_meetings():
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'live_meetings.json')
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
+    try:
+        sync_zoomrec_csv(data)
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
     return jsonify({"success": True})
 
 @app.route('/api/detect_subjects', methods=['POST'])

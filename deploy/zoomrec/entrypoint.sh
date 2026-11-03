@@ -48,11 +48,17 @@ pactl set-source-volume 2 100%
 # Map microphone-Output to microphone-Input
 pactl load-module module-loopback latency_msec=1 source=2 sink=microphone > /dev/null
 pactl load-module module-remap-source master=microphone.monitor source_name=microphone source_properties=device.description="microphone" > /dev/null
-# Set microphone Volume
+# Set microphone Volume and default speaker sink
 pactl set-source-volume 3 60%
+pactl set-default-sink speaker || true
 
 # zoommtg://-Links an den Zoom-Client geben
 xdg-mime default Zoom.desktop x-scheme-handler/zoommtg || true
+
+# X11-Wachhalter gegen Idle-Timeout (alle 10 Minuten)
+if command -v xdotool >/dev/null 2>&1; then
+  (while true; do DISPLAY="$DISPLAY" xdotool mousemove_relative 10 10 sleep 1 mousemove_relative -- -10 -10 >/dev/null 2>&1 || true; sleep 600; done) &
+fi
 
 echo -e "\nStart script.."
 sleep 5
