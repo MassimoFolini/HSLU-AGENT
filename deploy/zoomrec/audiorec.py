@@ -229,20 +229,137 @@ def _has_left_sidebar():
         return False
 
 
+def _get_ms_totp_secret():
+    sec = os.environ.get("HSLU_MS_TOTP_SECRET", "").strip()
+    if sec:
+        return sec
+    for p in (os.path.join(REC_PATH, ".ms_totp"), os.path.join(HOME, ".config", "ms_totp")):
+        try:
+            if os.path.exists(p):
+                with open(p, "r", encoding="utf-8") as f:
+                    s = f.read().strip()
+                    if s:
+                        return s
+        except Exception:
+            pass
+    return ""
+
+
+def _generate_totp(secret):
+    import base64
+    import hashlib
+    import hmac
+    import struct
+    secret = secret.strip().replace(" ", "").upper()
+    pad = (8 - len(secret) % 8) % 8
+    key = base64.b32decode(secret + "=" * pad)
+    counter = int(time.time() // 30)
+    msg = struct.pack(">Q", counter)
+    digest = hmac.new(key, msg, hashlib.sha1).digest()
+    offset = digest[-1] & 0x0F
+    code = (struct.unpack(">I", digest[offset:offset + 4])[0] & 0x7FFFFFFF) % 1000000
+    return f"{code:06d}"
+
+
+def _is_ms_blue(rgb):
+    r, g, b = int(rgb[0]), int(rgb[1]), int(rgb[2])
+    return b > 140 and r < 60 and 60 < g < 155
+
+
+def _clean_firefox_stale_tabs():
+    """Schliesst veraltete Firefox-Instanzen und loescht Wiederherstellungs-Tabs,
+    damit Microsoft-SAML-Anfragen immer mit einer frischen Einzelsitzung starten."""
+    try:
+        subprocess.run(["pkill", "-9", "-f", "firefox"], capture_output=True)
+        time.sleep(0.5)
+        import glob
+        for f in glob.glob(os.path.join(HOME, ".mozilla", "firefox", "*default-release", "sessionstore*")):
+            try:
+                os.remove(f)
+            except OSError:
+                pass
+        for f in glob.glob(os.path.join(HOME, ".mozilla", "firefox", "*default-release", "sessionstore-backups", "*")):
+            try:
+                os.remove(f)
+            except OSError:
+                pass
+    except Exception as e:
+        logging.warning(f"Firefox-Bereinigung: {e}")
+
+
 def _click_firefox_sso_if_needed():
-    """Falls Firefox Microsoft-Login ('Sign in to your account' / 'Stay signed in?') zeigt, bestaetigen."""
+    """Bestaetigt Microsoft-Login im Firefox: Passwort, 2FA-Code (TOTP) oder 'Angemeldet bleiben?'."""
     import pyautogui
     pyautogui.FAILSAFE = False
     for w in wmctrl_windows():
         t = w["title"]
-        if "Mozilla Firefox" in t and ("Sign in to your account" in t or "Anmelden" in t):
-            logging.info(f"Bestaetige Microsoft-SSO im Browser ({t})")
+        if "Mozilla Firefox" in t and ("Sign in to your account" in t or "Anmelden" in t or "SAML" in t or "Microsoft" in t):
             subprocess.run(["wmctrl", "-i", "-a", w["id"]], capture_output=True)
-            time.sleep(1.0)
-            pyautogui.click(616, 406)
-            time.sleep(0.4)
-            pyautogui.press("enter")
-            return True
+            # Klicke Titelleiste um Fokus in xfwm4 sicherzustellen
+            pyautogui.click(w["x"] + 200, w["y"] + 15)
+            time.sleep(0.8)
+            snapshot()
+            is_2fa = False
+            is_pw_or_stay = False
+            is_verify_identity = False
+            try:
+                from PIL import Image
+                with Image.open(LIVE_PNG) as im:
+                    rgb_im = im.convert("RGB")
+                    # 1. 2FA Eingabe ("Enter code" mit blauem Verify-Button bei 616, 497)
+                    rgb_2fa = rgb_im.getpixel((616, 497))
+                    is_2fa = _is_ms_blue(rgb_2fa)
+
+                    # 2. Passwort ("Sign in") oder "Stay signed in?" (blauer Button bei 616, 406)
+                    rgb_pw = rgb_im.getpixel((616, 406))
+                    is_pw_or_stay = _is_ms_blue(rgb_pw)
+
+                    # 3. Zwischenmaske "Verify your identity" mit grauer Kachel "[123] Use a verification code" bei (507, 391)
+                    if not is_2fa and not is_pw_or_stay:
+                        p_tile = rgb_im.getpixel((507, 391))
+                        if 190 <= p_tile[0] <= 245 and 190 <= p_tile[1] <= 245 and 190 <= p_tile[2] <= 245:
+                            dark_px = [
+                                1 for dy in range(365, 395) for dx in range(335, 370)
+                                if max(rgb_im.getpixel((dx, dy))) < 100
+                            ]
+                            if len(dark_px) > 40:
+                                is_verify_identity = True
+            except Exception as e:
+                logging.warning(f"Screenshot-Pruefung fuer SSO: {e}")
+
+            if is_verify_identity:
+                logging.info(f"Microsoft SSO: Waehle 'Use a verification code' ({t})")
+                pyautogui.click(507, 391)
+                time.sleep(1.5)
+                return True
+
+            if is_2fa:
+                secret = _get_ms_totp_secret()
+                if secret:
+                    code = _generate_totp(secret)
+                    logging.info(f"Microsoft 2FA erkannt — gebe TOTP-Code ein ({code[:2]}****)")
+                    pyautogui.click(450, 385)
+                    time.sleep(0.2)
+                    pyautogui.hotkey("ctrl", "a")
+                    pyautogui.press("backspace")
+                    pyautogui.write(code, interval=0.08)
+                    time.sleep(0.4)
+                    pyautogui.click(616, 497)
+                    time.sleep(3.0)
+                    return True
+                else:
+                    logging.warning("Microsoft 2FA-Abfrage erkannt, aber kein HSLU_MS_TOTP_SECRET hinterlegt!")
+                    return False
+
+            if is_pw_or_stay:
+                logging.info(f"Bestaetige Microsoft-SSO im Browser ({t})")
+                pyautogui.click(616, 406)
+                time.sleep(0.4)
+                pyautogui.press("enter")
+                time.sleep(2.0)
+                return True
+
+            return False
     return False
 
 
@@ -263,6 +380,8 @@ def relogin():
         logging.info("Zoom ist angemeldet")
         return True
 
+    _clean_firefox_stale_tabs()
+
     for attempt in range(2):
         if attempt == 1:
             logging.info("Zweiter Anmeldeversuch nach frischem Zoom-Neustart ...")
@@ -275,6 +394,7 @@ def relogin():
                 snapshot()
                 logging.info("Zoom ist angemeldet")
                 return True
+            _clean_firefox_stale_tabs()
 
         zwin = next((w for w in wmctrl_windows() if w["title"] == "Zoom Workplace"), None)
         if not zwin:
@@ -288,35 +408,26 @@ def relogin():
             # Screen direkt nach 'Sign out' (mit grauer linker Leiste + 'SSO'-Schluessel-Button unten links)
             logging.info("Versuche automatische Anmeldung ueber SSO-Button (Post-Sign-out-Ansicht)")
             pyautogui.click(wx + 320, wy + 480)             # (320, 507) bei wx=0, wy=27
-            time.sleep(4)
-            if zoom_state() is False and not _click_firefox_sso_if_needed():
-                z2 = next((w for w in wmctrl_windows() if w["title"] == "Zoom Workplace"), zwin)
-                subprocess.run(["wmctrl", "-i", "-a", z2["id"]], capture_output=True)
-                time.sleep(0.8)
-                pyautogui.click(z2["x"] + 465, z2["y"] + 364)
-                pyautogui.hotkey("ctrl", "a")
-                pyautogui.write("hslu", interval=0.05)
-                time.sleep(0.5)
-                pyautogui.press("enter")
+            time.sleep(3.0)
         else:
             # Frischer Start: 'You previously signed in as ...'-Karte -> 'Sign in with SSO' -> 'hslu'
             logging.info("Versuche automatische Anmeldung ueber gespeicherte Karte / SSO hslu")
             pyautogui.click(wx + 465, wy + 406)             # (362, 346) bei wx=-103, wy=-60
-            time.sleep(4)
-            if zoom_state() is False and not _click_firefox_sso_if_needed():
-                z2 = next((w for w in wmctrl_windows() if w["title"] == "Zoom Workplace"), zwin)
-                subprocess.run(["wmctrl", "-i", "-a", z2["id"]], capture_output=True)
-                time.sleep(0.8)
-                pyautogui.click(z2["x"] + 465, z2["y"] + 364)   # Feld 'Enter your company domain'
-                pyautogui.hotkey("ctrl", "a")
-                pyautogui.write("hslu", interval=0.05)
-                time.sleep(0.5)
-                pyautogui.press("enter")
-                time.sleep(1.0)
-                if zoom_state() is False:
-                    pyautogui.click(z2["x"] + 465, z2["y"] + 426)  # 'Continue'-Button
+            time.sleep(2.0)
 
-        for _ in range(22):
+        # Trage 'hslu' in die Unternehmens-Domaene ein und bestaetige
+        z2 = next((w for w in wmctrl_windows() if w["title"] == "Zoom Workplace"), zwin)
+        subprocess.run(["wmctrl", "-i", "-a", z2["id"]], capture_output=True)
+        time.sleep(0.5)
+        pyautogui.click(z2["x"] + 465, z2["y"] + 364)   # Feld 'Enter your company domain'
+        pyautogui.hotkey("ctrl", "a")
+        pyautogui.write("hslu", interval=0.05)
+        time.sleep(0.5)
+        pyautogui.press("enter")
+        time.sleep(1.0)
+        pyautogui.click(z2["x"] + 465, z2["y"] + 426)  # 'Continue'-Button
+
+        for _ in range(25):
             time.sleep(1)
             if zoom_state() is True:
                 _misses = 0

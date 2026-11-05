@@ -997,6 +997,15 @@ def save_settings():
         data["ZOOM_PASSWORD"] = data["HSLU_MS_PASSWORD"]
     if "HSLU_MS_EMAIL" in data:
         data["ZOOM_EMAIL"] = data["HSLU_MS_EMAIL"]
+    if "HSLU_MS_TOTP_SECRET" in data:
+        try:
+            sec = str(data["HSLU_MS_TOTP_SECRET"]).strip().strip("'\"")
+            totp_path = os.path.join(ZOOMREC_DIR, ".ms_totp")
+            with open(totp_path, "w", encoding="utf-8") as f:
+                f.write(sec + "\n")
+            os.chmod(totp_path, 0o600)
+        except Exception:
+            pass
 
     for key, value in data.items():
         val_str = str(value).strip().strip("'").strip('"') if value is not None else ""
