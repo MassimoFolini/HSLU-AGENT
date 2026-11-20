@@ -293,6 +293,16 @@ def _click_firefox_sso_if_needed():
     pyautogui.FAILSAFE = False
     for w in wmctrl_windows():
         t = w["title"]
+        if "Mozilla Firefox" in t and ("Per SSO anmelden" in t or "Sign in with SSO" in t):
+            logging.info(f"Zoom SSO-Uebergabe im Browser erkannt — klicke 'Zoom Workplace-App starten' ({t})")
+            subprocess.run(["wmctrl", "-i", "-a", w["id"]], capture_output=True)
+            pyautogui.click(w["x"] + 200, w["y"] + 15)
+            time.sleep(0.4)
+            pyautogui.press("escape")
+            time.sleep(0.3)
+            pyautogui.click(512, 515)
+            time.sleep(2.5)
+            return True
         if "Mozilla Firefox" in t and ("Sign in to your account" in t or "Anmelden" in t or "SAML" in t or "Microsoft" in t):
             subprocess.run(["wmctrl", "-i", "-a", w["id"]], capture_output=True)
             # Klicke Titelleiste um Fokus in xfwm4 sicherzustellen
